@@ -107,7 +107,7 @@
 \includeonly{%
 frontespizio,%
 abstract,%
-chap_qui,%
+neural_network,%
 chap_quo,%
 chap_qua,%
 app_a,%
@@ -132,6 +132,7 @@ app_a,%
 %\interlinea{1.2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
 
 % DEDICA
 % VSPACE - PROPORZIONE USATA PER CENTRATURA VERTICALE DEL TESTO
@@ -175,15 +176,15 @@ Reti neurali per la previsione dei tipi di personalità dagli stili di scrittura
 La personalità è considerata come uno degli argomenti di ricerca più influenti in psicologia poiché predittiva di molti esiti consequenziali come la salute mentale e fisica, ed è in grado di spiegare il comportamento umano.
 Grazie alla diffusione dei Social Network come mezzo di comunicazione, sta diventando sempre più importante sviluppare modelli che possano leggere automaticamente e con precisione l'essenza di individui basandosi esclusivamente sulla scrittura. 
 \\\\
-In particolare la convergenza tra scienze sociali (psicologiche) e informatiche hanno portato i ricercatori a sviluppare metodi automatizzati (approcci automatici) per estrarre e studiare le informazioni digitali "nascoste" nei dati testuali presenti in rete per prevedere i tratti della personalità.
+In particolare la convergenza tra scienze sociali e informatiche hanno portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni "nascoste" nei dati testuali presenti in rete.
 \\\\
-In questo studio, partendo da un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità o Big Five, modello sul quale la maggior parte degli attuali studi automatici di rilevamento della personalità si sono concentrati, si vuole identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. 
+Obiettivo di questo progetto di tesi è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità o Big Five.
 \\\\
-In questo lavoro, abbiamo esplorato vari metodi per affrontare il problema della predizione della personalità, partendo dall'implementazione di reti neurali feed-forward (fully-connected) come base per capire come i modelli semplici in deep-learning possano fornire informazioni sulle caratteristiche della personalità nascoste. 
+In questo lavoro siamo partiti dall'implementazione di reti neurali  fully-connected come base per capire come i modelli semplici in deep-learning possano fornire informazioni sulle caratteristiche della personalità nascoste. 
 \\\\
-Infine sfruttando il concetto di word embedding, utilizziamo una classe di algoritmi distribuzionali, inventati nel 2013 da Tomas Mikolov, che consistono nell'utilizzo di un particolare tipo di rete neurale, detta ricorrente, che impara in modo non supervisionato i contesti delle parole.
-In questo modo siamo in grado di trarre informazioni dalla semantica stessa del testo, e possiamo tradurre concetti in relazioni lineari, ottenendo una sorta di “geometria del significato”.
-In quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale è in gran parte accoppiato con i tratti della sua personalità.
+Infine utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale ricorrente, che impara in modo non supervisionato i contesti delle parole.
+In questo modo costruiamo un embedding in cui sono contenute le informazioni semantiche del testo, ottenendo una sorta di “geometria del significato” in cui i concetti sono tradotti in relazioni lineari.
+Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale sia in gran parte accoppiato con i tratti della sua personalità.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -202,9 +203,10 @@ In quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale �
 \listofcodes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
 
 % INCLUSIONE FILE CAPITOLI - TENERE COERENTE CON LISTA IN ALTO
-\include{chap_qui}
+\include{neural_network}
 \include{chap_quo}
 \include{chap_qua}
 
