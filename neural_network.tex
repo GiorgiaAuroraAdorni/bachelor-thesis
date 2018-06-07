@@ -1,0 +1,74 @@
+\chapter{Reti Neurali}
+\label{chap:RetiNeurali}
+
+\section{Supervised Learning}
+\label{sec:SupervisedLearning}
+
+Il supervised  learning​ consiste nell'imparare una funzione in grado di mappare da x a y, usando come training using  labeled  training  examples  (x,y).  \\
+Gli algoritmi Supervised  learning  includono la regressione lineare, la regressione logistic  regression? , e le reti neurali. Esistono diverse forme di Machine Learning, ma la maggior parte dei practical  value  provengono dell'apprendimento supervisionato.
+
+\subsection{Development and test set }
+\label{subsec:DevelopmentAndTestSet}
+
+Vengono generalmente definiti: 
+\begin{itemize}
+	\item Training set – Sul quale viene eseguito l'algoritmo di apprendimento.
+	\item Dev (development) set – Viene utilizzato per regolare i parametri, selezionare le features e prendere decisioni per quanto riguarda l'algoritmo di apprendimento. Talvolta viene anche chiamato set di hold-out / cross  validation. (convalida incrociata)
+	\item Test set – si utilizza per valutare le performance/prestazioni dell'algoritmo, ma non per prendere decisioni su quale algoritmo di apprendimento o parametri utilizzare. 
+\end{itemize}
+
+Your  dev  and  test  sets  should  come  from  thesame  distribution.
+Once  you  define  the  dev  and  test  sets,  your  team  will  be  focused  on  improving  dev  setperformance.  Thus,  the  dev  set  should  reflect  the  task  you  want  to  improve  on  the  most:  Todo  well  on  all  four  geographies,  and  not  only  two.There  is  a  second  problem  with  having  different  dev  and  test  set  distributions:  There  is  achance  that  your  team  will  build  something  that  works  well  on  the  dev  set,  only  to  find  that  itdoes  poorly  on  the  test  set.  I’ve  seen  this  result  in  much  frustration  and  wasted  effort.  Avoidletting  this  happen  to  you.
+
+But  if  the  dev  and  test  sets  come  from  different  distributions,  then  your  options  are  lessclear.  Several  things  could  have  gone  wrong:
+1.You  had  overfit  to  the  dev  set.
+2.The  test  set  is  harder  than  the  dev  set.  So  your  algorithm  might  be  doing  as  well  as  couldbe  expected,  and  there’s  no  further  significant  improvement  is  possible.
+3.The  test  set  is  not  necessarily  harder,  but  just  different, from  the  dev  set.  So  what  workswell  on  the  dev  set  just  does  not  work  well  on  the  test  set.  In  this  case,  a  lot  of  your  workto  improve  dev  set  performance  might  be  wasted  effort.
+
+7  How  large  do  the  dev/test  sets  need  to  be?The  dev  set  should  be  large  enough  to  detect  differences  between  algorithms  that  you  aretrying  out. 
+
+One  popular  heuristic  had  been  to  use  30%  of  your  datafor  your  test  set.  This  works  well  when  you  have  a  modest  number  of  examples—say  100  to10,000  examples.  But  in  the  era  of  big  data  where  we  now  have  machine  learning  problemswith  sometimes  more  than  a  billion  examples,  the  fraction  of  data  allocated  to  dev/test  setshas  been  shrinking,  even  as  the  absolute  number  of  examples  in  the  dev/test  sets  has  beengrowing.  There  is  no  need  to  have  excessively  large  dev/test  beyond  what  is  needed  toevaluate  the  performance  of  your  algorithms.
+
+\subsection{Evaluation metric }
+\label{subsec:EvaluationMetric}
+ single-number  evaluation  metricfor  your  team  to  optimize 
+ 
+ \\
+ optimizeClassification  accuracy  is  an  example  of  a  single-number  evaluation  metric​:  You  runyour  classifier  on  the  dev  set  (or  test  set),  and  get  back  a  single  number  about  what  fractionof  examples  it  classified  correctly.  According  to  this  metric,  if  classifier  A  obtains  97%accuracy,  and  classifier  B  obtains  90%  accuracy,  then  we  judge  classifier  A  to  be  superior.In  contrast,  Precision  and  Recall  is  not  a  single-number  evaluation  metric:  It  gives  two3numbers  for  assessing  your  classifier.  Having  multiple-number  evaluation  metrics  makes  itharder  to  compare  algorithms. 
+ 
+ Having  a  single-number  evaluation  metric​  such  asaccuracy  allows  you  to  sort  all  your  models  according  to  their  performance  on  this  metric,and  quickly  decide  what  is  working  best.
+ 
+ 8  Establish  a  single-number  evaluation  metricfor  your  team  to  optimizeClassification  accuracy  is  an  example  of  a  single-number  evaluation  metric​:  You  runyour  classifier  on  the  dev  set  (or  test  set),  and  get  back  a  single  number  about  what  fractionof  examples  it  classified  correctly.  According  to  this  metric,  if  classifier  A  obtains  97%accuracy,  and  classifier  B  obtains  90%  accuracy,  then  we  judge  classifier  A  to  be  superior.In  contrast,  Precision  and  Recall  is  not  a  single-number  evaluation  metric:  It  gives  two3numbers  for  assessing  your  classifier.  Having  multiple-number  evaluation  metrics  makes  itharder  to  compare  algorithms.  Suppose  your  algorithms  perform  as  follows:ClassifierPrecisionRecallA95%90%B98%85%Here,  neither  classifier  is  obviously  superior,  so  it  doesn’t  immediately  guide  you  towardpicking  one.During  development,  your  team  will  try  a  lot  of  ideas  about  algorithm  architecture,  modelparameters,  choice  of  features,  etc.  Having  a  single-number  evaluation  metric​  such  asaccuracy  allows  you  to  sort  all  your  models  according  to  their  performance  on  this  metric,and  quickly  decide  what  is  working  best.If
+ 
+ 
+ 8  Establish  a  single-number  evaluation  metricfor  your  team  to  optimizeClassification  accuracy  is  an  example  of  a  single-number  evaluation  metric​:  You  runyour  classifier  on  the  dev  set  (or  test  set),  and  get  back  a  single  number  about  what  fractionof  examples  it  classified  correctly.  According  to  this  metric,  if  classifier  A  obtains  97%accuracy,  and  classifier  B  obtains  90%  accuracy,  then  we  judge  classifier  A  to  be  superior.In  contrast,  Precision  and  Recall  is  not  a  single-number  evaluation  metric:  It  gives  two3numbers  for  assessing  your  classifier.  Having  multiple-number  evaluation  metrics  makes  itharder  to  compare  algorithms.  Suppose  your  algorithms  perform  as  follows:ClassifierPrecisionRecallA95%90%B98%85%Here,  neither  classifier  is  obviously  superior,  so  it  doesn’t  immediately  guide  you  towardpicking  one.During  development,  your  team  will  try  a  lot  of  ideas  about  algorithm  architecture,  modelparameters,  choice  of  features,  etc.  Having  a  single-number  evaluation  metric​  such  asaccuracy  allows  you  to  sort  all  your  models  according  to  their  performance  on  this  metric,and  quickly  decide  what  is  working  best.If  you  really  care  about  both  Precision  and  Recall,  I  recommend  using  one  of  the  standardways  to  combine  them  into  a  single  number.  For  example,  one  could  take  the  average  ofprecision  and  recall,  to  end  up  with  a  single  number.    Alternatively,  you  can  compute  the  “F1score,”  which  is  a  modified  way  of  computing  their  average,  and  works  better  than  simplytaking  the  mean.43
+ 
+ ThePrecisionofacatclassifieristhefractionofimagesinthedev(ortest)setitlabeledascatsthatreallyarecats.ItsRecallisthepercentageofallcatimagesinthedev(ortest)setthatitcorrectlylabeledasacat.Thereisoftenatradeoffbetweenhavinghighprecisionandhighrecall
+ \\
+ \\
+ \\
+ \\
+
+
+
+This is a reference to a chapter \ref{chap:quo}. This is a reference to a figure \ref{fig:doge}. This is a reference to some code \ref{lst:hello}. This is a citation \cite{famous:paper}.
+
+\lstinputlisting[label=lst:hello, firstline=2, lastline=4, caption={I directly included a portion of a file}]{code/hello.py}
+
+\begin{lstlisting}[language=Java, label=lst:java, caption={Some code in another language than the default one}]
+public void prepare(AClass foo) {
+        AnotherClass bar = new AnotherClass(foo)
+}
+\end{lstlisting}
+
+\Blindtext
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\columnwidth]{images/LogoBicocca.pdf}
+\end{center}
+\caption{This is not a figure. It's a caption.}
+\label{fig:doge}
+\end{figure}
+
+\section{Un-Supervised Learning}
