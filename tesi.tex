@@ -5,7 +5,7 @@
 
 % INCLUSIONE PACCHETTI
 		
-\usepackage{fullpage}	
+%s\usepackage{fullpage}	
 \usepackage{graphicx}
 \usepackage[pagestyles]{titlesec}
 \usepackage[flushleft]{caption}
@@ -107,6 +107,7 @@
 \includeonly{%
 frontespizio,%
 abstract,%
+introduzione,%
 neural_network,%
 chap_quo,%
 chap_qua,%
@@ -170,19 +171,18 @@ Grazie al mio relatore Fabio Stella e ai ragazzi del laboratorio MAD (Models and
 
 % ABSTRACT - PERSONALIZZARE
 \sommario
-Apprendimento della personalità basato sul linguaggio naturale. \\
-Reti neurali per la previsione dei tipi di personalità dagli stili di scrittura.
-\\\\
+
 La personalità è considerata come uno degli argomenti di ricerca più influenti in psicologia poiché predittiva di molti esiti consequenziali come la salute mentale e fisica, ed è in grado di spiegare il comportamento umano.
 Grazie alla diffusione dei Social Network come mezzo di comunicazione, sta diventando sempre più importante sviluppare modelli che possano leggere automaticamente e con precisione l'essenza di individui basandosi esclusivamente sulla scrittura. 
 \\\\
-In particolare la convergenza tra scienze sociali e informatiche hanno portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni "nascoste" nei dati testuali presenti in rete.
+In particolare la convergenza tra scienze sociali e informatiche ha portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni "nascoste" nei dati testuali presenti in rete.
+La natura di questo progetto di tesi è altamente sperimentale, e la motivazione alla base di questo lavoro è presentare delle analisi dettagliate sull'argomento, in quanto allo stato attuale non esistono importanti indagini di questo tipo.
 \\\\
-Obiettivo di questo progetto di tesi è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità o Big Five.
+Obiettivo è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità o Big Five.
 \\\\
 In questo lavoro siamo partiti dall'implementazione di reti neurali  fully-connected come base per capire come i modelli semplici in deep-learning possano fornire informazioni sulle caratteristiche della personalità nascoste. 
 \\\\
-Infine utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale ricorrente, che impara in modo non supervisionato i contesti delle parole.
+Infine utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale convoluzionale, che impara in modo non supervisionato i contesti delle parole.
 In questo modo costruiamo un embedding in cui sono contenute le informazioni semantiche del testo, ottenendo una sorta di “geometria del significato” in cui i concetti sono tradotti in relazioni lineari.
 Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale sia in gran parte accoppiato con i tratti della sua personalità.
 
@@ -206,6 +206,7 @@ Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale 
 \mainmatter
 
 % INCLUSIONE FILE CAPITOLI - TENERE COERENTE CON LISTA IN ALTO
+\include{introduzione}
 \include{neural_network}
 \include{chap_quo}
 \include{chap_qua}
