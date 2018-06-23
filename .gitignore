@@ -65,3 +65,5 @@ C:\\nppdf32Log\\debuglog.txt
 *.tdo
 *.*~
 .directory
+.DS_Store
+*.numbers
