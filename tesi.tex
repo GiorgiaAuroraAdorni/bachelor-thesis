@@ -16,6 +16,7 @@
 \usepackage{blindtext}
 \usepackage{graphicx,wrapfig}
 \usepackage{booktabs}
+\usepackage[table,xcdraw]{xcolor}
 \usepackage{lmodern}
 \usepackage{varioref}
 \usepackage{url}
@@ -29,6 +30,7 @@
 \usepackage{float}
 \usepackage{amssymb}
 \usepackage{multicol}
+\usepackage{color}
 \usepackage{multirow}
 \usepackage{listings}
 \usepackage[pass]{geometry}
@@ -38,8 +40,13 @@
 \usepackage{amsmath}
 \usepackage[babel]{csquotes}
 \usepackage{hyperref}
-\usepackage[backend=bibtex]{biblatex}
+\usepackage[backend=bibtex,sorting=none]{biblatex}
+\usepackage{array}
+\usepackage{nameref}
+%\newcommand{\cellavuota}{\multicolumn{1}{c|}{}}
+%\newcommand{\centra}[1]{\begin{center}#1\end{center}   }
 
+\newcommand{\setfont}[1]{\fontfamily{iwona}\selectfont \scshape #1}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % CONFIGURAZIONE LINK E RIFERIMENTI
@@ -94,7 +101,7 @@
 
 % INFORMAZIONI PDF - PERSONALIZZARE
 \pdfinfo{%
-  /Title    (Apprendimento della personalità basato sul linguaggio naturale)
+  /Title    (Reti neutrali per l’apprendimento dei tratti della personalità dal linguaggio naturale)
   /Author   (Giorgia Adorni)
   /Subject  (Laura Informatica)
   /Keywords (Tesi)
@@ -108,7 +115,11 @@
 frontespizio,%
 abstract,%
 introduzione,%
+contesto, %
 neural_network,%
+formulazione,
+esperimenti,
+conclusioni,
 chap_quo,%
 chap_qua,%
 app_a,%
@@ -155,9 +166,9 @@ app_a,%
 \begin{flushright}
 \noindent
 Citatemi dicendo che sono stato citato male.
-
 \textit{Groucho Marx}
 \end{flushright}
+
 \vspace*{\stretch{6}}
 \cleardoublepage
 
@@ -187,7 +198,6 @@ In questo modo costruiamo un embedding in cui sono contenute le informazioni sem
 Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale sia in gran parte accoppiato con i tratti della sua personalità.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 % INDICI 
 
 % INDICE GENERALE
@@ -203,11 +213,18 @@ Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale 
 \listofcodes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\mainmatter
+\introduzione
+\input{introduzione}
 
 % INCLUSIONE FILE CAPITOLI - TENERE COERENTE CON LISTA IN ALTO
-\include{introduzione}
+
+\mainmatter
+%\include{introduzione}
+\include{contesto}
 \include{neural_network}
+\include{formulazione}
+\include{esperimenti}
+\include{conclusioni}
 \include{chap_quo}
 \include{chap_qua}
 
@@ -218,8 +235,13 @@ Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % BIBLIOGRAFIA
-\addcontentsline{toc}{chapter}{\refname}
-\nocite{*}
 \printbibliography
+\addcontentsline{toc}{chapter}{\refname}
+%\nocite{*}
+
+
+
+
+
 
 \end{document}
