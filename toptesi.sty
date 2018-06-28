@@ -165,6 +165,14 @@
  \@afterindentfalse
  \@schapter{\summaryname}%
  \addcontentsline{toc}{chapter}{\summaryname}%
+        }     
+  \def\introduzione{%
+ \iffrontmatter\else\frontmattertrue\fi
+ \if@openright\clearpage\else\clearpage\fi
+ \global\@topnum\z@
+ \@afterindentfalse
+ \@schapter{\introname}%
+ \addcontentsline{toc}{chapter}{\introname}%
         }            
 \def\ringraziamenti{%
  \iffrontmatter\else\frontmattertrue\fi
