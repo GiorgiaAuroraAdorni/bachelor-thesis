@@ -30,6 +30,7 @@
 \usepackage{float}
 \usepackage{amssymb}
 \usepackage{multicol}
+\usepackage{multirow}
 \usepackage{color}
 \usepackage{multirow}
 \usepackage{listings}
@@ -40,13 +41,35 @@
 \usepackage{amsmath}
 \usepackage[babel]{csquotes}
 \usepackage{hyperref}
-\usepackage[backend=bibtex,sorting=none]{biblatex}
+\usepackage[backend=bibtex,sorting=none, backref=true]{biblatex}
 \usepackage{array}
 \usepackage{nameref}
+\usepackage{numprint}
+\usepackage{siunitx}
+\usepackage{microtype}
 %\newcommand{\cellavuota}{\multicolumn{1}{c|}{}}
 %\newcommand{\centra}[1]{\begin{center}#1\end{center}   }
 
 \newcommand{\setfont}[1]{\fontfamily{iwona}\selectfont \scshape #1}
+\hyphenation{algo-rithms}
+\DeclareMathOperator{\mean}{E}
+\DeclareMathOperator{\variance}{Var}
+\DeclareMathOperator{\mse}{MSE}
+
+
+\makeatletter
+\def\thickhline{%
+	\noalign{\ifnum0=`}\fi\hrule \@height \thickarrayrulewidth \futurelet
+	\reserved@a\@xthickhline}
+\def\@xthickhline{\ifx\reserved@a\thickhline
+	\vskip\doublerulesep
+	\vskip-\thickarrayrulewidth
+	\fi
+	\ifnum0=`{\fi}}
+\makeatother
+
+\newlength{\thickarrayrulewidth}
+\setlength{\thickarrayrulewidth}{4\arrayrulewidth}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % CONFIGURAZIONE LINK E RIFERIMENTI
@@ -56,8 +79,8 @@
     pdfstartview={FitH},
     colorlinks,
     linkcolor={black}, %COLORE DEI RIFERIMENTI AL TESTO
-    citecolor={blue}, %COLORE DEI RIFERIMENTI ALLE CITAZIONI
-    urlcolor={blue} %COLORI DEGLI URL
+    citecolor={black}, %COLORE DEI RIFERIMENTI ALLE CITAZIONI
+    urlcolor={black} %COLORI DEGLI URL
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -120,8 +143,6 @@ neural_network,%
 formulazione,
 esperimenti,
 conclusioni,
-chap_quo,%
-chap_qua,%
 app_a,%
 }
 
@@ -176,7 +197,7 @@ Citatemi dicendo che sono stato citato male.
 
 % RINGRAZIAMENTI - PERSONALIZZARE
 \ringraziamenti
-Grazie al mio relatore Fabio Stella e ai ragazzi del laboratorio MAD (Models and Algorithms for Data \& text mining).
+Grazie al mio relatore Fabio Stella e ai ragazzi del Laboratorio MAD (Models and Algorithms for Data \& Text Mining).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -186,14 +207,14 @@ Grazie al mio relatore Fabio Stella e ai ragazzi del laboratorio MAD (Models and
 La personalità è considerata come uno degli argomenti di ricerca più influenti in psicologia poiché predittiva di molti esiti consequenziali come la salute mentale e fisica, ed è in grado di spiegare il comportamento umano.
 Grazie alla diffusione dei Social Network come mezzo di comunicazione, sta diventando sempre più importante sviluppare modelli che possano leggere automaticamente e con precisione l'essenza di individui basandosi esclusivamente sulla scrittura. 
 \\\\
-In particolare la convergenza tra scienze sociali e informatiche ha portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni "nascoste" nei dati testuali presenti in rete.
+In particolare, la convergenza tra scienze sociali e informatiche ha portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni ''nascoste'' nei dati testuali presenti in rete.
 La natura di questo progetto di tesi è altamente sperimentale, e la motivazione alla base di questo lavoro è presentare delle analisi dettagliate sull'argomento, in quanto allo stato attuale non esistono importanti indagini di questo tipo.
 \\\\
-Obiettivo è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità o Big Five.
+L'obiettivo è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità, i Big Five.
 \\\\
-In questo lavoro siamo partiti dall'implementazione di reti neurali  fully-connected come base per capire come i modelli semplici in deep-learning possano fornire informazioni sulle caratteristiche della personalità nascoste. 
+In questo lavoro siamo partiti dall'implementazione di reti neurali  fully-connected come base per capire come modelli semplici di Deep Learning possano fornire informazioni sulle caratteristiche nascoste della personalità. 
 \\\\
-Infine utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale convoluzionale, che impara in modo non supervisionato i contesti delle parole.
+Infine, utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale convoluzionale in grado di imparare, in modo non supervisionato, i contesti delle parole.
 In questo modo costruiamo un embedding in cui sono contenute le informazioni semantiche del testo, ottenendo una sorta di “geometria del significato” in cui i concetti sono tradotti in relazioni lineari.
 Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale sia in gran parte accoppiato con i tratti della sua personalità.
 
@@ -225,8 +246,6 @@ Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale 
 \include{formulazione}
 \include{esperimenti}
 \include{conclusioni}
-\include{chap_quo}
-\include{chap_qua}
 
 \appendix
 % INCLUSIONE APPENDICI -
