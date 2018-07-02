@@ -1,57 +1,62 @@
 \chapter{Reti Neurali}
 \label{chap:RetiNeurali}
 
-Nel campo dell'apprendimento automatico (o machine learning), una rete neurale artificiale (\textbf{ANN} "Artificial Neural Network") è un modello matematico basato sulla semplificazione delle reti neurali biologiche \cite{samuel1959some}. \\
-Una rete neurale può essere considerata come un sistema dinamico avente la topologia di un grafo orientato con nodi (i neuroni artificiali) ed archi (pesi sinaptici).
-Questo modello è composto da un gruppo di interconnessioni di informazioni costituite da neuroni artificiali che modellano i neuroni in un cervello biologico e processi che utilizzano un approccio di connessionismo di calcolo.
-Ogni connessione, come le sinapsi di un cervello biologico, può trasmettere un segnale da un neurone artificiale a un altro, i quali sono tipicamente aggregati in strati. 
-Gli stimoli vengono ricevuti da un livello di nodi d'ingresso detto unità di elaborazione. Il neurone artificiale che riceve il segnale può elaborarlo e quindi trasmetterlo ad altri neuroni artificiali collegati ad esso.\\
-Poiché nell'implementazione di ANN tradizionali i segnali vengono rappresentati da numeri reali, possiamo considerare questa elaborazione come una moltiplicazione tra gli ingressi e un valore detto peso. Il risultato di queste operazioni viene sommato e se la somma supera un certa soglia il neurone si attiva, attivando la sua uscita.
-Il peso serve a quantificare l'importanza dell'efficacia sinaptica della linea di ingresso.		\\
-Sono strutture non-lineari di dati statistici e vengono utilizzate per simulare relazioni complesse tra ingressi ed uscite che altre funzioni analitiche non sono in grado di rappresentare.\\
+Nel campo dell'apprendimento automatico, o \emph{machine learning}, una rete neurale artificiale  in inglese \emph{Artificial Neural Network} (ANN),  è un modello matematico basato sulla semplificazione delle reti neurali biologiche \cite{samuel1959some}.
 
-\begin{figure}
+Una rete neurale può essere considerata come un sistema dinamico avente la topologia di un grafo orientato con nodi, che modellano i neuroni in un cervello biologico, e archi, che rappresentano le sinapsi (interconnessioni di informazioni).
+
+Ogni connessione può trasmettere un segnale da un neurone artificiale a un altro, i quali sono tipicamente aggregati in strati. Gli stimoli vengono ricevuti da un livello di nodi d'ingresso, detto unità di elaborazione, che elabora il segnale e lo trasmette ad altri neuroni collegati ad esso.
+
+\section{Modello}
+\label{sec:modello}
+
+Le reti neurali possono essere viste come semplici modelli matematici che definiscono una funzione $f:X\rightarrow Y$. 
+
+La funzione di rete di un neurone $f(x)$ è definita come una composizione di altre funzioni $g_i(x)$, che possono a loro volta essere scomposte in altre funzioni.
+
+Una rappresentazione ampiamente utilizzata per la descrizione di ANN tradizionali è la \emph{somma ponderata}, mostrata nell'equazione \ref{eq:modellomat}.
+
+\begin{equation}
+f(x)=K \bigg( \sum_{i}w_ix_i +b\bigg)
+\label{eq:modellomat}
+\end{equation}
+
+Ogni segnale in ingresso $x_i$ viene moltiplicato ad un corrispondente peso $w_i$, che assume valore positivo o negativo a seconda che si voglia eccitare o inibire il neurone.  
+Il bias $b$ varia secondo la propensione del neurone ad attivarsi, influenzandone l'uscita.
+Inoltre viene applicata una funzione predefinita $K$, detta anche \emph{funzione di attivazione}, illustrata nella seguente sezione.
+
+\begin{figure}[htb]
 	\centering
-	{\includegraphics[width=.65\textwidth]{images/ArtificialNeuronModel}} \quad
+	{\includegraphics[width=.7\textwidth]{images/ArtificialNeuronModel}} 
 	\caption{Artificial Neuron Model}
-	\label{fig:Artificial Neuron Model}\end{figure}
+	\label{fig:Modello matematico di un neurone artificiale}
+\end{figure}
 
-\section{Definizioni}
-\label{sec:def}
-Le reti neurali possono essere viste come semplici modelli matematici che definiscono una funzione $f:X\rightarrow Y$. \\
-La funzione di rete di un neurone $f(x)$ è definita come una composizione di altre funzioni $g_i(x)$, che possono a loro volta essere scomposte in altre funzioni. Questo può essere rappresentato come una struttura di reti.\\
-Una rappresentazione ampiamente utilizzata è la \emph{somma ponderata non lineare}, dove 
-\begin{equation}
-f(x)=K \bigg( \sum_{i}w_ig_i(x)\bigg)
-\end{equation}
-dove $k$ è una funzione predefinita, detta anche \emph{funzione di attivazione}.
-\\\\
-Ad ogni input $x_i$ è associato un peso $w_i$ con valore positivo o negativo per eccitare o inibire il neurone. Il bias varia secondo la propensione del neurone ad attivarsi, per variare la soglia di attivazione del neurone.
-Secondo l'algoritmo, dopo il caricamento dei valori di input e i pesi relativi, si prosegue calcolando la somma dei valori di input pesata con i relativi pesi. In seguito viene calcolato il valore della funzione di attivazione $K$ con il risultato della somma pesata.
-L'output del neurone $y$ è il risultato ottenuto dalla funzione di attivazione
-\begin{equation}
-y(x)=K\bigg( \sum_{i=1}^{d}w_ix_i+w_0\bigg) = \overline{w}^T\overline{x}
-\end{equation}
-
-\subsection{Funzione di attivazione}
+\subsection{Funzioni di attivazione}
 \label{subsec:fattivazione}
-La funzione di attivazione di un nodo determina la risposta di quel neurone.\\
-Solo le funzioni di attivazione non lineare consentono a tali reti di calcolare problemi non banali utilizzando un  numero limitato di nodi.\\\\
-Utilizzando una funzione di attivazione Sigmoide normalizzabile, il modello realistico rimane a zero fino a quando viene ricevuta la corrente di ingresso, a quel punto la frequenza di accensione aumenta rapidamente all'inizio, ma gradualmente si avvicina a un asintoto con una frequenza di attivazione del 100\% \cite{han1995influence}.
+Una funzione di attivazione è una componente fondamentale del modello. Essa consente alla rete di imparare trasformazioni non lineari, in modo da calcolare problemi non banali utilizzando un limitato numero di nodi.
+
+Una delle funzioni più utilizzate è la \emph{sigmoide} $\sigma(x)$, la quale modella la frequenza degli stimoli emessi, da neurone inattivo, $\sigma(x)=0$, a neurone completamente saturo con una frequenza di attivazione massima $\sigma(x)=1$.
 
 \begin{equation}
-f (x) = \frac{1}{1+e^{-x}}
+\sigma(x) = \frac{1}{1+e^{-x}}
+\label{eq:sigmoid}
 \end{equation}
-$\\$
-Un'altra delle funzioni di attivazione più utilizzate è la ReLU (Rectified Linear Unit) \cite{nair2010rectified}, definita dalla seguente 
+
+
+È diventata molto popolare negli ultimi anni la \emph{Rectified Linear Unit} (ReLU) \cite{nair2010rectified,hahnloser2000digital,hahnloser2003permitted,glorot2011deepsparse}, definita dalla seguente equazione:
 \begin{equation}
-f (x) = max(0, x)
+f (x) = \max(0, x)= \begin{cases}
+x \quad \mbox{se } x>0\\
+0 \quad \mbox{altrimenti}
+\end{cases}
+\label{eq:relu}
 \end{equation}
-Questa funzione semplicemente setta a zero tutti i valori negativi, mentre ritorna lo stesso valore per quelli positivi.
-La ReLU viene utilizzata in quanto rende più rapido ridurre l’accuratezza ed inoltre risolve parzialmente il problema del "vanishing gradient" che porta i layer più in profondità della rete ad imparare troppo lentamente.
+Questa funzione azzera tutti i valori negativi, mentre ritorna invariati quelli positivi.
 
+Essa viene utilizzata in quanto accelera notevolmente la convergenza della discesa del gradiente stocastico, inoltre la sua implementazione è semplice ed efficiente.
 
-\begin{figure}
+\begin{figure}[htb]
 	\centering
 	\subfloat[][\emph{Sigmoide}]
 	{\includegraphics[width=.45\textwidth]{images/signmoid2}}
@@ -59,24 +64,82 @@ La ReLU viene utilizzata in quanto rende più rapido ridurre l’accuratezza ed 
 	\subfloat[][\emph{ReLU}]
 	{\includegraphics[width=.45\textwidth]{images/relu2}} 
 	
-	\caption{Funzioni di attivazione}
-	\label{fig:subfig}\end{figure}
+	\caption{Andamento di due funzioni di attivazione}
+	\label{fig:subfig}
+\end{figure}
 
+
+\subsection{Batch normalization}
+\label{subsec:normalization}
+
+Per aumentare la stabilità della rete neurale, generalmente viene applicata ad ogni strato una \emph{batch normalization}, la quale normalizza l'uscita di un precedente livello sottraendo il valore medio di un batch e dividendo il risultato per la sua deviazione standard \cite{ioffe2015batch}.
+
+\begin{equation}
+	\hat{x}^{(k)}=\frac{x^{(k)}-\mean[x^{(k)}]}{\sqrt{\variance[x^{(k)}]}}
+\end{equation}
+
+La batchnorm di ogni input potrebbe cambiare ciò che il layer può rappresentare. Per questo motivo viene assicurato che la trasformazione inserita nella rete possa rappresentare l'identità, permettono di annullare il potenziale effetto della batch normalization, nel caso in cui fosse l'azione ottimale.
+Dunque viene prevista l'aggiunta di due parametri  ``deviazione standard'' $\gamma$ e ``media'' $\beta$, che la rete impara assieme ai parametri del modello originale, come mostrato nell'equazione \ref{eq:batchnorm}:
+\begin{equation}
+	y^{(k)}=\gamma^{(k)}\hat{x}^{(k)}+\beta^{(k)}\mbox{.}
+	\label{eq:batchnorm}
+\end{equation}
 
 
 \section{Apprendimento}
 \label{sec:apprendimento}
-Per insegnare alla rete a risolvere il problema occorre un periodo di apprendimento in cui vengono sfruttate una serie di osservazioni per trovare ciò che risolvere il compito in maniera ottimale. \\
-Questo comporta la definizione di una \emph{funzione di costo} in grado di misurare la distanza tra una soluzione particolare ed una ottimale per il problema. Gli algoritmi di apprendimento cercano una funzione che abbia il minor costo possibile.\\
-La conoscenza estratta dalla rete viene memorizzata sui pesi che vengono modificati sfruttando tecniche di ottimizzazione. \\\\
-La funzione di errore è l'espressione della differenza/scostamento tra l'output della rete $y$ e l'output desiderato $y'$ nell'apprendimento
+Per insegnare alla rete a risolvere un determinato problema, occorre una fase di apprendimento in cui vengono sfruttate una serie di osservazioni per trovare un modello ottimale.
+
+Questo comporta la definizione di una \emph{funzione di costo}, in grado di misurare la distanza tra una soluzione particolare ed una ottimale. 
+
+\subsection{Funzione di costo}
+\label{subsec:loss}
+
+Una funzione di costo mappa un evento ad un numero reale, che rappresenta intuitivamente il suo ``costo''.
+
+Gli algoritmi di apprendimento cercano di risolvere un problema di ottimizzazione, ovvero la minimizzare una certa funzione di perdita. 
+
+Il tipo di problema che si vuole risolvere è una \emph{regressione}, il cui compito è prevedere dei valori reali. Per questo task, è comune calcolare lo scostamento tra la quantità prevista dalla rete $\hat(Y)$ e i valori osservati $Y$ (ground truth). 
+ 
+L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quadrati degli errori, e viene calcolato come
+
 \begin{equation}
-E(w)=\sum_{i=1}^{c}((y_i-y'_i)^2)
+\mse = \frac{1}{n}\sum_{i=1}^{n}(Y_i-\hat{Y}_i)^2 \mbox{.}
 \end{equation}
+
+\subsection{Algoritmi di ottimizzazione}
+\label{subsec:optimizer}
+
+Gli algoritmi di ottimizzazione sono necessari per minimizzare il risultato di una determinata funzione obiettivo, la quale dipende dai parametri che il modello deve imparare durante l'addestramento. 
+
+Vengono utilizzate varie strategie e algoritmi di ottimizzazione per aggiornare e calcolare i valori appropriati e ottimali di tale modello, i quali influenzano fortemente l'efficacia del processo di apprendimento.
+
+La tradizionale discesa gradiente, o \emph{Batch Gradient Descent} (GD), calcola il gradiente dell'intero set di dati, eseguendo un solo aggiornamento. Di conseguenza il processo di addestramento può risultare lento e difficile da controllare per i set di dati che sono molto grandi. 
+
+La dimensione dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
+
+\subsubsection{Adagrad}
+\label{subsubsec:adagrad}
+
+\emph{Adagrad} è un metodo di apprendimento adattativo che aggiusta il learning rate sulla base dei parametri \ref{duchi2011adaptive}.
+Gli aggiornamenti sono resi grandi per parametri associati a caratteristiche poco ricorrenti e piccoli per quelli più frequenti. Per questo motivo viene considerato adatto alla gestione di dati sparsi.
+
+Adagrad modifica il tasso di apprendimento generale $\eta$ ad ogni istante di tempo $t$ per ogni parametro $\theta(i)$, sulla base dei gradienti che sono stati calcolati per $\theta(i)$.
+
+Il vantaggio principale di Adagrad è che non è necessario regolare manualmente la frequenza di apprendimento e nella maggior parte delle implementazioni viene usato un valore predefinito --- per esempio \numprint{0,001} --- e lascia a invariato.\\
+La principale debolezza consiste nell'accumulo dei gradienti quadrati nel denominatore, finché ogni termine aggiunto è positivo. Di conseguenza il tasso di apprendimento si riduce fino al punto in cui l'algoritmo non è più in grado di acquisire ulteriori conoscenze. 
+
+
+\subsubsection{Adam}
+\label{subsubsec:adam}
+
+L'\emph{Adaptive Moment Estimation} (Adam) è un altro metodo che calcola i tassi di apprendimento adattivi per ciascun parametro. Oltre a memorizzare una media esponenziale decadente di gradienti quadrati, mantiene anche una media decadente esponenziale dei gradienti passati M (t).
+
+Adam funziona bene se confrontato con altri algoritmi adattativi, poiché converge molto velocemente e la velocità di apprendimento è efficiente.
 
 
 {\color{blue}
-	\subsection{Algoritmo di back propagation}
+	\subsection{Algoritmo di Backpropagation}
 	\label{subsec:backprop}}
 
 \subsection{Paradigmi di apprendimento}
@@ -84,7 +147,7 @@ E(w)=\sum_{i=1}^{c}((y_i-y'_i)^2)
 
 Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
 \begin{itemize}
-	\item[\bfseries supervisionato] --- alla rete viene presentato un training set preparato da un "insegnante esterno", composto da coppie significative di valori (input, output atteso/desiderato).\\
+	\item[\bfseries supervisionato] --- alla rete viene presentato un training set preparato da un ``insegnante esterno'', composto da coppie significative di valori (input, output atteso/desiderato).\\
 	Quando alla rete neurale viene fornito l'input dall'ambiente, l'insegnante è in grado di calcolare/restituire l'output desiderato corrispondente addestrando la rete mediante un algoritmo (tipicamente quello di back propagation). 
 	Durante questo procedimento viene calcolo l'errore che la rete commette, necessario per farle comprendere di quanto sbaglia ed è dato dalla differenza tra l'output e l'output atteso. La rete modifica i propri pesi in base all'errore commesso, che rappresenta l'azione ottima per l'input corrente, cercando di minimizzarlo.\\
 	In questo moto la rete impara a riconoscere la relazione incognita che lega le variabili di ingresso e uscita, in modo da prevedere il valore di output per qualsiasi valore di ingresso, basandosi solo su una limitata casistica di corrispondenza (coppie input-output).
@@ -130,7 +193,7 @@ Avere una singola metrica di valutazione del numero come l'\emph{accuratezza} co
 \subsection{Overfitting}
 \label{subsec:overfitting}
 
-L'\emph{overfitting} è "la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future".\\
+L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future''.\\
 La rete neurale deve avere capacità di comprensione del modello statistico dei dati, non memorizzare i soli dati del training set. L'essenza del sovraffollamento consiste nell'estrarre inconsapevolmente parte della variazione residua (cioè il rumore) come se quella variazione rappresentasse la sottostante struttura del modello \cite{burnham2003model}.\\
 Per ridurre la possibilità di overfitting esistono diverse tecniche come la convalida incrociata (cross validation), la regolarizzazione o l'\emph{early stopping}, che consiste nell'utilizzo di un validation set di coppie non usate nel training set per la misurazione dell'errore.\\
 La base di alcune tecniche è per penalizzare esplicitamente i modelli eccessivamente complessi per testare la capacità del modello di generalizzare, valutando le sue prestazioni su un insieme di dati non utilizzati per l'addestramento.
@@ -145,11 +208,11 @@ Questo corrisponde ad una mappatura tra i valori di input e di output, che può 
 
 \section{Reti neurali convoluzionali}
 \label{sec:cnn}
-Una rete neurale convoluzionale (o CNN "Convolutional Neural Network") è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali con livelli completamente connessi (corrispondenti a quelli tipici di ANN) \cite{kim2014convolutional}. Questa architettura consente ai CNN di sfruttare la struttura 2D dei dati di input.\\\\
+Una rete neurale convoluzionale (o CNN ``Convolutional Neural Network'') è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali seguiti da una serie di livelli completamente connessi (corrispondenti a quelli tipici di ANN) \cite{kim2014convolutional}. Questa architettura consente alle CNN di sfruttare la struttura 2D dei dati di input.\\\\
 Una convoluzione può essere considerata come una funzione a finestra scorrevole, detta \emph{kernel} o filtro, applicata a una matrice. 
-Nell CNN usiamo le convoluzioni sul livello di input per calcolare l'output. Ciò si traduce in connessioni locali, in cui ogni regione dell'ingresso è collegata a un neurone nell'output. Ogni livello applica filtri diversi, in genere centinaia o migliaia, e combina i loro risultati. Durante la fase di addestramento, una CNN impara automaticamente i valori dei suoi filtri in base all'attività che si desidera eseguire. \\
-Le CNN sono adatte per elaborare dati visivi e altri dati bidimensionali. Hanno mostrato risultati superiori in entrambe le applicazioni di immagine e parlato. Possono essere addestrati con back-propagation standard. Le CNN sono più facili da addestrare rispetto ad altre reti neurali regolari, profonde e feed-forward e hanno molti meno parametri da stimare.\\
+Nelle CNN usiamo le convoluzioni sul livello di input per calcolare l'output. Ciò si traduce in connessioni locali, in cui ogni regione dell'ingresso è collegata a un neurone nell'output. Ogni livello applica filtri diversi, in genere centinaia o migliaia, e combina i loro risultati. Durante la fase di addestramento, una CNN impara automaticamente i valori dei suoi filtri in base all'attività che si desidera eseguire. \\
+Le reti convoluzionali sono adatte per elaborare dati visivi e altri dati bidimensionali. Hanno mostrato risultati superiori in entrambe le applicazioni di immagine e parlato. Possono essere addestrati con Backpropagation standard. Le CNN sono più facili da addestrare rispetto ad altre reti neurali regolari, profonde e feed-forward e hanno molti meno parametri da stimare.\\
 Una CNN è composta da un input e un livello di output, oltre a più livelli nascosti. Gli strati nascosti di una CNN consistono tipicamente di strati convoluzionali, strati di raggruppamento, strati completamente connessi e livelli di normalizzazione.\\
-Rappresentano una delle tecniche più popolari nel campo del riconoscimento delle immagini ma anche nell'elaborazione del linguaggio naturale (NLP "Natuaral Language Processing") \cite{manning1999foundations,FIXME}.\\
-In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matrice. Ogni riga della matrice corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed} o GloVe \cite{pennington2014glove}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. Nel NLP utilizziamo filtri che scorrono su righe complete della matrice (parole). Pertanto, la "larghezza" dei nostri filtri è solitamente uguale alla larghezza della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. \\
+Rappresentano una delle tecniche più popolari nel campo del riconoscimento delle immagini ma anche nell'elaborazione del linguaggio naturale (NLP ``Natuaral Language Processing'') \cite{manning1999foundations,FIXME}.\\
+In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matrice. Ogni riga della matrice corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed} o GloVe \cite{pennington2014glove}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. Nel NLP utilizziamo filtri che scorrono su righe complete della matrice (parole). Pertanto, la ``larghezza'' dei nostri filtri è solitamente uguale alla larghezza della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. \\
 Risulta che le CNN applicate ai problemi di NLP funzionino abbastanza bene, un esempio è il modello \emph{Bag of Words} che è stato l'approccio standard per anni e ha portato a risultati piuttosto buoni.
