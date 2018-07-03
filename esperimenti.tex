@@ -6,7 +6,7 @@ In particolare verranno utilizzate diverse strutture di rete, combinando differe
 
 \section{Spazi di rappresentazione}
 \label{sec:approcci}
-Per affrontare questo problema di {\color{red} analisi testuale (?)}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche:
+Per affrontare questo problema di \emph{Text Mining}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche:
 \begin{itemize}
 	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze.
 	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite gli algoritmi di Mikolov. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
@@ -24,14 +24,14 @@ In seguito viene posta l'attenzione su tre diverse architetture neurali:
 \section{Esperimento 1}
 \label{sec:es1}
 \subsection{Input Features}
-\label{subsec:features}
+\label{subsec:features1}
 
-Nel primo approccio proposto, per rappresentare i dati testuali viene utilizzato il modello \emph{bag-of-words}, un tipo di descrizione semplificata, spesso utilizzata nell'elaborazione del linguaggio naturale e nel recupero delle informazioni (IR). 
+Nel primo approccio proposto, per rappresentare i dati testuali viene utilizzato il modello \emph{bag-of-words}, un tipo di descrizione semplificata, spesso utilizzata nell'elaborazione del linguaggio naturale e nel campo dell'\emph{Information Retrivial} (IR). 
 
 Sfruttando il dizionario delle occorrenze precedentemente costruito, il testo viene modellato  come fosse una ``borsa di parole'', in cui grammatica e ordine delle parole vengono trascurate.
 Ogni frase viene ridotta ad un vettore in cui ogni elemento identifica una parola del dizionario. Nella posizione corrispondente ad un determinato termine vi sarà il valore \num{1} se la parola è contenuta nella frase, \num{0} altrimenti.
 
-Il modello riguarda solo se le parole conosciute, di conseguenza i vocaboli che compaiono nel testo ma sono assenti nel dizionario vengono trascurati.
+Il modello riguarda solo le parole conosciute, di conseguenza i vocaboli che compaiono nel testo ma sono assenti nel dizionario vengono trascurati.
 
 \begin{figure}[H]
 	\centering
@@ -40,9 +40,8 @@ Il modello riguarda solo se le parole conosciute, di conseguenza i vocaboli che 
 	\label{fig:bow}
 \end{figure}
 
-
 \subsection{Architettura della rete}
-\label{subsec:modelli}
+\label{subsec:modelli1}
 
 Una volta estratte, le features posso essere passate in input alla rete neurale, che le elabora calcolando le risposte dei neuroni dal livello di input verso il livello di output.
 
@@ -53,23 +52,22 @@ Lo scopo di un layer completamente connesso è imparare combinazioni non lineari
 
 Ad ogni livello fully connected viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}.
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. {\color{red}in realtà non mi pare si sia descritto come funziona in quella sezione, decida come desidera trattare questi aspetti per evitare che le vengano mosse obiezioni}
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
 
 \begin{figure}[H]
 	\centering
-		\begin{tabular}{lccc}
+		\begin{tabular}{lcccc}
 			\toprule
-			\textbf{Layer} \quad & \textbf{Modello 1} & \textbf{Modello 2} & \textbf{Modello 3}  \\
-			
+			\textbf{Layer} \quad & \textbf{Modello 1} & \textbf{Modello 2} & \textbf{Modello 3} &  \textbf{Modello 4}  \\
 			\midrule
-			Input & \numprint{60000} & \numprint{60000} &\numprint{60000} \\
-			fc1  & \num{300}& \num{300} & \num{100} \\
-			fc2  &  \num{20}& \num{200} & \num{50}   \\
-			fc3 & -& \num{100} & \num{20} \\
-			Output &  \num{5}& \num{5} & \num{5}  \\
+			Input 				 & \numprint{60000}	  & \numprint{60000}   &\numprint{60000}	&\numprint{60000}	   \\
+			fc1  				 & \num{300}		  & \num{300} 		   & \num{100} 			& \num{300} 		   \\
+			fc2  				 &  \num{200}		  & \num{200} 		   & \num{50}  			& \num{20}  		   \\
+			fc3					 & -				  & \num{100} 		   & \num{20} 			& -					   \\
+			Output 				 &  \num{5}			  & \num{5} 		   & \num{5}			& \num{5} 			   \\
 			\bottomrule
 		\end{tabular}
 	\captionof{table}{Confronto delle architetture di tre differenti modelli}
@@ -85,7 +83,7 @@ Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emp
 In ogni epoca si alternano una fase di training ed una fase di test in modo tale da monitorare costantemente i miglioramenti o i peggioramenti del modello sul test set. 
 
 \subsection{Performance}
-\label{subsec:performance}
+\label{subsec:performance1}
 Prendendo in considerazione le tre diverse architetture implementate, presentiamo i nostri risultati ottenuti in termini di loss.
 \begin{table}[H]
 	\centering
@@ -95,7 +93,8 @@ Prendendo in considerazione le tre diverse architetture implementate, presentiam
 		\midrule
 		\textbf{Modello 1} & \numprint{0.0607} & \numprint{0.0619} &\numprint{235} min \\
 		\textbf{Modello 2} & \numprint{0.0901} & \numprint{0.0606} &\numprint{250} min \\
-		\textbf{Modello 3} & \numprint{0.0681} & \numprint{0.0624} &\numprint{265} min \\
+		\textbf{Modello 3} & \numprint{0.0680} & \numprint{0.0624} &\numprint{265} min \\
+%		\textbf{Modello 4} & \numprint{0.0287} & \numprint{0.0104} &\numprint{145} min \\
 		\bottomrule 
 	\end{tabular}
 	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti dalle tre diverse reti}
@@ -121,12 +120,16 @@ Calcolando il valore medio assunto da ogni caratteristica durante la fase di add
 		\midrule
 		\multirow{2}*{\textbf{Modello 3}} & Modello   & \numprint{0,147} & \numprint{0,226} & \numprint{0,225} & \numprint{0,262} & \numprint{0,348} \\
 		& Modello 0 & \numprint{0,233} & \numprint{0,307} & \numprint{0,262} & \numprint{0,373} & \numprint{0,546}  \\
+%		\midrule
+%		\multirow{2}*{\textbf{Modello 4}} & Modello   & \numprint{0,147} & \numprint{0,226} & \numprint{0,225} & \numprint{0,262} & \numprint{0,348} \\
+%		& Modello 0 & \numprint{0,233} & \numprint{0,307} & \numprint{0,262} & \numprint{0,373} & \numprint{0,546}  \\
 		\bottomrule	
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle tre architetture contro il modello basato sulla media di training}
+	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle architetture contro il modello basato sulla media di training}
 	\label{tab:confmm0bow+fc}
 \end{table}
 
+{\color{red} sembrerebbe leggermente meglio il terzo modello}
 Mettendo a confronto le due metriche, si nota che i modelli realmente implementati imparano nella maggioranza dei casi a predire un valore con lo stesso errore commesso dai modelli banali che calcolano la media. Risulta allora evidente che i risultati ottenuti non siano ottimali.
 
 La scarsa efficienza di questi modelli potrebbe dipendere dall'efficacia con cui vengono codificate le feature in input alla rete. 
@@ -136,19 +139,69 @@ Inoltre, un tipo di rappresentazione sparsa risulta più difficile da modellare 
 
 \section{Esperimento 2}
 \label{sec:es2}
-%
-% modello in cui applichiamo una tecnica non supervisionata che non fornisce alcuna indicazione sulla coerenza semantica degli argomenti risultanti. 
-%
-%
-%	
-%L'approccio proposto sfrutta le basi di conoscenza word2vec ... . A differenza dei precedenti approcci, questa tecnica è in grado di scoprire importanti intuizioni ... . 
-%
-%
+
+In compiti come il riconoscimento di parole, tutte le informazioni ed ogni termine vengono rappresentati per mezzo di id unici e discreti.
+Queste codifiche però non forniscono alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che il modello può sfruttare molto poco di ciò che ha appreso su una determinata parola quando sta elaborando i dati. 
+
+Questo tipo di ``raffigurazione'' porta alla creazione di dati sparsi, di conseguenza, per ottenere un modello di successo, potrebbero essere necessari più dati di input. 
+
+L'utilizzo di modelli spaziali vettoriali (VSM) per rappresentare le parole in uno spazio continuo, può aiutare a superare alcuni dei sopracitati ostacoli.
+Questi metodi dipendono dall'ipotesi distributiva, la quale afferma che le parole che appaiono negli stessi contesti condividono lo stesso significato semantico \cite{FIXME}. 
+
+\subsection{Input Features}
+\label{subsec:features2}
+
+Nel secondo approccio, viene utilizzato un modello spazio-vettoriale, in particolare viene adottata una tecnica non supervisionata, che consiste nell'implementazione e applicazione del modello \texttt{word2vec} di Tomas Mikolov \cite{mikolov2013efficient}. 
+
+\texttt{Word2vec} è un modello predittivo particolarmente efficiente dal punto di vista computazionale per l'apprendimento degli embedding di parole dal testo non elaborato. 
+Esso consiste in una rete neurale a due strati, addestrati a ricostruire i contesti linguistici delle parole. 
+\\
+\\
+L'algoritmo prende in input un grande corpus di testo, producendo uno spazio vettoriale, in genere di diverse centinaia di dimensioni. Ogni parola univoca nel corpo che viene assegnata a un vettore corrispondente nello spazio. 
+
+Per l'implementazione viene utilizzato il modello \emph{Skip-Gram}, una versione di questo algoritmo che predice le parole di contesto di origine a partire dalle parole target \cite{FIXME}.
+
+A partire dal dataset, viene formato un set che accoppia ogni parola target ai contesti in cui appare. Viene considerato come contesto l'insieme delle ``parole a sinistra'' e delle ``parole alla destra'' dell'obiettivo, ovvero la finestra di parole, di dimensione 1, attorno al target. 
+In questo modo, ogni coppia di destinazione del contesto viene trattata come se fosse una nuova osservazione, incrementando le informazioni distribuzionali.\\
+
+\begin{figure}[htb]
+	\centering
+	{\includegraphics[width=.75\textwidth]{images/skip-gram}} 
+	\caption{Visualizzazione del modello Skip-gram}
+	\label{fig:mikolov}
+\end{figure}
+
+In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo tale che le parole che condividono contesti comuni nel corpo siano situate in stretta prossimità l'una dell'altra, in altri termini, vocaboli semanticamente simili sono mappati a punti vicini dello spazio.\\
+Un esempio interessante viene illustrato nella figura \ref{fig:embedding1}\subref{subfig:vis3d} --- si ponga particolare attenzione alle parole ``beautiful'', ``lovely'', ``chic'', ``trendy'' ecc..
+
+\begin{figure}[htb]
+	\centering
+	\subfloat[][\emph{Visualizzazione 2D}\label{subfig:vis2d}]
+	{\includegraphics[width=.45\textwidth]{images/embedding1/embedding1_tsne_2d}}
+	\hspace{10mm}
+	\subfloat[][\emph{Dettaglio di una visualizzazione 3D}\label{subfig:vis3d}]
+	{\includegraphics[width=.45\textwidth]{images/embedding1/Embedding1_similarity}}
+	
+	\caption{Proiezione dell'embedding di Mikolov nello spazio 2-3 dimensionale, tramite la \emph{tecnica di riduzione della dimensionalità} (t-SNE) \cite{FIXME}.}
+	\label{fig:embedding1}
+\end{figure}
+
+%La funzione obiettivo viene definita sull'intero set di dati, ma ottimizzata con la discesa del gradiente stocastico (SGD) un esempio alla volta 
+
+\subsection{Architettura della rete}
+\label{subsec:modelli2}
+
+
 %Windowing, parole attorno agli aggettivi della lista degli aggettivi disponibili:
 %K parole prima e dopo la parola corrente, finestre scorrevoli
-%
-%
-%Questi batch consisteranno in parole di input (memorizzate in batch) e parole di contesto associate casuali all'interno del grammo come le etichette da prevedere (memorizzate nel contesto). Ad esempio, nel 5-grammo "il gatto seduto sul", la parola in ingresso sarà la parola centrale cioè "sat" e le parole di contesto che verranno pronosticate verranno estratte a caso dalle restanti parole del grammo: ['il ',' cat ',' on ',' the ']. La dimensione della finestra delle parole di contesto da disegnare attorno alla parola di input è definita nell'argomento skipwindow - nell'esempio sopra ("il gatto seduto sul"), abbiamo una larghezza della finestra di salto di 2 attorno alla parola di input "sat ”.
+
+
+
+
+
+\subsection{Performance}
+\label{subsec:performance2}
+
 
 
 %\subsection{Layer convoluzionale}
