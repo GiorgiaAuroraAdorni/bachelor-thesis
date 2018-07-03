@@ -23,7 +23,7 @@ f(x)=K \bigg( \sum_{i}w_ix_i +b\bigg)
 
 Ogni segnale in ingresso $x_i$ viene moltiplicato ad un corrispondente peso $w_i$, che assume valore positivo o negativo a seconda che si voglia eccitare o inibire il neurone.  
 Il bias $b$ varia secondo la propensione del neurone ad attivarsi, influenzandone l'uscita.
-Inoltre viene applicata una funzione predefinita $K$, detta anche \emph{funzione di attivazione}, illustrata nella seguente sezione.
+Inoltre, viene applicata una funzione predefinita $K$, detta anche \emph{funzione di attivazione}, illustrata nella seguente sezione.
 
 \begin{figure}[htb]
 	\centering
@@ -54,7 +54,7 @@ x \quad \mbox{se } x>0\\
 \end{equation}
 Questa funzione azzera tutti i valori negativi, mentre ritorna invariati quelli positivi.
 
-Essa viene utilizzata per la sua capacità di accelerare notevolmente la convergenza della discesa del gradiente stocastico, inoltre la sua implementazione risulta semplice ed efficiente.
+Essa viene utilizzata per la sua capacità di accelerare notevolmente la convergenza della discesa del gradiente stocastico, inoltre la sua implementazione risulta semplice ed efficiente. {\color{red}dovremmo fornire una referenza o nota a piede pagina, infatti non abbiamo mai introdotto questo}
 
 \begin{figure}[htb]
 	\centering
@@ -85,6 +85,7 @@ Dunque viene prevista l'aggiunta di due parametri --- ``deviazione standard'' $\
 	\label{eq:batchnorm}
 \end{equation}
 
+{\color{red} stesso discorso del gradiente, dovremmo accennare cosa sia la batch normalization, basta una nota pie pagina}
 
 \section{Apprendimento}
 \label{sec:apprendimento}
@@ -107,6 +108,7 @@ L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quad
 \mse = \frac{1}{n}\sum_{i=1}^{n}(Y_i-\hat{Y}_i)^2 \mbox{.}
 \end{equation}
 
+{\color{red} definire cosa siano n, Yi e Yi hat}
 \subsection{Algoritmi di ottimizzazione}
 \label{subsec:optimizer}
 
@@ -116,7 +118,7 @@ Vengono utilizzate varie strategie e algoritmi di ottimizzazione per aggiornare 
 
 La tradizionale discesa gradiente, o \emph{Batch Gradient Descent} (GD), calcola il gradiente dell'intero set di dati, eseguendo un solo aggiornamento. Di conseguenza il processo di addestramento può risultare lento e difficile da controllare per i set di dati che sono molto grandi. 
 
-La dimensione dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
+L'entità dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
 
 \subsubsection{Adagrad}
 \label{subsubsec:adagrad}
@@ -129,18 +131,14 @@ Adagrad modifica il tasso di apprendimento generale $\eta$ ad ogni istante di te
 Il vantaggio principale di questo metodo è che non è necessario regolare manualmente la frequenza di apprendimento e nella maggior parte delle implementazioni viene usato un valore predefinito --- per esempio \numprint{0,001} --- e lasciato invariato.\\
 La principale debolezza consiste nell'accumulo dei ``gradienti quadrati'' nel denominatore, finché ogni termine aggiunto è positivo. Di conseguenza il tasso di apprendimento si riduce fino al punto in cui l'algoritmo non è più in grado di acquisire ulteriori conoscenze. 
 
+{\color{red} suggerisco di fornire referenza letteratura ogni volta che si facciano affermazioni di tal tipo, questo per evitare atteggiamenti non adeguati da parte di chi valuta}
 
 \subsubsection{Adam}
 \label{subsubsec:adam}
 
 L'\emph{Adaptive Moment Estimation} (Adam) è un altro metodo che calcola i tassi di apprendimento adattivi per ciascun parametro. Oltre a memorizzare una media esponenziale decadente di gradienti quadrati, mantiene anche una media decadente esponenziale dei gradienti passati.
 
-Adam funziona bene se confrontato con altri algoritmi adattativi, poiché converge molto velocemente e la velocità di apprendimento è efficiente.
-
-
-{\color{blue}
-	\subsection{Algoritmo di Backpropagation}
-	\label{subsec:backprop}}
+{\color{blue}Adam funziona bene se confrontato con altri algoritmi adattativi, poiché converge molto velocemente e la velocità di apprendimento è efficiente.}{\color{red}questa frase ritengo debba essere meglio strutturata per comunicarne il senso compiuto al lettore interessato}
 
 \subsection{Paradigmi di apprendimento}
 \label{subsec:Paradigmi di apprendimento}
@@ -151,9 +149,9 @@ Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
 	
 	Quando alla rete neurale viene fornito l'input dall'ambiente, l'insegnante calcola l'output desiderato corrispondente, addestrando la rete mediante un algoritmo (tipicamente quello di back propagation). 
 	
-	Durante questo procedimento viene calcolo l'errore che la rete commette, dato dalla differenza tra l'output e l'output atteso, necessario per farle comprendere di quanto sbaglia. La rete cerca di minimizzare l'errore commesso, che rappresenta l'azione ottima per l'input corrente, modificando i propri pesi.
+	{\color{red}Durante questo procedimento viene calcolo l'errore che la rete commette, } dato dalla differenza tra l'output e l'output atteso, necessario per farle comprendere di quanto sbaglia. La rete cerca di minimizzare l'errore commesso, che rappresenta l'azione ottima per l'input corrente, modificando i propri pesi.
 	
-	In questo moto la rete impara a riconoscere la relazione incognita che lega le variabili di ingresso e uscita, in modo da prevedere il valore di output per qualsiasi valore di ingresso, basandosi solo su una limitata casistica di corrispondenze (coppie input-output).
+	In questo moto la rete impara a riconoscere la relazione incognita che lega le variabili di ingresso e uscita, in modo da prevedere il valore di output per qualsiasi valore di ingresso, basandosi solo su una casistica di corrispondenze (coppie input-output).
 	
 	\item[\bfseries non supervisionato] --- alla rete vengono presentati solo i valori di input, mentre non sono messe a disposizione le informazioni di ritorno dell'ambiente sui valori obiettivo che si vogliono ottenere in risposta o riguardo la correttezza dell'output fornito.
 	
@@ -179,8 +177,7 @@ Una volta definiti i set di development e test, ci si concentrerà sul miglioram
 Generalmente la dimensione del test set è un terzo di quella del training. Esso è composto da input critici su cui la risposta della rete deve essere buona. 
 Questo funziona bene quando sono messi a disposizione un numero limitato di esempi, ma nell'era dei big data, dove i problemi di apprendimento automatico consistono di più di un miliardo di campioni, la frazione di dati allocati agli insiemi di sviluppo e test è ridotta, nonostante il valore assoluto di esempi sia maggiore.
 
-Vengono utilizzate diverse tecniche statistiche per valutare la bontà di un modello. Normalmente si accetta una rete se sul test set viene mostrato un errore inferiore al \numprin{20-25\%}.
-
+Vengono utilizzate diverse tecniche statistiche per valutare la bontà di un modello.
 
 \subsection{Evaluation metric}
 \label{subsec:EvaluationMetric}
@@ -192,10 +189,10 @@ Vengono presi in considerazione diversi tipi di metriche per valutare i modelli.
 I modelli predittivi si distinguo in due principali categorie: si parla di \emph{regressione} quando l'output da prevedere è continuo, o di \emph{classificazione} nel caso in cui l'output sia nominale o binario. Le metriche di valutazione utilizzate in ciascuno di questi modelli sono diverse.
 
 Nei problemi di classificazione, in particolare quella binaria, gli output sono 0 o 1. 
-Una \emph{matrice di confusione}, nota anche come matrice di errore, è una tabella $N \times N$, con N corrispondente al numero delle classi, che consente la visualizzazione delle prestazioni di un algoritmo di apprendimento supervisionato. Ogni riga della matrice rappresenta le istanze previste si una classe mentre ciascuna colonna rappresenta le istanze osservate di una classe. 
-È dunque possibile estrarre da questa tabella l'\emph{accuratezza} del modello, che consiste nella porzione rispetto al totale delle previsioni corrette, la \emph{precisione}, cioè la porzione dei casi positivi identificati correttamente, e la \emph{recall}, ovvero la porzione dei casi positivi reali correttamente identificati. 
+Una \emph{matrice di confusione}, nota anche come matrice di errore, è una tabella $N \times N$, con N corrispondente al numero delle classi,{\color{red} attenzione se consideri 0/1 allora la matrice è ovviamene 2x2, poi generalizza pure ad NxN dicendo che se il problema è ad N classi allora la matrice di confusione è fatta in quel modo} che consente la visualizzazione delle prestazioni di un algoritmo di apprendimento supervisionato. Ogni riga della matrice rappresenta le istanze previste si una classe mentre ciascuna colonna rappresenta le istanze osservate di una classe. 
+È dunque possibile estrarre da questa tabella l'\emph{accuratezza} del modello, che consiste nella porzione rispetto al totale delle previsioni corrette, la \emph{precisione}, cioè la porzione dei casi positivi identificati correttamente, e la \emph{recall}, ovvero la porzione dei casi positivi reali correttamente identificati. {\color{red} classe 1}
 
-L'individuazione di falsi positivi, falsi negativi, veri positivi e veri negativi, consente un'analisi più dettagliata della semplice proporzione di classificazioni corrette. L'accuratezza infatti non è una metrica attendibile per le prestazioni reali di un classificatore, poiché produrrà risultati fuorvianti se il set di dati non è bilanciato.
+L'individuazione di falsi positivi, falsi negativi, veri positivi e veri negativi, {\color{red} chiarire cosa siano falsi positivi, falsi negativi, ...}consente un'analisi più dettagliata della semplice proporzione di classificazioni corrette. L'accuratezza infatti non è una metrica attendibile per le prestazioni reali di un classificatore, poiché produrrà risultati fuorvianti se il set di dati non è bilanciato.
 
 L'\emph{errore quadratico medio}(RMSE) è la metrica di valutazione più popolare utilizzata nei problemi di regressione. Questo parametro aiuta a fornire risultati affidabili, mostrando correttamente la grandezza del termine di errore.
 La metrica RMSE è definita dalla seguente equazione
@@ -204,11 +201,12 @@ La metrica RMSE è definita dalla seguente equazione
 	\label{eq:rmse}
 \end{equation}
 
+{\color{red} attenzione prima usavamo Yi e Yi hat, ora abbiamo cambiato? perche? dobbiamo motivare}
 \subsection{Overfitting}
 \label{subsec:overfitting}
 
 L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future''.
-
+{\color{red} si puo' ben dire che overfitting è sinonimo di memorizzazione del training set che poi si traduce in cattiva capacità di generalizzazione su nuovi dati}
 La rete neurale deve avere capacità di comprensione del modello statistico dei dati, non memorizzare i soli dati del training set. L'essenza di questo problema consiste nell'estrarre inconsapevolmente parte della variazione residua (cioè il rumore) come se quella variazione rappresentasse la sottostante struttura del modello \cite{burnham2003model}.
 
 Per ridurre la possibilità di overfitting esistono diverse tecniche, come la convalida incrociata (cross validation), la regolarizzazione o l'\emph{early stopping}, che consiste nell'utilizzo di un validation set di coppie non usate nel training set per la misurazione dell'errore.
