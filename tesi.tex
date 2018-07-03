@@ -55,7 +55,7 @@
 \DeclareMathOperator{\mean}{E}
 \DeclareMathOperator{\variance}{Var}
 \DeclareMathOperator{\mse}{MSE}
-
+\DeclareMathOperator{\rmse}{RMSE}
 
 \makeatletter
 \def\thickhline{%
@@ -124,7 +124,7 @@
 
 % INFORMAZIONI PDF - PERSONALIZZARE
 \pdfinfo{%
-  /Title    (Reti neutrali per l’apprendimento dei tratti della personalità dal linguaggio naturale)
+  /Title    (Reti neurali per l’apprendimento dei tratti della personalità dal linguaggio naturale)
   /Author   (Giorgia Adorni)
   /Subject  (Laura Informatica)
   /Keywords (Tesi)
@@ -173,8 +173,9 @@ app_a,%
 \vspace*{\stretch{1}}
 \begin{flushright}
 \noindent
-\textit{A mio padre. }\\
-\textit{Al mio fidanzato e collega. }
+\textit{A mio padre, per il suo sostegno quotidiano.}\\
+\textit{Ad Elia, per tutto il supporto e l'amore dimostrato.} \\
+\textit{A me stessa.}
 \end{flushright}
 \vspace*{\stretch{6}}
 \cleardoublepage
@@ -197,7 +198,8 @@ Citatemi dicendo che sono stato citato male.
 
 % RINGRAZIAMENTI - PERSONALIZZARE
 \ringraziamenti
-Grazie al mio relatore Fabio Stella e ai ragazzi del Laboratorio MAD (Models and Algorithms for Data \& Text Mining).
+Grazie al mio relatore Fabio Stella, per avermi trasmesso la sua passione e per avermi fornito gli strumenti necessari per intraprendere questo percorso.\\ 
+Grazie ai ragazzi del Laboratorio MAD (Models and Algorithms for Data \& Text Mining), per tutti i loro consigli.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -206,14 +208,14 @@ Grazie al mio relatore Fabio Stella e ai ragazzi del Laboratorio MAD (Models and
 
 La personalità è considerata come uno degli argomenti di ricerca più influenti in psicologia poiché predittiva di molti esiti consequenziali come la salute mentale e fisica, ed è in grado di spiegare il comportamento umano.
 Grazie alla diffusione dei Social Network come mezzo di comunicazione, sta diventando sempre più importante sviluppare modelli che possano leggere automaticamente e con precisione l'essenza di individui basandosi esclusivamente sulla scrittura. 
-\\\\
+\\
 In particolare, la convergenza tra scienze sociali e informatiche ha portato i ricercatori a sviluppare approcci automatici per estrarre e studiare le informazioni ''nascoste'' nei dati testuali presenti in rete.
 La natura di questo progetto di tesi è altamente sperimentale, e la motivazione alla base di questo lavoro è presentare delle analisi dettagliate sull'argomento, in quanto allo stato attuale non esistono importanti indagini di questo tipo.
-\\\\
+\\
 L'obiettivo è identificare un adeguato spazio semantico che permetta di definire la personalità dell'oggetto a cui un determinato testo si riferisce. Punto di partenza è un dizionario di aggettivi che la letteratura psicologica definisce come marker dei cinque grandi tratti di personalità, i Big Five.
-\\\\
+\\
 In questo lavoro siamo partiti dall'implementazione di reti neurali  fully-connected come base per capire come modelli semplici di Deep Learning possano fornire informazioni sulle caratteristiche nascoste della personalità. 
-\\\\
+\\
 Infine, utilizziamo una classe di algoritmi distribuzionali inventati nel 2013 da \emph{Tomas Mikolov}, che consistono nell'utilizzo di una rete neurale convoluzionale in grado di imparare, in modo non supervisionato, i contesti delle parole.
 In questo modo costruiamo un embedding in cui sono contenute le informazioni semantiche del testo, ottenendo una sorta di “geometria del significato” in cui i concetti sono tradotti in relazioni lineari.
 Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale sia in gran parte accoppiato con i tratti della sua personalità.
@@ -231,7 +233,7 @@ Con quest'ultimo esperimento ipotizziamo che uno stile di scrittura individuale 
 \listoftables
 
 % INDICE DEI CODICI
-\listofcodes
+%\listofcodes
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \introduzione

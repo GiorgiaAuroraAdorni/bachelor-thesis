@@ -2,17 +2,17 @@
 \label{chap:esperimenti}
 
 I precedenti modelli di previsione della personalità si sono concentrati sull'applicazione di tecniche generali di apprendimento automatico per predire i tratti di personalità Big Five.
-{\color{red} In particolare utilizzeremo diverse strutture di rete combinando differenti domini.}
+In particolare verranno utilizzate diverse strutture di rete, combinando differenti domini.
 
 \section{Spazi di rappresentazione}
 \label{sec:approcci}
 Per affrontare questo problema di {\color{red} analisi testuale (?)}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche:
 \begin{itemize}
-	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, nel nostro caso nel dizionario delle occorrenze.
-	\item Un approccio non supervisionato in cui viene costruito un embedding, tramite gli algoritmi di Mikolov. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
+	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze.
+	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite gli algoritmi di Mikolov. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
 \end{itemize}
 $\\$
-In seguito viene posta l'attenzione su tre diverse architetture neurali (o di reti):
+In seguito viene posta l'attenzione su tre diverse architetture neurali:
 \begin{itemize}
 	\item Reti fully-connected;
 	\item Reti neurali convoluzionali CNN;
@@ -26,11 +26,10 @@ In seguito viene posta l'attenzione su tre diverse architetture neurali (o di re
 \subsection{Input Features}
 \label{subsec:features}
 
-Nel primo approccio proposto, viene utilizzato il modello \emph{bag-of-words} per rappresentare i dati testuali.
-Questo è un tipo di rappresentazione semplificata, spesso utilizzata nell'elaborazione del linguaggio naturale e nel recupero delle informazioni (IR). 
+Nel primo approccio proposto, per rappresentare i dati testuali viene utilizzato il modello \emph{bag-of-words}, un tipo di descrizione semplificata, spesso utilizzata nell'elaborazione del linguaggio naturale e nel recupero delle informazioni (IR). 
 
 Sfruttando il dizionario delle occorrenze precedentemente costruito, il testo viene modellato  come fosse una ``borsa di parole'', in cui grammatica e ordine delle parole vengono trascurate.
-Ogni frase viene ridotta ad un vettore in cui ogni elemento identifica una parola del dizionario. Alla posizione corrispondente ad un determinato termine vi sarà il valore \num{1} se la parola è contenuta nella frase, \num{0} altrimenti.
+Ogni frase viene ridotta ad un vettore in cui ogni elemento identifica una parola del dizionario. Nella posizione corrispondente ad un determinato termine vi sarà il valore \num{1} se la parola è contenuta nella frase, \num{0} altrimenti.
 
 Il modello riguarda solo se le parole conosciute, di conseguenza i vocaboli che compaiono nel testo ma sono assenti nel dizionario vengono trascurati.
 
@@ -47,12 +46,12 @@ Il modello riguarda solo se le parole conosciute, di conseguenza i vocaboli che 
 
 Una volta estratte, le features posso essere passate in input alla rete neurale, che le elabora calcolando le risposte dei neuroni dal livello di input verso il livello di output.
 
-In questa prima strategia viene utilizzata una rete \emph{feedforward}, in cui le informazioni si spostano dal livello di input attraverso eventuali strati nascosti fino al livello di output senza cicli. L'architettura è caratterizzata da una struttura densa o \emph{fully-connected}, in cui tutti i neuroni del layer precedente sono collegato ad ogni neurone del layer successivo, e ciascuna connessione ha il proprio peso.
+In questa prima strategia viene utilizzata una rete \emph{feedforward}, in cui le informazioni si spostano dal livello di input attraverso eventuali strati nascosti fino al livello di output senza cicli. L'architettura è caratterizzata da una struttura densa o \emph{fully-connected}, in cui tutti i neuroni del layer precedente sono collegati ad ogni neurone del layer successivo, e ciascuna connessione ha il proprio peso.
 
 
-Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. L’ultimo rappresenta l’output della rete.
+Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. L'ultimo di questi strati rappresenta l’output della rete.
 
-Ad ogni strato fully connected viene applicata la funzione attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
+Ad ogni livello fully connected viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
 Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}.
 
@@ -81,18 +80,13 @@ Tutte le simulazioni sono state addestrate per \num{10} epoche: la fase di addes
 
 L’ottimizzatore scelto è l'{Adaptive Subgradient Methods} \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
 
-Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsec:loss}.
+Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsec:loss}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{root mean squared error} (RMSE), introdotta nella sezione \ref{subsec:EvaluationMetric}.
 
 In ogni epoca si alternano una fase di training ed una fase di test in modo tale da monitorare costantemente i miglioramenti o i peggioramenti del modello sul test set. 
 
-
-
 \subsection{Performance}
 \label{subsec:performance}
-
-
-Prendendo in considerazione le tre diverse architettura implementate, valutiamo l'efficacia dei nostri risultati.
-
+Prendendo in considerazione le tre diverse architetture implementate, presentiamo i nostri risultati ottenuti in termini di loss.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{l@{\hspace{.5cm}}ccc}
@@ -104,245 +98,195 @@ Prendendo in considerazione le tre diverse architettura implementate, valutiamo 
 		\textbf{Modello 3} & \numprint{0.0681} & \numprint{0.0624} &\numprint{265} min \\
 		\bottomrule 
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti dalle tre diverse architetture}
+	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti dalle tre diverse reti}
 	\label{tab:lossbow+fc}
 \end{table}
 
-
-Analizzando nel dettaglio ogni modello, in particolare calcolando il valore di \emph{Root Mean Squared Error} per ogni tratto di personalità, e confrontandolo 
-
-
-
-Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, ed utilizzando questi valori per calcolare un nuovo valore della funzione di loss. se confronto la loss del modello calcolato sulla media e quello reale 
-
-Prevedere con la media o questo modello è circa uguale, quindi il modello non è efficiente.
-
-
-Confrontando il valore assunto dalla variabile con , e confrontandolo con i valori predetti dalla rete, si può notare come il modello impari nella maggioranza dei casi a prevedere la media di ogni tratto e non il valore osservabile.
-
-
-
-Sfortunatamente, ci sono ancora molti problemi aperti sulla corretta interpretazione dei risultati ottenuti ; 
+Per valutare l'efficacia di questi modelli, è fondamentale eseguire un analisi dettagliata, in particolare ponendo l'attenzione sui valori di RMSE per ogni tratto di personalità.
+Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, è possibile stabilire qual è il valore di root mean squared error di un modello concettuale che per ogni tratto predice sempre il suo valore medio.
  
 \begin{table}[H]
 	\centering
 	\begin{tabular}{clccccc}
 		\toprule	
-		 						 		  & 		  & \multicolumn{5}{c}{\textbf{Root Mean Squared Error}} 									    \\
+		& 		  & \multicolumn{5}{c}{\textbf{Root Mean Squared Error}} 									    \\
 		\multicolumn{2}{c}{\multirow{-2}{*}{Modelli}}
-		 							   		 		  & O 				& C 			   & E 				  & A 				 & N 			    \\ 
+		& O 				& C 			   & E 				  & A 				 & N 			    \\ 
 		\midrule
 		\multirow{2}*{\textbf{Modello 1}} & Modello   & \numprint{0,148} & \numprint{0,227} & \numprint{0,224} & \numprint{0,251} & \numprint{0,351} \\
-								 		  & Modello 0 & \numprint{0,145} & \numprint{0,224} & \numprint{0,213} & \numprint{0,218} & \numprint{0,318} \\
+		& Modello 0 & \numprint{0,145} & \numprint{0,224} & \numprint{0,213} & \numprint{0,218} & \numprint{0,318} \\
 		\midrule
 		\multirow{2}*{\textbf{Modello 2}} & Modello   & \numprint{0,147} & \numprint{0,226} & \numprint{0,225} & \numprint{0,251} & \numprint{0,341} \\
-								 		  & Modello 0 & \numprint{0,141} & \numprint{0,227} & \numprint{0,213} & \numprint{0,208} & \numprint{0,305} \\
+		& Modello 0 & \numprint{0,141} & \numprint{0,227} & \numprint{0,213} & \numprint{0,208} & \numprint{0,305} \\
 		\midrule
 		\multirow{2}*{\textbf{Modello 3}} & Modello   & \numprint{0,147} & \numprint{0,226} & \numprint{0,225} & \numprint{0,262} & \numprint{0,348} \\
-							   	 		  & Modello 0 & \numprint{0,233} & \numprint{0,307} & \numprint{0,262} & \numprint{0,373} & \numprint{0,546}  \\
+		& Modello 0 & \numprint{0,233} & \numprint{0,307} & \numprint{0,262} & \numprint{0,373} & \numprint{0,546}  \\
 		\bottomrule	
 	\end{tabular}
 	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle tre architetture contro il modello basato sulla media di training}
 	\label{tab:confmm0bow+fc}
 \end{table}
 
-{\color{blue}
-	 durante la modellazione del testo.
-	
-	interno della proiezione
-	
- (poco efficace a causa di...)
-	
-strategia
+Mettendo a confronto le due metriche, si nota che i modelli realmente implementati imparano nella maggioranza dei casi a predire un valore con lo stesso errore commesso dai modelli banali che calcolano la media. Risulta allora evidente che i risultati ottenuti non siano ottimali.
 
-che si avranno a disposizione
-
-
-}
-
-presentiamo la progettazione di ... per la classificazione del testo. Il design è modulare, dove i gradienti sono ottenuti mediante back-propagation [27] per eseguire l'ottimizzazione.
-
-
-
-
-Limiti del sacco di parole
-* Vocabolario: il vocabolario richiede un'attenta progettazione, in particolare per gestire la dimensione, che influisce sulla scarsità delle rappresentazioni del documento.
-* Sparsità: le rappresentazioni sparse sono più difficili da modellare sia per ragioni computazionali (spazio e complessità temporale) sia per ragioni di informazione, dove la sfida è che i modelli sfruttino così poche informazioni in uno spazio rappresentativo così ampio.
-* Significato: Scartare l'ordine delle parole ignora il contesto e, a sua volta, il significato delle parole nel documento (semantica). Contesto e significato possono offrire molto al modello, che se modellato potrebbe dire la differenza tra le stesse parole disposte diversamente ("questo è interessante" vs "è interessante"), sinonimi ("vecchia bici" vs "moto usata") , e altro ancora.
-
-
-
-
-
-
-non vengono rappresentati gli aggettivi nella fase di apprendimento 
-
-
-i modelli predicono qualcosa di simile alla media di training e validation ….
-
-
-Questo è un modello di connessione totalmente generico e non fa ipotesi sulle caratteristiche dei dati. È anche molto costoso in termini di memoria (pesi) e computazione (connessioni).
-
-
-
-
-
+La scarsa efficienza di questi modelli potrebbe dipendere dall'efficacia con cui vengono codificate le feature in input alla rete. 
+Infatti le limitazioni dell'approccio bag-of-words derivano in parte dalla progettazione del vocabolario e della sua dimensione, che può causare una scarsa ``descrizione'' del documento. 
+Scartare l'ordine delle parole e ignorare il contesto non consente di determinare la differenza tra le stesse parole disposte diversamente, i sinonimi ecc.
+Inoltre, un tipo di rappresentazione sparsa risulta più difficile da modellare quando si cercano modelli in grado di sfruttare poche informazioni in uno spazio rappresentativo ampio, sia per ragioni computazionali (spazio e complessità temporale) sia per ragioni di informazione.
 
 \section{Esperimento 2}
 \label{sec:es2}
- modello in cui applichiamo una tecnica non supervisionata che non fornisce alcuna indicazione sulla coerenza semantica degli argomenti risultanti. 
-
-
-	
-L'approccio proposto sfrutta le basi di conoscenza word2vec ... . A differenza dei precedenti approcci, questa tecnica è in grado di scoprire importanti intuizioni ... . 
-
-
-Windowing, parole attorno agli aggettivi della lista degli aggettivi disponibili:
-K parole prima e dopo la parola corrente, finestre scorrevoli
-
-
-Questi batch consisteranno in parole di input (memorizzate in batch) e parole di contesto associate casuali all'interno del grammo come le etichette da prevedere (memorizzate nel contesto). Ad esempio, nel 5-grammo "il gatto seduto sul", la parola in ingresso sarà la parola centrale cioè "sat" e le parole di contesto che verranno pronosticate verranno estratte a caso dalle restanti parole del grammo: ['il ',' cat ',' on ',' the ']. La dimensione della finestra delle parole di contesto da disegnare attorno alla parola di input è definita nell'argomento skipwindow - nell'esempio sopra ("il gatto seduto sul"), abbiamo una larghezza della finestra di salto di 2 attorno alla parola di input "sat ”.
-
-
-\subsection{Layer convoluzionale}
-\label{subsec:layerconv}
-Livello denso / completamente connesso: un'operazione lineare sul vettore di input del livello.
-Livello involutivo: un livello costituito da un insieme di "filtri". I filtri accettano un sottoinsieme dei dati di input alla volta, ma vengono applicati all'intero input (passando sopra l'input). Le operazioni eseguite da questo livello sono ancora moltiplicazioni lineare / matrice, ma passano attraverso una funzione di attivazione all'uscita, che di solito è un'operazione non lineare.
-Pooling layer: utilizziamo il fatto che livelli consecutivi della rete sono attivati da caratteristiche "più alte" o più complesse che sono esposte da una vasta area dei dati di input della rete. Un livello di raggruppamento riduce in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide dal livello precedente.
-Livello di normalizzazione: utilizzato per l'input per il ridimensionamento delle funzionalità e per la normalizzazione batch nei livelli nascosti.
-
-
-
-Uno strato convoluzionale è molto più specializzato ed efficiente di uno strato completamente connesso.
-
-
-
-Al contrario, in uno strato convoluzionale ogni neurone è collegato solo a pochi neuroni vicini (alias locali) nel livello precedente, e lo stesso insieme di pesi (e layout di connessione locale) è usato per ogni neurone.
-
-Il minor numero di connessioni e pesi rende gli strati convoluzionali relativamente economici (rispetto alla piena connessione) in termini di memoria e potenza di calcolo necessari.
-Il nome strato / rete "convoluzionale" deriva dal fatto che il modello di connessione locale e lo schema di peso condiviso possono essere interpretati come un filtro (o un insieme di filtri) che viene "convogliato" con l'input / immagine ... Ma in inglese semplice è solo un "layer di peso condiviso localmente connesso".
-
-Embedding
-Deep representation
-Fully connected part
-
-
-EMBEDDING
-Incorporando i livelli prendi una sequenza di parole id come input e produci una sequenza di vettori corrispondenti come output. La loro funzionalità è molto semplice e poiché la semantica di questi vettori non è interessante per il nostro problema, l'unica domanda rimanente è "Qual è il modo migliore per inizializzare i pesi?"
-
-A seconda del problema, le risposte possono essere controintuitive come il consiglio "generare le proprie etichette sintetiche, formare word2vec su di esse e avviare il livello di incorporamento con esse".
-
-Ma per tutti gli scopi pratici è possibile utilizzare un set pre-addestrato di incastri e sintonizzarlo congiuntamente per il modello specifico. È probabile che i vettori di parole risultanti cesseranno di dimostrare le stesse proprietà di un modello word2vec vanill:
-
-
-DEEP REPRESENTATION
-Lo scopo principale della parte di rappresentazione profonda è di condensare tutte le informazioni rilevanti nel suo output, mentre sopprime le parti che potrebbero portare a identificare un singolo campione da esso. Ciò è altamente auspicabile in quanto la rete con capacità elevata probabilmente si sovraperforma su particolari esempi e ha prestazioni scarse sul set di test.
-
-Rete neurale convoluzionale (CNN)
-
-Un modo alternativo per addestrare un classificatore di testo profondo consiste nell'utilizzare reti convoluzionali. Tipicamente, dato un campo ricettivo abbastanza grande, è possibile ottenere gli stessi risultati di un livello di attenzione dedicato. Non c'è un singolo trucco qui, ma tenere un sacco di mappe delle caratteristiche all'inizio e ridurre il loro numero in modo esponenziale in un secondo momento aiuta a evitare l'apprendimento di modelli irrilevanti.
-
-
-FULLY CONNECTED PART
-Classificatore denso
-
-Una parte completamente connessa esegue una serie di trasformazioni sulla rappresentazione profonda e alla fine emette i punteggi per ogni classe. La migliore pratica qui è applicare le trasformazioni come segue:
-
-Livello completamente connesso
-Normalizzazione batch
-(Opzionale) Trasformazione non lineare (tangente iperbolica o ELU)
-Buttare fuori
-Spero che vi piaccia questa panoramica degli algoritmi di classificazione del testo neurale che può essere ulteriormente potenziata con metodi più sofisticati di vostra scelta. Alcuni suggerimenti e trucchi menzionati qui ti aiuteranno a costruire modelli migliori e ad ottenere una convergenza più rapida.
-
-Inoltre, qui sotto troverai alcuni link a tutorial e strumenti per compiti di apprendimento di classificazione e rappresentazione.
-
-
-
-Modello di design
-Abbiamo progettato 2 ConvNets, uno grande e uno piccolo. Sono entrambi 9 strati profondi con 6 strati convoluzionali e 3 strati completamente connessi. La figura 1 mostra un'illustrazione
-Lunghezza
-...
-Convoluzioni Conv. Max pooling e piscina. strati completamente connessi
-Figura 1: illustrazione del nostro modello
-L'input ha un numero di caratteristiche pari a 70 a causa del nostro metodo di quantizzazione dei caratteri, e la lunghezza della funzione di input è 1014. Sembra che 1014 caratteri possano già catturare la maggior parte dei testi di interesse. Inseriamo anche 2 moduli di interruzione [10] tra i 3 livelli completamente connessi per la regolarizzazione. Hanno una probabilità di abbandono di 0,5. La Tabella 1 elenca le configurazioni per i layer convoluzionali e la tabella 2 elenca le configurazioni per i layer (lineari) completamente connessi.
-
-
-\section{Struttura}
-\label{sec:struttura}
-Per un tipo di apprendimento supervisionato:\\
-• Individuare le classi in cui dividere l’input secondo il tipo di problema\\
-• Scegliere le feature analizzando matematicamente gli oggetti in input\\
-• Definire molte coppie (input, output) per i set di training (60\%), validation (20\%), test (20\%)\\
-• Definire la codifica numerica: per l’input valori in [-1,1]; per l’output valori binari {0,1}\\
-\\
-Scegliere un modello di rete e definirne l’architettura con:\\
-– Funzione di attivazione per ogni neurone\\
-– Numero di livelli hidden e numero di neuroni per ogni livello hidden (non esistono precise regole per determinarli, solo con tentativi e verifiche degli errori commessi)\\
-– Numero di neuroni per lo strato input: tanti quanti i valori delle feature\\
-– Numero di neuroni per lo strato output: tanti quante sono le classi\\
-• Scegliere un algoritmo di apprendimento e i suoi parametri di controllo (es. back propagation)\\
-• Scegliere una tecnica per controllare l’apprendimento (es. early stopping)\\
-• Scegliere alcuni criteri per valutare la qualità della risposta globale della rete sul test set\\
-\\
-
-
-
-
-
-
-adottiamo diverse tecniche per la costruzione dei modelli.  
-
-tentiamo con diversi esperimenti di identificare ...
-
-Proposti  numerosi  approcci. 
-
-adotteremo
-
-realizzeremo diversi modelli al fine di estrarre informazioni significative...
-
-
-
-
-
-
-
-Vi sono stati numerosi esperimenti prima di ottenere il modello finale, ovvero quello con le performance migliori. Di seguito vengono descritti brevemente soltanto quelli più significativi, mentre per la descrizione precisa del modello finale si rimanda alla sezione successiva.\\
-
-
-
-
-
-L'approccio descritto viene applicato allo stesso modo per ogni coppia di documenti di esperti e corpora di documenti presentati. Costruiamo 6 diversi tipi di modelli 
-
-
-i metodi coinvolti 
-
-sono una tecnica senza supervisione, 
-
-
-Sfruttando i dataset ... generiamo ... per addestrare i modelli ... . 
-
-
-Il primo ... contiene i
-è composto da 
-
-
-il numero di features è 
+%
+% modello in cui applichiamo una tecnica non supervisionata che non fornisce alcuna indicazione sulla coerenza semantica degli argomenti risultanti. 
+%
+%
+%	
+%L'approccio proposto sfrutta le basi di conoscenza word2vec ... . A differenza dei precedenti approcci, questa tecnica è in grado di scoprire importanti intuizioni ... . 
+%
+%
+%Windowing, parole attorno agli aggettivi della lista degli aggettivi disponibili:
+%K parole prima e dopo la parola corrente, finestre scorrevoli
+%
+%
+%Questi batch consisteranno in parole di input (memorizzate in batch) e parole di contesto associate casuali all'interno del grammo come le etichette da prevedere (memorizzate nel contesto). Ad esempio, nel 5-grammo "il gatto seduto sul", la parola in ingresso sarà la parola centrale cioè "sat" e le parole di contesto che verranno pronosticate verranno estratte a caso dalle restanti parole del grammo: ['il ',' cat ',' on ',' the ']. La dimensione della finestra delle parole di contesto da disegnare attorno alla parola di input è definita nell'argomento skipwindow - nell'esempio sopra ("il gatto seduto sul"), abbiamo una larghezza della finestra di salto di 2 attorno alla parola di input "sat ”.
+
+
+%\subsection{Layer convoluzionale}
+%\label{subsec:layerconv}
+%Livello denso / completamente connesso: un'operazione lineare sul vettore di input del livello.
+%Livello involutivo: un livello costituito da un insieme di "filtri". I filtri accettano un sottoinsieme dei dati di input alla volta, ma vengono applicati all'intero input (passando sopra l'input). Le operazioni eseguite da questo livello sono ancora moltiplicazioni lineare / matrice, ma passano attraverso una funzione di attivazione all'uscita, che di solito è un'operazione non lineare.
+%Pooling layer: utilizziamo il fatto che livelli consecutivi della rete sono attivati da caratteristiche "più alte" o più complesse che sono esposte da una vasta area dei dati di input della rete. Un livello di raggruppamento riduce in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide dal livello precedente.
+%Livello di normalizzazione: utilizzato per l'input per il ridimensionamento delle funzionalità e per la normalizzazione batch nei livelli nascosti.
+%
+%
+%
+%Uno strato convoluzionale è molto più specializzato ed efficiente di uno strato completamente connesso.
+%
+%
+%
+%Al contrario, in uno strato convoluzionale ogni neurone è collegato solo a pochi neuroni vicini (alias locali) nel livello precedente, e lo stesso insieme di pesi (e layout di connessione locale) è usato per ogni neurone.
+%
+%Il minor numero di connessioni e pesi rende gli strati convoluzionali relativamente economici (rispetto alla piena connessione) in termini di memoria e potenza di calcolo necessari.
+%Il nome strato / rete "convoluzionale" deriva dal fatto che il modello di connessione locale e lo schema di peso condiviso possono essere interpretati come un filtro (o un insieme di filtri) che viene "convogliato" con l'input / immagine ... Ma in inglese semplice è solo un "layer di peso condiviso localmente connesso".
+%
+%Embedding
+%Deep representation
+%Fully connected part
+%
+%
+%EMBEDDING
+%Incorporando i livelli prendi una sequenza di parole id come input e produci una sequenza di vettori corrispondenti come output. La loro funzionalità è molto semplice e poiché la semantica di questi vettori non è interessante per il nostro problema, l'unica domanda rimanente è "Qual è il modo migliore per inizializzare i pesi?"
+%
+%A seconda del problema, le risposte possono essere controintuitive come il consiglio "generare le proprie etichette sintetiche, formare word2vec su di esse e avviare il livello di incorporamento con esse".
+%
+%Ma per tutti gli scopi pratici è possibile utilizzare un set pre-addestrato di incastri e sintonizzarlo congiuntamente per il modello specifico. È probabile che i vettori di parole risultanti cesseranno di dimostrare le stesse proprietà di un modello word2vec vanill:
+%
+%
+%DEEP REPRESENTATION
+%Lo scopo principale della parte di rappresentazione profonda è di condensare tutte le informazioni rilevanti nel suo output, mentre sopprime le parti che potrebbero portare a identificare un singolo campione da esso. Ciò è altamente auspicabile in quanto la rete con capacità elevata probabilmente si sovraperforma su particolari esempi e ha prestazioni scarse sul set di test.
+%
+%Rete neurale convoluzionale (CNN)
+%
+%Un modo alternativo per addestrare un classificatore di testo profondo consiste nell'utilizzare reti convoluzionali. Tipicamente, dato un campo ricettivo abbastanza grande, è possibile ottenere gli stessi risultati di un livello di attenzione dedicato. Non c'è un singolo trucco qui, ma tenere un sacco di mappe delle caratteristiche all'inizio e ridurre il loro numero in modo esponenziale in un secondo momento aiuta a evitare l'apprendimento di modelli irrilevanti.
+%
+%
+%FULLY CONNECTED PART
+%Classificatore denso
+%
+%Una parte completamente connessa esegue una serie di trasformazioni sulla rappresentazione profonda e alla fine emette i punteggi per ogni classe. La migliore pratica qui è applicare le trasformazioni come segue:
+%
+%Livello completamente connesso
+%Normalizzazione batch
+%(Opzionale) Trasformazione non lineare (tangente iperbolica o ELU)
+%Buttare fuori
+%Spero che vi piaccia questa panoramica degli algoritmi di classificazione del testo neurale che può essere ulteriormente potenziata con metodi più sofisticati di vostra scelta. Alcuni suggerimenti e trucchi menzionati qui ti aiuteranno a costruire modelli migliori e ad ottenere una convergenza più rapida.
+%
+%Inoltre, qui sotto troverai alcuni link a tutorial e strumenti per compiti di apprendimento di classificazione e rappresentazione.
+%
+%
+%
+%Modello di design
+%Abbiamo progettato 2 ConvNets, uno grande e uno piccolo. Sono entrambi 9 strati profondi con 6 strati convoluzionali e 3 strati completamente connessi. La figura 1 mostra un'illustrazione
+%Lunghezza
+%...
+%Convoluzioni Conv. Max pooling e piscina. strati completamente connessi
+%Figura 1: illustrazione del nostro modello
+%L'input ha un numero di caratteristiche pari a 70 a causa del nostro metodo di quantizzazione dei caratteri, e la lunghezza della funzione di input è 1014. Sembra che 1014 caratteri possano già catturare la maggior parte dei testi di interesse. Inseriamo anche 2 moduli di interruzione [10] tra i 3 livelli completamente connessi per la regolarizzazione. Hanno una probabilità di abbandono di 0,5. La Tabella 1 elenca le configurazioni per i layer convoluzionali e la tabella 2 elenca le configurazioni per i layer (lineari) completamente connessi.
+%
+%
+%\section{Struttura}
+%\label{sec:struttura}
+%Per un tipo di apprendimento supervisionato:\\
+%• Individuare le classi in cui dividere l’input secondo il tipo di problema\\
+%• Scegliere le feature analizzando matematicamente gli oggetti in input\\
+%• Definire molte coppie (input, output) per i set di training (60\%), validation (20\%), test (20\%)\\
+%• Definire la codifica numerica: per l’input valori in [-1,1]; per l’output valori binari {0,1}\\
+%\\
+%Scegliere un modello di rete e definirne l’architettura con:\\
+%– Funzione di attivazione per ogni neurone\\
+%– Numero di livelli hidden e numero di neuroni per ogni livello hidden (non esistono precise regole per determinarli, solo con tentativi e verifiche degli errori commessi)\\
+%– Numero di neuroni per lo strato input: tanti quanti i valori delle feature\\
+%– Numero di neuroni per lo strato output: tanti quante sono le classi\\
+%• Scegliere un algoritmo di apprendimento e i suoi parametri di controllo (es. back propagation)\\
+%• Scegliere una tecnica per controllare l’apprendimento (es. early stopping)\\
+%• Scegliere alcuni criteri per valutare la qualità della risposta globale della rete sul test set\\
+%\\
+%
+%
+%
+%
+%
+%
+%adottiamo diverse tecniche per la costruzione dei modelli.  
+%
+%tentiamo con diversi esperimenti di identificare ...
+%
+%Proposti  numerosi  approcci. 
+%
+%adotteremo
+%
+%realizzeremo diversi modelli al fine di estrarre informazioni significative...
+%
+%
+%
+%
+%
+%
+%
+%Vi sono stati numerosi esperimenti prima di ottenere il modello finale, ovvero quello con le performance migliori. Di seguito vengono descritti brevemente soltanto quelli più significativi, mentre per la descrizione precisa del modello finale si rimanda alla sezione successiva.\\
+%
+%
+%
+%
+%
+%L'approccio descritto viene applicato allo stesso modo per ogni coppia di documenti di esperti e corpora di documenti presentati. Costruiamo 6 diversi tipi di modelli 
+%
+%
+%i metodi coinvolti 
+%
+%sono una tecnica senza supervisione, 
+%
+%
+%Sfruttando i dataset ... generiamo ... per addestrare i modelli ... . 
+%
+%
+%Il primo ... contiene i
+%è composto da 
+%
+%
+%il numero di features è 
 
 \section{Risultati}
 \label{sec:risultati}
 
-Abbiamo valutato il nostro approccio basato sulla conoscenza sulla sua efficacia nel predire la personalità degli individui rispetto al modello dei Big Five. La nostra valutazione misura le prestazioni di: 1) classificare gli individui per ogni tratto di personalità e 2) stimare il grado di appartenenza degli individui a ciascun tratto di personalità. La prima valutazione è definita come un problema di classificazione multi-etichetta e assegna etichette "Sì" e "No" per gli individui per ciascun tratto di personalità. Questa è la metodologia di valutazione più popolare seguita nella letteratura sulla previsione della personalità. La seconda valutazione si concentra sul grado di appartenenza di ciascun individuo a ciascun tratto di personalità rispetto all'assegnazione di etichette piuttosto rigide "Sì" e "No". Gran parte della ricerca pertinente in letteratura non ha valutato questa impostazione della previsione della personalità [19]. Riteniamo che questa impostazione sia più vicina allo scenario del mondo reale dal momento che ogni individuo ha alcune caratteristiche da ogni tratto della personalità piuttosto che appartenere a ciascun tratto o meno. La seconda valutazione è definita come un problema di regressione e usiamo la regressione lineare e SVM per la regressione [9] per stimare il valore del grado di appartenenza.
-
-Dataset di valutazione
-Abbiamo utilizzato il famoso repository di dati di Facebook gestito dal progetto "myPersonality" 3 come set di dati di valutazione nei nostri esperimenti. Questo repository viene creato raccogliendo i dati utilizzando la popolare applicazione Facebook "myPersonality" lanciata nel 2007. I valori di personalità degli individui nel set di dati vengono valutati chiedendo loro di fare un test psicometrico standard. L'output di questo test mostra il grado di appartenenza di ciascun individuo a ciascun tratto di personalità e questi valori sono compresi tra 1 e 5. Ad esempio, un individuo può avere valori 2,85 per extraversione, 4,20 per nevroticismo, 2,12 per coscienziosità, 3,55 per gradevolezza e 4.31 per i tratti di personalità di apertura. Attualmente, possiede i dati di milioni di utenti di Facebook e contiene i loro aggiornamenti di stato, rete di amici, Mi piace ecc.
-Il nostro approccio sfrutta la semantica degli aggiornamenti di stato degli utenti. Il numero di aggiornamenti di stato di Facebook da parte degli utenti mostra una distribuzione a coda lunga come mostrato nella Figura 3. Abbiamo creato un set di dati di esempio da questo set di dati di grandi dimensioni come dataset di valutazione in base al numero di aggiornamenti di stato degli utenti. Abbiamo selezionato 1.000 utenti con il più alto numero di aggiornamenti di stato poiché si è osservato che un minor numero di aggiornamenti di stato non fornisce informazioni limitate o limitate [20]. Il numero di aggiornamenti di stato per gli utenti selezionati è riportato nella Figura 4. L'utente con gli aggiornamenti di stato massimi ha avuto 2.450 aggiornamenti, mentre l'utente con aggiornamenti di stato minimi ha 702 aggiornamenti di stato.
-
-
-
-\subsection{Layer di pooling}
-\label{subsec:layermp}
+%Abbiamo valutato il nostro approccio basato sulla conoscenza sulla sua efficacia nel predire la personalità degli individui rispetto al modello dei Big Five. La nostra valutazione misura le prestazioni di: 1) classificare gli individui per ogni tratto di personalità e 2) stimare il grado di appartenenza degli individui a ciascun tratto di personalità. La prima valutazione è definita come un problema di classificazione multi-etichetta e assegna etichette "Sì" e "No" per gli individui per ciascun tratto di personalità. Questa è la metodologia di valutazione più popolare seguita nella letteratura sulla previsione della personalità. La seconda valutazione si concentra sul grado di appartenenza di ciascun individuo a ciascun tratto di personalità rispetto all'assegnazione di etichette piuttosto rigide "Sì" e "No". Gran parte della ricerca pertinente in letteratura non ha valutato questa impostazione della previsione della personalità [19]. Riteniamo che questa impostazione sia più vicina allo scenario del mondo reale dal momento che ogni individuo ha alcune caratteristiche da ogni tratto della personalità piuttosto che appartenere a ciascun tratto o meno. La seconda valutazione è definita come un problema di regressione e usiamo la regressione lineare e SVM per la regressione [9] per stimare il valore del grado di appartenenza.
+%
+%Dataset di valutazione
+%Abbiamo utilizzato il famoso repository di dati di Facebook gestito dal progetto "myPersonality" 3 come set di dati di valutazione nei nostri esperimenti. Questo repository viene creato raccogliendo i dati utilizzando la popolare applicazione Facebook "myPersonality" lanciata nel 2007. I valori di personalità degli individui nel set di dati vengono valutati chiedendo loro di fare un test psicometrico standard. L'output di questo test mostra il grado di appartenenza di ciascun individuo a ciascun tratto di personalità e questi valori sono compresi tra 1 e 5. Ad esempio, un individuo può avere valori 2,85 per extraversione, 4,20 per nevroticismo, 2,12 per coscienziosità, 3,55 per gradevolezza e 4.31 per i tratti di personalità di apertura. Attualmente, possiede i dati di milioni di utenti di Facebook e contiene i loro aggiornamenti di stato, rete di amici, Mi piace ecc.
+%Il nostro approccio sfrutta la semantica degli aggiornamenti di stato degli utenti. Il numero di aggiornamenti di stato di Facebook da parte degli utenti mostra una distribuzione a coda lunga come mostrato nella Figura 3. Abbiamo creato un set di dati di esempio da questo set di dati di grandi dimensioni come dataset di valutazione in base al numero di aggiornamenti di stato degli utenti. Abbiamo selezionato 1.000 utenti con il più alto numero di aggiornamenti di stato poiché si è osservato che un minor numero di aggiornamenti di stato non fornisce informazioni limitate o limitate [20]. Il numero di aggiornamenti di stato per gli utenti selezionati è riportato nella Figura 4. L'utente con gli aggiornamenti di stato massimi ha avuto 2.450 aggiornamenti, mentre l'utente con aggiornamenti di stato minimi ha 702 aggiornamenti di stato.
+%
 
 
-\section{Confronti}
-\label{sec:confronti}
+%\subsection{Layer di pooling}
+%\label{subsec:layermp}
+%
