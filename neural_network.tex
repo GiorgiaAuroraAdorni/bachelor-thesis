@@ -69,7 +69,7 @@ Essa viene utilizzata per la sua capacità di accelerare notevolmente la converg
 \end{figure}
 
 
-\subsection{Batch normalization}
+\subsection{Batch normalization *}
 \label{subsec:normalization}
 
 Per aumentare la stabilità della rete neurale, generalmente viene applicata ad ogni strato una \emph{batch normalization}, la quale normalizza l'uscita di un precedente livello sottraendo il valore medio di un batch e dividendo il risultato per la sua deviazione standard \cite{ioffe2015batch}.
@@ -93,7 +93,7 @@ Per insegnare alla rete a risolvere un determinato problema, occorre una fase di
 
 Questo comporta la definizione di una \emph{funzione di costo}, in grado di misurare la distanza tra una soluzione particolare ed una ottimale. 
 
-\subsection{Funzione di costo}
+\subsection{Funzione di costo *}
 \label{subsec:loss}
 
 Una funzione di costo mappa un evento ad un numero reale, il quale ne rappresenta intuitivamente il ``costo''.
@@ -109,7 +109,7 @@ L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quad
 \end{equation}
 
 {\color{red} definire cosa siano n, Yi e Yi hat}
-\subsection{Algoritmi di ottimizzazione}
+\subsection{Algoritmi di ottimizzazione *}
 \label{subsec:optimizer}
 
 Gli algoritmi di ottimizzazione sono necessari per minimizzare il risultato di una determinata funzione obiettivo, la quale dipende dai parametri che il modello deve imparare durante l'addestramento. 
@@ -140,7 +140,7 @@ L'\emph{Adaptive Moment Estimation} (Adam) è un altro metodo che calcola i tass
 
 {\color{blue}Adam funziona bene se confrontato con altri algoritmi adattativi, poiché converge molto velocemente e la velocità di apprendimento è efficiente.}{\color{red}questa frase ritengo debba essere meglio strutturata per comunicarne il senso compiuto al lettore interessato}
 
-\subsection{Paradigmi di apprendimento}
+\subsection{Paradigmi di apprendimento *}
 \label{subsec:Paradigmi di apprendimento}
 
 Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
@@ -162,7 +162,7 @@ Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
 	Questo è un tipo di apprendimento autonomo senza controllo esterno sull'errore. È un approccio adatto per ottimizzare le risorse e se non si conoscono a priori i gruppi in cui dividere l'input.
 \end{itemize}
 
-\section{Development and test set }
+\section{Development and test set}
 \label{sec:DevelopmentAndTestSet}
 Per misurare le prestazioni di una rete neurale dopo la fase di apprendimento, viene creato un test set formato da coppie non utilizzate per il training e validation set.\\
 Vengono generalmente definiti: 
@@ -179,7 +179,7 @@ Questo funziona bene quando sono messi a disposizione un numero limitato di esem
 
 Vengono utilizzate diverse tecniche statistiche per valutare la bontà di un modello.
 
-\subsection{Evaluation metric}
+\subsection{Evaluation metric *}
 \label{subsec:EvaluationMetric}
 
 Le metriche di valutazione spiegano le prestazioni di un modello. Un loro aspetto importante è la capacità di discriminare tra i risultati del modello.
@@ -202,7 +202,7 @@ La metrica RMSE è definita dalla seguente equazione
 \end{equation}
 
 {\color{red} attenzione prima usavamo Yi e Yi hat, ora abbiamo cambiato? perche? dobbiamo motivare}
-\subsection{Overfitting}
+\subsection{Overfitting *}
 \label{subsec:overfitting}
 
 L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future''.
@@ -211,14 +211,14 @@ La rete neurale deve avere capacità di comprensione del modello statistico dei 
 
 Per ridurre la possibilità di overfitting esistono diverse tecniche, come la convalida incrociata (cross validation), la regolarizzazione o l'\emph{early stopping}, che consiste nell'utilizzo di un validation set di coppie non usate nel training set per la misurazione dell'errore.
 
-\section{Reti neurali per la classificazione}
+\section{Reti neurali per la classificazione *}
 \label{sec:classificazione}
 La classificazione è la suddivisione di oggetti in insiemi disgiunti secondo un criterio stabilito a priori (etichetta). Ogni oggetto viene rappresentato come un vettore di numeri in modo da poter essere classificato dalla rete neurale, un vettore di feature che contraddistingue univocamente quell'oggetto.\\
 
 Date $N$ classi di appartenenza tra cui discriminare, il vettore di input $x$ possiede $L$ dimensioni delle feature da classificare, il vettore $y$ individua la classe formata da $N$ valori. Il classificatore riceve in input il vettore $x$ e restituisce in uscita il vettore $y$ dove $y_i=1$ se l'oggetto con l'input $x$ appartiene alla classe $i$ e $y_j=0$ per $i\neq j$ per $i,j=1 \dots N$.\\
 Questo corrisponde ad una mappatura tra i valori di input e di output, che può essere modellata come una funzione non lineare.
 
-\section{Reti neurali convoluzionali}
+\section{Reti neurali convoluzionali *}
 \label{sec:cnn}
 Una rete neurale convoluzionale, in inglese \emph{Convolutional Neural Network} (CNN), è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali seguiti da una serie di livelli completamente connessi (corrispondenti a quelli tipici di ANN) \cite{kim2014convolutional}. Questa architettura consente alle CNN di sfruttare la struttura 2D dei dati di input.\\
 
@@ -234,3 +234,8 @@ In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matr
 Nel \emph{Natural Language Processing} (NLP) utilizziamo filtri che scorrono su righe complete della matrice (parole), pertanto, la loro ``larghezza'' è solitamente uguale alla quella della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. 
 
 Risulta che le CNN applicate ai problemi di NLP funzionino abbastanza bene, un esempio è il modello \emph{Bag of Words} che è stato l'approccio standard per anni e ha portato a risultati piuttosto buoni.
+
+
+
+
+Il minor numero di connessioni e pesi di questa architettura, rende gli strati convoluzionali relativamente economici in termini di memoria e potenza di calcolo necessari.
