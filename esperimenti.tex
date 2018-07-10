@@ -1,15 +1,15 @@
 \chapter{Esperimenti e risultati}
 \label{chap:esperimenti}
 
-I precedenti modelli di previsione della personalità si sono concentrati sull'applicazione di tecniche generali di apprendimento automatico per predire i tratti di personalità Big Five.
+La maggior parte degli attuali studi di previsione della personalità si sono concentrati sull'applicazione di tecniche generali di apprendimento automatico per predire i tratti di personalità Big Five.
 In particolare verranno utilizzate diverse strutture di rete, combinando differenti domini.
 
 \section{Spazi di rappresentazione}
 \label{sec:approcci}
-Per affrontare questo problema di \emph{Text Mining}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche:
+Per affrontare questo problema di \emph{Text Mining}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche del testo:
 \begin{itemize}
-	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze.
-	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite gli algoritmi di Mikolov. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
+	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze \cite{FIXME}.
+	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite l'algoritmo \texttt{word2vec} di Tomas Mikolov \cite{FIXME}. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
 \end{itemize}
 $\\$
 In seguito viene posta l'attenzione su tre diverse architetture neurali:
@@ -45,14 +45,14 @@ Il modello riguarda solo le parole conosciute, di conseguenza i vocaboli che com
 
 Una volta estratte, le features posso essere passate in input alla rete neurale, che le elabora calcolando le risposte dei neuroni dal livello di input verso il livello di output.
 
-In questa prima strategia viene utilizzata una rete \emph{feedforward}, in cui le informazioni si spostano dal livello di input attraverso eventuali strati nascosti fino al livello di output senza cicli. L'architettura è caratterizzata da una struttura densa o \emph{fully-connected}, in cui tutti i neuroni del layer precedente sono collegati ad ogni neurone del layer successivo, e ciascuna connessione ha il proprio peso.
+In questa prima strategia viene utilizzata una rete \emph{feed-forward}, in cui le informazioni si spostano dal livello di input attraverso eventuali strati nascosti fino al livello di output senza cicli. L'architettura è caratterizzata da una struttura densa o \emph{fully-connected}, in cui tutti i neuroni del layer precedente sono collegati ad ogni neurone del layer successivo, e ciascuna connessione ha il proprio peso.
 
 
 Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. L'ultimo di questi strati rappresenta l’output della rete.
 
 Ad ogni livello fully connected viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. {\color{red}in realtà non mi pare si sia descritto come funziona in quella sezione, decida come desidera trattare questi aspetti per evitare che le vengano mosse obiezioni}
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. 
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
@@ -61,22 +61,23 @@ Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementa
 	\centering
 		\begin{tabular}{lcccc}
 			\toprule
-			\textbf{Layer} \quad & \textbf{Modello 1} & \textbf{Modello 2} & \textbf{Modello 3} &  \textbf{Modello 4}  \\
+			\textbf{Layer} \quad & \textbf{Modello 1} & \textbf{Modello 2} & \textbf{Modello 3} \\
 			\midrule
-			Input 				 & \numprint{60000}	  & \numprint{60000}   &\numprint{60000}	&\numprint{60000}	   \\
-			fc1  				 & \num{300}		  & \num{300} 		   & \num{100} 			& \num{300} 		   \\
-			fc2  				 &  \num{200}		  & \num{200} 		   & \num{50}  			& \num{20}  		   \\
-			fc3					 & -				  & \num{100} 		   & \num{20} 			& -					   \\
-			Output 				 &  \num{5}			  & \num{5} 		   & \num{5}			& \num{5} 			   \\
+			Input 				 & \numprint{60000}	  & \numprint{60000}   &\numprint{60000}\\
+			fc1  				 & \num{300}		  & \num{300} 		   & \num{100} 		\\
+			fc2  				 &  \num{200}		  & \num{200} 		   & \num{50}  		\\
+			fc3					 & -				  & \num{100} 		   & \num{20}    	\\
+			Output 				 &  \num{5}			  & \num{5} 		   & \num{5}		\\
 			\bottomrule
 		\end{tabular}
 	\captionof{table}{Confronto delle architetture di tre differenti modelli}
 	\label{tab:arcbow+fc}
 \end{figure}
 
+
 Tutte le simulazioni sono state addestrate per \num{10} epoche: la fase di addestramento viene in genere portata avanti fino a quando le performance sul test non producono alcun miglioramento.
 
-L’ottimizzatore scelto è l'{Adaptive Subgradient Methods} \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
+L’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
 
 Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsec:loss}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{root mean squared error} (RMSE), introdotta nella sezione \ref{subsec:EvaluationMetric}.
 
@@ -84,16 +85,16 @@ In ogni epoca si alternano una fase di training ed una fase di test in modo tale
 
 \subsection{Performance}
 \label{subsec:performance1}
-Prendendo in considerazione le tre diverse architetture implementate, presentiamo i risultati ottenuti in termini di loss.
+Prendendo in considerazione le tre diverse architetture implementate, vengono presentati i risultati ottenuti in termini di loss.
 \begin{table}[H]
 	\centering
 	\begin{tabular}{l@{\hspace{.5cm}}ccc}
 		\toprule
-		 & \textbf{Dev loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
+		 & \textbf{Train loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
 		\midrule
-		\textbf{Modello 1} & \numprint{0.0607} & \numprint{0.0619} &\numprint{235} min \\
-		\textbf{Modello 2} & \numprint{0.0901} & \numprint{0.0606} &\numprint{250} min \\
-		\textbf{Modello 3} & \numprint{0.0680} & \numprint{0.0624} &\numprint{265} min \\
+		\textbf{Modello 1} & \numprint{0.061} & \numprint{0.062} &\numprint{235} min \\
+		\textbf{Modello 2} & \numprint{0.090} & \numprint{0.061} &\numprint{250} min \\
+		\textbf{Modello 3} & \numprint{0.068} & \numprint{0.062} &\numprint{265} min \\
 %		\textbf{Modello 4} & \numprint{0.0287} & \numprint{0.0104} &\numprint{145} min \\
 		\bottomrule 
 	\end{tabular}
@@ -102,7 +103,7 @@ Prendendo in considerazione le tre diverse architetture implementate, presentiam
 \end{table}
 
 Per valutare l'efficacia di questi modelli, è fondamentale eseguire un analisi dettagliata, in particolare ponendo l'attenzione sui valori di RMSE per ogni tratto di personalità.
-Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, è possibile stabilire qual è il valore di root mean squared error di un modello concettuale che per ogni tratto predice sempre il suo valore medio.
+Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, è possibile stabilire qual è il valore di root mean squared error di un modello concettuale, chiamato ``Modello 0'', che per ogni tratto predice sempre il suo valore medio.
  
 \begin{figure}[H]
 	\centering
@@ -139,10 +140,7 @@ Calcolando il valore medio assunto da ogni caratteristica durante la fase di add
 
 Mettendo a confronto le due metriche, si nota che i modelli realmente implementati imparano nella maggioranza dei casi a predire un valore con lo stesso errore commesso dai modelli banali che calcolano la media. Risulta allora evidente che i risultati ottenuti non siano ottimali.
 
-{\color{red} Nonostante ciò, il terzo modello sembrerebbe essere meglio.
-
-In seguito a questa analisi, il termo modello sembrerebbe essere leggermente migliore degli altri due. 
-Dall'analisi seguita al confronto del modello ocn il suo modello 0, esso è quello che ottiene risultati migliori rispetto ad esso, quindi la rete sembrerebbe effettivamente imparare qualcosa di più. SI può migliorare. come?}
+Nonostante ciò, il terzo modello sembrerebbe essere leggermente migliore degli altri due, in particolare confrontandolo con il corrispondente modello nullo si nota la presenza di un piccolo margine di miglioramento.
 
 La scarsa efficienza di questi modelli potrebbe dipendere dall'efficacia con cui vengono codificate le feature in input alla rete. 
 Infatti le limitazioni dell'approccio bag-of-words derivano in parte dalla progettazione del vocabolario e della sua dimensione, che può causare una scarsa ``descrizione'' del documento. 
@@ -152,21 +150,23 @@ Inoltre, un tipo di rappresentazione sparsa risulta più difficile da modellare 
 \section{Esperimento 2}
 \label{sec:es2}
 
-In compiti come il riconoscimento di parole, tutte le ``informazioni'' vengono rappresentati per mezzo di id unici e discreti.
-Queste codifiche però non forniscono alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su una determinato termine. 
+Durante l'applicazione di tecniche di apprendimento automatico, tutte le ``informazioni'' vengono rappresentate per mezzo di id unici e discreti. 
 
-La ``raffigurazione'' utilizzata nel precedente approccio, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un alternativa valida sarebbe quella di sfruttare \emph{modelli spaziali vettoriali} (VSM) per rappresentare le parole in uno spazio continuo \cite{FIXME}.
+Nel caso dell'approccio \emph{bag-of-words}, la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su un determinato termine. 
+
+Inoltre la ``raffigurazione'' utilizzata nel precedente esperimento, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un'alternativa valida sarebbe quella di sfruttare \emph{modelli spaziali vettoriali} (VSM) per rappresentare le parole in uno spazio continuo \cite{FIXME}.
 Questi metodi dipendono dall'ipotesi distributiva, la quale afferma che le parole che appaiono negli stessi contesti condividono lo stesso significato semantico \cite{FIXME}. 
 
 \subsection{Input Features}
 \label{subsec:features2}
 
-Nel secondo approccio, viene utilizzato un modello spazio-vettoriale, adottando una tecnica non supervisionata che consiste nell'applicazione di \texttt{word2vec} di Tomas Mikolov \cite{mikolov2013efficient}. 
-\texttt{Word2vec} è un modello predittivo particolarmente efficiente dal punto di vista computazionale per l'apprendimento degli embedding di parole dal testo non elaborato.
-{\color{blue}Esso viene implementato come una} rete neurale a due strati, addestrati a ricostruire i contesti linguistici delle parole.
+Nel secondo approccio, viene applicato l'algoritmo non supervisionato \texttt{word2vec} di Tomas Mikolov  \cite{mikolov2013efficient}. 
+\texttt{Word2vec} è un modello predittivo particolarmente efficiente dal punto di vista computazionale per l'apprendimento degli embedding di parole a partire dal testo non elaborato.
+Esso è basato su una rete neurale artificiale a due strati, addestrati a ricostruire i contesti linguistici delle parole. 
 
-A partire dal corpus di testo, l'algoritmo prende in input un set formato dall'accoppiamento di ogni parola target e i contesti in cui appare. Viene considerato come ``contesto'' l'insieme delle ``parole a sinistra'' e delle ``parole alla destra'' dell'obiettivo, ovvero la finestra di dimensione 1 attorno all'elemento target. Ogni coppia di destinazione del contesto viene trattata come se fosse una nuova osservazione, incrementando le informazioni distribuzionali. Viene così prodotto uno spazio vettoriale di diverse centinaia di dimensioni, in cui ogni parola univoca viene assegnata a un vettore corrispondente nello spazio.
+A partire dal corpus di testo, la rete prende in input un set formato dall'accoppiamento di ogni parola target e i contesti in cui appare e restituisce un insieme di vettori che rappresentano la distribuzione semantica delle parole nel testo. 
 
+Viene considerato come ``contesto'' l'insieme delle ``parole a sinistra'' e delle ``parole alla destra'' dell'obiettivo, ovvero la finestra di dimensione 1 attorno all'elemento target. Ogni coppia di destinazione del contesto viene trattata come se fosse una nuova osservazione, incrementando le informazioni distribuzionali. Viene così prodotto uno spazio vettoriale di diverse centinaia di dimensioni, in cui ogni parola univoca viene assegnata a un vettore corrispondente nello spazio.
 
 Per l'implementazione viene utilizzato il modello \emph{Skip-Gram}, una versione di \texttt{word2vec} che vuole predire le parole del contesto di origine (label) a partire dalle parole target (features) \cite{FIXME}.
 
@@ -187,13 +187,11 @@ In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo t
 	\subfloat[][\emph{Dettaglio di una visualizzazione 3D}\label{subfig:vis3d}]
 	{\includegraphics[width=.45\textwidth]{images/embedding1/Embedding1_similarity}}
 	
-	\caption{Proiezione dell'embedding di Mikolov nello spazio 2-3 dimensionale, tramite la \emph{tecnica di riduzione della dimensionalità} (t-SNE) \cite{FIXME}.}
+	\caption{Proiezione dell'embedding di Mikolov nello spazio 2-3 dimensionale, tramite la \emph{tecnica di riduzione della dimensionalità} (t-SNE) \cite{maaten2008visualizing}.}
 	\label{fig:embedding1}
 \end{figure}
 
-{\color{red}La funzione obiettivo/algoritmo di ottimizzazione della rete utilizzata per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Socastic Gradient Descent} (SGD) un esempio alla volta \cite{FIXME} \ref{subsec:optimizer}.
-loss function: nce loss. learning rate
-}
+La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Socastic Gradient Descent} (SGD), definita nella sezione \ref{subsec:optimizer}.
 
 Nella seguente tabella vengono presentati i due embedding realizzati e i relativi parametri.
 
@@ -216,34 +214,32 @@ Nella seguente tabella vengono presentati i due embedding realizzati e i relativ
 
 \subsection{Architettura della rete}
 \label{subsec:modelli2}
-%Windowing, parole attorno agli aggettivi della lista degli aggettivi disponibili:
-%K parole prima e dopo la parola corrente, finestre scorrevoli
 
-La rappresentazione spazio-vettoriale viene utilizzata come feature della rete che si andrà a costruire.
-{\color{red}Un modo alternativo per addestrare il modello consiste nell'utilizzare le \emph{reti convoluzionali}, in cui ogni neurone è collegato solo a pochi neuroni vicini (alias locali) nel livello precedente, e lo stesso insieme di pesi viene utilizzato per ogni neurone. Uno strato convoluzionale è molto più specializzato ed efficiente di uno completamente connesso
+La rappresentazione spazio-vettoriale viene utilizzata come feature della modello che si andrà a costruire.
+In questo secondo approccio verrà utilizzata un \emph{rete convoluzionale}, in cui ogni neurone è collegato solo a pochi neuroni vicini nel livello precedente, e lo stesso insieme di pesi viene utilizzato per ogni neurone. 
 
-In una rete convoluzionale, il modello di connessione locale e lo schema di peso condiviso possono essere interpretati come un filtro (o un insieme di filtri) che viene "convogliato" con l'input.
-Esso è costituito da un insieme di ``filtri'' che accettano un sottoinsieme dei dati di input alla volta, ma vengono applicati all'intero input.}
+In questo tipo di rete, il modello di connessione locale e lo schema di peso condiviso possono essere interpretati come un filtro (o un insieme di filtri) che accettano un sottoinsieme dei dati di input alla volta, ma vengono applicati all'intero input.
+
+Uno strato convoluzionale è molto più specializzato ed efficiente di uno completamente connesso.\\
 
 Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni'' non lineari tramite l'applicazione della funzione di attivazione \emph{ReLU}, introdotta nella sezione \ref{subsec:fattivazione}.
 
-Ad ogni livello convoluzionale viene applicata una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}, {\color{blue} utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.}
+Ad ogni livello convoluzionale viene applicata una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
 
-{\color{red} Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling} \cite{FIXME} \ref{FIXME} \ref{sec:cnn}: Un livello di raggruppamento riduce in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide dal livello precedente.
+Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling} \cite{FIXME}, introdotto nella sezione \ref{sec:cnn}, per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
 
-Come ultimo strato della rete viene scelto un \emph{layer denso}, un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda e alla fine emette i punteggi per ogni classe.}\\
+Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella sezione \ref{FIXME}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
 
-
-\begin{figure}[H]
+\begin{figure}[tb]
 	\centering
 	\begin{tabular}{lccc}
 		\toprule
 		\textbf{Layer}& \textbf{Modello 4} & \textbf{Modello 5} & \textbf{Modello 6} 		\\ 
 		\midrule
-		conv1 	& \num{10}$\times$\num{5}, 10	  & \num{5}$\times$\num{5}, 150, padding same    &\num{3}$\times$\num{3}, 100, padding same 		   \\
+		conv1 	& \num{10}$\times$\num{5}, 10	  & \num{5}$\times$\num{5}, 150, same pad    &\num{3}$\times$\num{3}, 100, same pad 		   \\
 		
-		mpool1 	& &{\num{4}$\times$\num{4}, stride 2, padding same}	&   \\
-		conv2  	& \num{18}$\times$\num{18}, 10	  &  \num{5}$\times$\num{20}, 100, padding same	  &		\num{3}$\times$\num{20}, 75, padding same    \\
+		mpool1 	& &{\num{4}$\times$\num{4}, stride 2, same pad}	&   \\
+		conv2  	& \num{18}$\times$\num{18}, 10	  &  \num{5}$\times$\num{20}, 100, same pad	  &		\num{3}$\times$\num{20}, 75, same pad    \\
 		conv3  	& ---	  & \num{1}$\times$\num{20}, 50, 	   &	\num{1}$\times$\num{20}, 50 	   \\
 		fcout		& &{\num{1}$\times$\num{1}, 5}&		   \\
 		
@@ -255,19 +251,23 @@ Come ultimo strato della rete viene scelto un \emph{layer denso}, un'operazione 
 
 Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.
 
-{\color{red}L'input è costituito da un numero di caratteristiche pari a \num{40}$\times$``numero delle parole'' di ogni sentence.}
+L'input della rete è costituito da un numero di caratteristiche pari a ``dimensione dell'embedding''$\times$``numero delle parole di ogni sentence''.
+Ad ogni livello vengono applicate la funzione di attivazione non lineare \emph{ReLU} e la \emph{batch normalization}, introdotte rispettivamente nelle sezioni \ref{subsec:fattivazione} e \ref{subsec:normalization}.
 
-Nel caso del secondo embedding abbiamo voluto provare un modello che sfruttasse solo le reti fully connected, senza alcun layer di convoluzione. 
+Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsec:optimizer}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
+Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsec:loss}.
 
-\begin{figure}[H]
+Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully connected}, senza applicare alcuna convoluzione. 
+
+\begin{figure}[tb]
 	\centering
 	\begin{tabular}{lcc}
 		\toprule
 		\textbf{Layer}& \textbf{Modello 7} 								  & \textbf{Modello 8} 			   \\ 
 		\midrule
-		conv1 	& \num{3}$\times$\num{3}, 100, stride 2, padding same     & ---	   \\
-		mpool1 	& \num{4}$\times$\num{4}, stride 2, padding same		  & ---	   \\
-		conv2  	& \num{3}$\times$\num{63}, 75, stride 2, padding same	  & ---    \\
+		conv1 	& \num{3}$\times$\num{3}, 100, stride 2, same pad     & ---	   \\
+		mpool1 	& \num{4}$\times$\num{4}, stride 2, same pad		  & ---	   \\
+		conv2  	& \num{3}$\times$\num{63}, 75, stride 2, same pad	  & ---    \\
 		conv3  	& \num{1}$\times$\num{32}, 50, stride 2	  				  & ---	   \\
 		fc1  	& ---													  & \num{1}$\times$\num{1}, 100	   \\
 		fc2  	& \num{1}$\times$\num{32}, 50, stride 2	  				  & \num{1}$\times$\num{1},  50    \\
@@ -279,65 +279,400 @@ Nel caso del secondo embedding abbiamo voluto provare un modello che sfruttasse 
 	\label{tab:netemb2}
 \end{figure}
 
+\begin{table}[tb]
+	\centering
+	\begin{tabular}{llc}
+		\toprule
+		\multicolumn{2}{c}{{Modelli}} & \textbf{Learning Rate}  \\
+		\midrule
+		\multirow{3}*{{Embedding 1}} 
+		&\textbf{Modello 4} & \numprint{0.001} \\
+		&\textbf{Modello 5} & \numprint{0.0001} \\
+		&\textbf{Modello 6} & \numprint{0.005} \\
+		\midrule
+		\multirow{2}*{{Embedding 2}} 
+		&\textbf{Modello 7} & \numprint{0.005} \\
+		&\textbf{Modello 8} & \numprint{0.0001} \\	
+		\bottomrule 
+	\end{tabular}
+	\captionof{table}{Learning rate delle simulazioni effettuate nell'esperimento 2}
+	\label{tab:learningratemikolov}
+\end{table}
+
 \subsection{Performance}
 \label{subsec:performance2}
 
-Prendendo in considerazione i due diversi embedding, mettiamo a confronto le diverse architetture implementate, mostrando i risultati ottenuti in termini di loss.
-\begin{table}[H]
+Prendendo in considerazione i due diversi embedding, vengono messe a confronto a confronto le diverse architetture implementate, mostrando i risultati ottenuti in termini di loss.
+\begin{table}[]
 	\centering
-	\begin{tabular}{l@{\hspace{.5cm}}ccc}
+	\begin{tabular}{ll@{\hspace{.5cm}}ccc}
 		\toprule
-		 & \textbf{Dev loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
+		\multicolumn{2}{c}{{Modelli}} & \textbf{Train loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
 		\midrule
-		\textbf{Modello 4} & \numprint{0.061} & \numprint{0.058} &\numprint{200} min \\
-		\textbf{Modello 5} & \numprint{0.052} & \numprint{0.060} &\numprint{310} min \\
-		\textbf{Modello 6} & \numprint{0.042} & \numprint{0.060} &\numprint{540} min \\
+		\multirow{3}*{{Embedding 1}} 
+		&\textbf{Modello 4} & \numprint{0.061} & \numprint{0.058} &\numprint{200} min \\
+		&\textbf{Modello 5} & \numprint{0.052} & \numprint{0.060} &\numprint{310} min \\
+		&\textbf{Modello 6} & \numprint{0.042} & \numprint{0.060} &\numprint{540} min \\
 		\midrule
-		\textbf{Modello 7} & \numprint{0.038} & \numprint{0.057} &\numprint{225} min \\
-		\textbf{Modello 8} & \numprint{0.058} & \numprint{0.117} &\numprint{250} min \\	
+		\multirow{2}*{{Embedding 2}} 
+		&\textbf{Modello 7} & \numprint{0.038} & \numprint{0.057} &\numprint{225} min \\
+		&\textbf{Modello 8} & \numprint{0.058} & \numprint{0.117} &\numprint{250} min \\	
 		\bottomrule 
 	\end{tabular}
 	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti nelle diverse reti con i due diversi embedding}
 	\label{tab:lossmikolov}
 \end{table}
 
-Nella seguente tabella vengono riassunti i valori di RMSE per ogni tratto di personalità.
+Valutando le prestazioni su train e test set viene rilevato il  come il migliore tra quelli proposti, presentando i valori di loss più bassi. 
+Oltre a ciò, anche rispetto al precedente approccio il ``Modello 7'' mostra una performance migliorata circa 
+del \SI{3}{\percent}.
 
-\begin{figure}[H]
+\begin{figure}[b]
 	\centering
 	\begin{tabular}{clccccc}
 		\toprule	
 		& 		 			& \multicolumn{5}{c}{\textbf{Root Mean Squared Error}} 									       \\
 		\multicolumn{2}{c}{\multirow{-2}{*}{Modelli}}
-							& O 				& C 			   & E 				  & A 				 & N 			   \\ 
+		& O 				& C 			   & E 				  & A 				 & N 			   \\ 
 		\midrule
-		\multirow{3}*{\textbf{Embedding 1}} 
-				& Modello 4 & \numprint{0,1482} & \numprint{0,2256} & \numprint{0,2316} & \numprint{0,2524} & \numprint{0,3132} \\
-				& Modello 5 & \numprint{0,1464} & \numprint{0,2269} & \numprint{0,2303} & \numprint{0,2514} & \numprint{0,3359} \\
-				& Modello 6 & \numprint{0,1464} & \numprint{0,2246} & \numprint{0,2237} & \numprint{0,2514} & \numprint{0,3370} \\
+		\multirow{3}*{{Embedding 1}} 
+		& \textbf{Modello 4} & \numprint{0,148} & \numprint{0,226} & \numprint{0,232} & \numprint{0,252} & \numprint{0,313} \\
+		& \textbf{Modello 5} & \numprint{0,146} & \numprint{0,227} & \numprint{0,230} & \numprint{0,251} & \numprint{0,336} \\
+		& \textbf{Modello 6} & \numprint{0,146} & \numprint{0,225} & \numprint{0,224} & \numprint{0,251} & \numprint{0,337} \\
 		\midrule
-		\multirow{2}*{\textbf{Embedding 2}} 
-				& Modello 7 & \numprint{0,1465} & \numprint{0,2231} & \numprint{0,2223} & \numprint{0,2511} & \numprint{0,3204} \\
-				& Modello 8 & \numprint{0,3993} & \numprint{0,2749} & \numprint{0,2574} & \numprint{0,2708} & \numprint{0,4567} \\
+		\multirow{2}*{{Embedding 2}} 
+		& \textbf{Modello 7} & \numprint{0,147} & \numprint{0,223} & \numprint{0,222} & \numprint{0,251} & \numprint{0,320} \\
+		& \textbf{Modello 8} & \numprint{0,399} & \numprint{0,275} & \numprint{0,257} & \numprint{0,271} & \numprint{0,457} \\
 		\bottomrule	
 	\end{tabular}
 	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle architetture sul test set}
 	\label{tab:rmsemikolov}
 \end{figure}
 
-\begin{figure}[H]
+Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalità, riassunti nella tabella \ref{tab:rmsemikolov}, e viene inoltre visualizzata la curva RMSE nella figura \ref{fig:rmse}.
+
+\begin{figure}[t]
 	\centering
-	{\includegraphics[width=.75\textwidth]{images/rmse2-linlong}} 
+	{\includegraphics[width=.65\textwidth]{images/rmse2-linlong}} 
 	\caption{Visualizzazione delle training RMSE dei modelli}
 	\label{fig:rmse}
 \end{figure}
 
 
-% può aiutare a superare alcuni dei sopracitati ostacoli.
+\section{Esperimento 3}
+\label{sec:es3}
 
-\section{Risultati}
-\label{sec:risultati}
+Nel terzo approccio si decide di valutare una rappresentazione dell'input alternativa.
 
+\subsection{Input Features}
+\label{subsec:features3}
+
+Ricorrendo nuovamente al modello \emph{skip-gram}, l'input della rete questa volta comprende il set formato dall'accoppiamento tra gli aggettivi contenuti nel dizionario OCEAN e i loro contesti.
+
+La finestratura che si andrà a definire in torno al target sarà di dimensione 2 e considererà le due parole a sinistra e le due parole a destra dell'aggettivo. La window non sarà più quindi incentrata su ogni elemento della sentence.
+Dunque nell'embedding che si andrà a costruire non verranno appresi i contesti di tutte le parole, ma solamente quelli di nostro interesse, ovvero relativi agli aggettivi.
+
+In questo esperimento viene realizzato un solo embedding, la cui dimensione è \num{250} e con numero di etichette negative da campionare pari a 50 \cite{liu2016classification}.
+
+\subsection{Architettura della rete}
+\label{subsec:modelli3}
+
+Viene utilizzato l'embedding estratto per costruire due modelli di reti neurali, le cui architetture vengono presentate nella tabella \ref{tab:netemb3}.
+Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; si rimanda alla sezione \ref{subsec:modelli2} per i dettagli. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{lcc}
+		\toprule
+		\textbf{Layer}& \textbf{Modello 9} & \textbf{Modello 10}	\\ 
+		\midrule
+		conv1   & \num{7}$\times$\num{5}, 100, stride 2, same pad    		&\num{3}$\times$\num{3}, 100, stride 2, same pad 		   \\
+		mpool1 	&\multicolumn{2}{c}{\num{4}$\times$\num{4}, stride 2, same pad}	 \\
+		conv2  	&  \num{5}$\times$\num{63}, 75, stride 2, same pad	    &		\num{3}$\times$\num{63}, 75, stride 2, same pad    \\
+		conv3  	& \num{3}$\times$\num{32}, 50, stride 2, same pad 	   	&	\num{1}$\times$\num{32}, 50, stride 2 	   \\
+		conv4  	& \num{1}$\times$\num{16}, 25, stride 2 	   	&	--- 	   \\
+		fcout	&\multicolumn{2}{c}{\num{1}$\times$\num{1}, 5}						\\
+		
+		\bottomrule	
+	\end{tabular}
+	\captionof{table}{Architetture dei due modelli implementati a partire dall'embedding 3}
+	\label{tab:netemb3}
+\end{figure}
+
+Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.
+
+L'algoritmo di apprendimento utilizzato è \emph{Adagrad}, definito nella sezione \ref{subsec:optimizer}, con \emph{learning rate} \numprint{0,0005} per il ``Modello 9'' e \numprint{0,005} per il ``Modello 10''. La funzione di \emph{loss} scelta è la MSE, introdotta nella sezione \ref{subsec:loss}. 
+
+\subsection{Performance}
+\label{subsec:performance3}
+
+Vengono presentati nella tabella \ref{tab:lossmikolov2} i valori ottenuti dalla funzione obiettivo dei due modelli, mentre nella tabella \ref{tab:rmsemikolov2} vengono riassunti i valori di RMSE per ogni tratto di personalità.
+
+\begin{table}[b]
+	\centering
+	\begin{tabular}{l@{\hspace{.5cm}}ccc}
+		\toprule
+		& \textbf{Train loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
+		\midrule
+		\textbf{Modello 9} & \numprint{0.043} & \numprint{0.060} &\numprint{18} h \\
+		\textbf{Modello 10} & \numprint{0.050} & \numprint{0.059} &\numprint{17} h \\	
+		\bottomrule 
+	\end{tabular}
+	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti nell'implementazione dei due modelli}
+	\label{tab:lossmikolov2}
+\end{table}
+
+\begin{figure}[t]
+	\centering
+	\begin{tabular}{clccccc}
+		\toprule	
+		& 		 			& \multicolumn{5}{c}{\textbf{Root Mean Squared Error}} 									       \\
+		\multicolumn{2}{c}{\multirow{-2}{*}{Modelli}}
+		& O 				& C 			   & E 				  & A 				 & N 			   \\ 
+		\midrule
+		& \textbf{Modello 9} & \numprint{0,146} & \numprint{0,223} & \numprint{0,223} & \numprint{0,251} & \numprint{0,331} \\
+		& \textbf{Modello 10} & \numprint{0,147} & \numprint{0,225} & \numprint{0,224} & \numprint{0,252} & \numprint{0,339} \\
+		\bottomrule	
+	\end{tabular}
+	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle due architetture sul test set}
+	\label{tab:rmsemikolov2}
+\end{figure}
+
+Rispetto al precedente approccio non vengono ottenuti dei miglioramenti. 
+
+\section{Esperimento 4}
+\label{sec:es4}
+
+L'ultimo approccio provato riutilizza i precedenti metodi di estrazione di feature che hanno ottenuto le migliori prestazioni per realizzare un modello predittivo di classificazione.
+
+Nello specifico il problema viene trasformato in un compito di classificazione binaria multi-label, in cui si cercano di predire cinque diverse etichette per ogni istanza. 
+
+Per ogni dimensione di personalità l'output della rete sarà ``0'', se il valore reale che assume un determinato tratto è inferiore a 0, o ``1'' altrimenti.
+Viene stabilito 0 come ``punto di neutralità assoluta'' perché corrisponde alla media dei valori osservati in ognuna delle caratteristiche.
+
+Adottando questo metodo, si assumerà di poter estrarre da questa funzione una misura di polarità, positiva o negativa, che indicherà un tratto più o meno accentuato.
+
+Il vantaggio effettivo di questo approccio consiste nella possibilità di valutare le performance in modo standard, misurando accuratezza, precisione e recall, e visualizzando le matrici di confusione, argomenti trattati nella sezione \ref{subsec:EvaluationMetric}.
+
+\subsection{Input Features}
+\label{subsec:features4}
+
+Vengono utilizzati come ingresso della rete due embedding di Mikolov realizzati negli esperimenti precedenti, ovvero l'``Embedding 2'' e l'``Embedding 3''.
+
+\subsection{Architettura della rete}
+\label{subsec:modelli4}
+
+Le reti che vengono realizzate sono molto simili a quelle precedentemente implementate; i dettagli delle architetture vengono presentati nella tabella \ref{tab:netemb4}.
+
+Ad ogni livello della rete viene applicata la stessa procedura degli esperimenti precedenti. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{lccc}
+		\toprule
+		\textbf{Layer} & \textbf{Modello 11} & \textbf{Modello 12} & \textbf{Modello 13}  	\\ 
+		\midrule
+		conv1 	& \num{3}$\times$\num{3}, 100	  & \num{5}$\times$\num{3}, 100 & \num{7}$\times$\num{5}, 100 	   \\
+		mpool1 	& {\num{4}$\times$\num{4}}	&{\num{4}$\times$\num{4}}	& {\num{4}$\times$\num{4}}	 \\
+		conv2  	& \num{3}$\times$\num{63}, 75 &  \num{3}$\times$\num{63}, 75	  &		\num{5}$\times$\num{63}, 75    \\
+		conv3  	&\num{1}$\times$\num{32}, 50	  & \num{1}$\times$\num{32}, 50  &	\num{3}$\times$\num{32}, 50 	  \\
+		conv4  	& ---	  & \num{1}$\times$\num{16}, 25  &	\num{1}$\times$\num{16}, 25 	  \\
+		fcout	&{\num{1}$\times$\num{1}, 10} &{\num{1}$\times$\num{1}, 10}&{\num{1}$\times$\num{1}, 10}		   \\
+		\bottomrule	
+	\end{tabular}
+	\captionof{table}{Architetture implementate a partire dall'embedding 2}
+	\label{tab:netemb4}
+\end{figure}
+
+In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione 2 e padding same, tranne che per l'ultimo livello convoluzionale con padding valid.
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{lcc}
+		\toprule
+		\textbf{Layer} & \textbf{Modello 14} & \textbf{Modello 15}   	\\ 
+		\midrule
+		conv1 	& {\num{7}$\times$\num{5}, 100, stride 2, same pad}&{\num{7}$\times$\num{5}, 100, stride 2, same pad} \\
+		mpool1 	& {\num{4}$\times$\num{4}, stride 2, same pad} &{\num{4}$\times$\num{4}, stride 2, same pad}  \\
+		conv2  	& {\num{5}$\times$\num{63}, 75, stride 2, same pad}&{\num{5}$\times$\num{63}, 75, stride 2, same pad}    \\
+		conv3  	&  {\num{3}$\times$\num{32}, 50, stride 2, same pad} &{\num{3}$\times$\num{32}, 50, stride 2, same pad} 	  \\
+		conv4  	& \num{1}$\times$\num{16}, 25, stride 2  &	\num{3}$\times$\num{16}, 25, stride 2, same pad 	  \\
+		conv5  	& ---  &	\num{1}$\times$\num{8}, 16, stride 2 	  \\
+		fcout	& \multicolumn{2}{c}{\num{1}$\times$\num{1}, 10}		   \\
+		\bottomrule	
+	\end{tabular}
+	\captionof{table}{Architetture implementate a partire dall'embedding 3}
+	\label{tab:rmsebin2}
+\end{figure}
+
+In tutte le simulazioni l’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, il valore di \emph{learning rate}  di ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov2}.
+
+Come funzione obiettivo viene utilizzata la \emph{Softamax Cross Entropy}, presentata nella sezione \ref{subsec:loss}. 
+
+\begin{table}[b]
+	\centering
+	\begin{tabular}{llc}
+		\toprule
+		\multicolumn{2}{c}{{Modelli}} & \textbf{Learning Rate}  \\
+		\midrule
+		\multirow{3}*{{Embedding 2}} 
+		&\textbf{Modello 11} & \numprint{0.0001} \\
+		&\textbf{Modello 12} & \numprint{0.0005} \\
+		&\textbf{Modello 13} & \numprint{0.0005} \\
+		\midrule
+		\multirow{2}*{{Embedding 3}} 
+		&\textbf{Modello 14} & \numprint{0.0005} \\
+		&\textbf{Modello 15} & \numprint{0.0005} \\	
+		\bottomrule 
+	\end{tabular}
+	\captionof{table}{Learning rate delle simulazioni effettuate nell'esperimento 2}
+	\label{tab:learningratemikolov2}
+\end{table}
+
+
+\subsection{Performance}
+\label{subsec:performance4}
+
+Prendendo in considerazione le diverse architetture implementate, vengono presentati i risultati ottenuti in termini di loss.
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ll@{\hspace{.5cm}}ccc}
+		\toprule
+		\multicolumn{2}{c}{{Modelli}} & \textbf{Train loss} & \textbf{Test loss} & \textbf{Tempo di training}  \\
+		\midrule
+		\multirow{3}*{{Embedding 2}} 
+		&\textbf{Modello 11} & \numprint{3.275} & \numprint{3.455} &\numprint{20} h \\
+		&\textbf{Modello 12} & \numprint{3.297} & \numprint{3.459} &\numprint{30} h \\
+		&\textbf{Modello 13} & \numprint{3.444} & \numprint{3.458} &\numprint{40} h \\
+		\midrule
+		\multirow{2}*{{Embedding 2}} 
+		&\textbf{Modello 14} & \numprint{3.350} & \numprint{3.459} &\numprint{20} h \\
+		&\textbf{Modello 15} & \numprint{3.230} & \numprint{3.454} &\numprint{60} h \\	
+		\bottomrule 
+	\end{tabular}
+	\captionof{table}{Confronto delle \emph{loss} ottenute nelle diverse reti con i due diversi embedding}
+	\label{tab:lossmikolov3}
+\end{table}
+
+Come già detto, l'utilizzo di questo approccio consente una valutazione non più solo in termini di loss ma se ne potrà analizzare anche l'accuratezza, introdotta nella sezione \ref{subsec:EvaluationMetric}. 
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular}{clP{1cm}P{1cm}P{1cm}P{1cm}P{1cm}}
+		\toprule	
+		& 		 			& \multicolumn{5}{c}{\textbf{Train/Test Accuracy [\%]} 		}							       \\
+		\multicolumn{2}{c}{\multirow{-2}{*}{Modelli}}
+		& O 				& C 			   & E 				  & A 				 & N 			   \\ 
+		\midrule
+		\multirow{3}*{{Embedding 2}} 
+		& \textbf{Modello 11} & \numprint{61}/\numprint{61} & \numprint{60}/\numprint{59} & \numprint{63}/\numprint{60} & \numprint{58}/\numprint{56} & \numprint{57}/\numprint{54} \\
+		
+		& \textbf{Modello 12} &\numprint{62}/\numprint{59} &\numprint{61}/\numprint{50} & \numprint{64}/\numprint{45} & \numprint{61}/\numprint{56} & \numprint{61}/\numprint{56} \\
+		
+		& \textbf{Modello 13} & \numprint{63}/\numprint{55} &\numprint{63}/\numprint{60} & \numprint{63}/\numprint{61} & \numprint{63}/\numprint{58} & \numprint{62}/\numprint{59} \\
+		\midrule
+		\multirow{2}*{{Embedding 3}} 
+		& \textbf{Modello 14} & \numprint{61}/\numprint{61} & \numprint{61}/\numprint{57} & \numprint{62}/\numprint{52} & \numprint{60}/\numprint{57} & \numprint{60}/\numprint{56} \\
+		
+		& \textbf{Modello 15} &\numprint{63}/\numprint{60} & \numprint{62}/\numprint{48} & \numprint{64}/\numprint{60} & \numprint{62}/\numprint{49} & \numprint{62}/\numprint{48} \\
+		\bottomrule	
+	\end{tabular}
+	\captionof{table}{Confronto delle accuracy sul test set delle diverse architetture}
+	\label{tab:accuracymikolov}
+\end{figure}
+
+Il ``Modello 13'' sembrerebbe il migliore tra quelli proposti poiché presenta valori di accuracy più alti e la differenza di prestazioni tra train e test set è una tra le più basse, dimostrando minore propensione all'overfitting.  \\
+
+Viene presentata un analisi più dettagliata su questo modello, in particolare mostrando il grafico dell'accuratezza, su train e test set, e le matrici di confusione calcolate per ogni tratto di personalità.
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confO}]{
+		\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.6\textwidth]{images/binary/accO}
+		\end{minipage}} 
+	\hspace{10mm}
+	\subfloat[][\emph{Visualizzazione accuratezza su train e test}\label{subfig:accO}]{
+		\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.8\textwidth]{images/binary/plotO}
+		\end{minipage}}
+	\caption{Analisi della caratteristica Openness del ``Modello 13''}
+	\label{fig:binO}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confC}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.6\textwidth]{images/binary/accC}
+		\end{minipage}} 
+	\hspace{10mm}
+	\subfloat[][\emph{Visualizzazione accuratezza su train e test}\label{subfig:accC}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.8\textwidth]{images/binary/plotC}
+		\end{minipage}}
+	\caption{Analisi della caratteristica Conscientiousness del ``Modello 13''}
+	\label{fig:binC}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confE}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.6\textwidth]{images/binary/accE}
+		\end{minipage}} 
+	\hspace{10mm}
+	\subfloat[][\emph{Visualizzazione accuratezza su train e test}\label{subfig:accE}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.8\textwidth]{images/binary/plotE}
+		\end{minipage}}
+	\caption{Analisi della caratteristica Extraversion del ``Modello 13''}
+	\label{fig:binE}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confA}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.6\textwidth]{images/binary/accA}
+		\end{minipage}} 
+	\hspace{10mm}
+	\subfloat[][\emph{Visualizzazione accuratezza su train e test}\label{subfig:accA}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.8\textwidth]{images/binary/plotA}
+		\end{minipage}}
+	\caption{Analisi della caratteristica Agreeableness del ``Modello 13''}
+	\label{fig:binA}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confN}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.6\textwidth]{images/binary/accN}
+		\end{minipage}} 
+	\hspace{10mm}
+	\subfloat[][\emph{Visualizzazione accuratezza su train e test}\label{subfig:accN}]
+	{\begin{minipage}[c][0.7\width]{0.45\textwidth}
+			\centering
+			\includegraphics[width=.8\textwidth]{images/binary/plotN}
+		\end{minipage}}
+	\caption{Analisi della caratteristica Neuroticism del ``Modello 13''}
+	\label{fig:binN}
+\end{figure}
+
+Come si può vedere chiaramente dalle matrici di confusione, le caratteristiche \emph{Conscientiousness} e \emph{Extraversion} sono quelle che vengono predette nel modo peggiore.
+ 
 
 
 %Vi sono stati numerosi esperimenti prima di ottenere il modello finale, ovvero quello con le performance migliori. Di seguito vengono descritti brevemente soltanto quelli più significativi, mentre per la descrizione precisa del modello finale si rimanda alla sezione successiva.\\
@@ -345,13 +680,4 @@ Nella seguente tabella vengono riassunti i valori di RMSE per ogni tratto di per
 
 
 %Abbiamo valutato il nostro approccio basato sulla conoscenza sulla sua efficacia nel predire la personalità degli individui rispetto al modello dei Big Five. La nostra valutazione misura le prestazioni di: 1) classificare gli individui per ogni tratto di personalità e 2) stimare il grado di appartenenza degli individui a ciascun tratto di personalità. La prima valutazione è definita come un problema di classificazione multi-etichetta e assegna etichette "Sì" e "No" per gli individui per ciascun tratto di personalità. Questa è la metodologia di valutazione più popolare seguita nella letteratura sulla previsione della personalità. La seconda valutazione si concentra sul grado di appartenenza di ciascun individuo a ciascun tratto di personalità rispetto all'assegnazione di etichette piuttosto rigide "Sì" e "No". Gran parte della ricerca pertinente in letteratura non ha valutato questa impostazione della previsione della personalità [19]. Riteniamo che questa impostazione sia più vicina allo scenario del mondo reale dal momento che ogni individuo ha alcune caratteristiche da ogni tratto della personalità piuttosto che appartenere a ciascun tratto o meno. La seconda valutazione è definita come un problema di regressione e usiamo la regressione lineare e SVM per la regressione [9] per stimare il valore del grado di appartenenza.
-%
-%Dataset di valutazione
-%Abbiamo utilizzato il famoso repository di dati di Facebook gestito dal progetto "myPersonality" 3 come set di dati di valutazione nei nostri esperimenti. Questo repository viene creato raccogliendo i dati utilizzando la popolare applicazione Facebook "myPersonality" lanciata nel 2007. I valori di personalità degli individui nel set di dati vengono valutati chiedendo loro di fare un test psicometrico standard. L'output di questo test mostra il grado di appartenenza di ciascun individuo a ciascun tratto di personalità e questi valori sono compresi tra 1 e 5. Ad esempio, un individuo può avere valori 2,85 per extraversione, 4,20 per nevroticismo, 2,12 per coscienziosità, 3,55 per gradevolezza e 4.31 per i tratti di personalità di apertura. Attualmente, possiede i dati di milioni di utenti di Facebook e contiene i loro aggiornamenti di stato, rete di amici, Mi piace ecc.
-%Il nostro approccio sfrutta la semantica degli aggiornamenti di stato degli utenti. Il numero di aggiornamenti di stato di Facebook da parte degli utenti mostra una distribuzione a coda lunga come mostrato nella Figura 3. Abbiamo creato un set di dati di esempio da questo set di dati di grandi dimensioni come dataset di valutazione in base al numero di aggiornamenti di stato degli utenti. Abbiamo selezionato 1.000 utenti con il più alto numero di aggiornamenti di stato poiché si è osservato che un minor numero di aggiornamenti di stato non fornisce informazioni limitate o limitate [20]. Il numero di aggiornamenti di stato per gli utenti selezionati è riportato nella Figura 4. L'utente con gli aggiornamenti di stato massimi ha avuto 2.450 aggiornamenti, mentre l'utente con aggiornamenti di stato minimi ha 702 aggiornamenti di stato.
-%
 
-
-%\subsection{Layer di pooling}
-%\label{subsec:layermp}
-%

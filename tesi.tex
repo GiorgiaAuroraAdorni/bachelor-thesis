@@ -15,6 +15,8 @@
 \usepackage[T1]{fontenc} % codifica dei font
 \usepackage{blindtext}
 \usepackage{graphicx,wrapfig}
+\usepackage{graphbox}
+\usepackage[export]{adjustbox}
 \usepackage{booktabs}
 \usepackage[table,xcdraw]{xcolor}
 \usepackage{lmodern}
@@ -47,6 +49,7 @@
 \usepackage{numprint}
 \usepackage{siunitx}
 \usepackage{microtype}
+
 %\newcommand{\cellavuota}{\multicolumn{1}{c|}{}}
 %\newcommand{\centra}[1]{\begin{center}#1\end{center}   }
 
@@ -56,6 +59,8 @@
 \DeclareMathOperator{\variance}{Var}
 \DeclareMathOperator{\mse}{MSE}
 \DeclareMathOperator{\rmse}{RMSE}
+
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
 
 \makeatletter
 \def\thickhline{%

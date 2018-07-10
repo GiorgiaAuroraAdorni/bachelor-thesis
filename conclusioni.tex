@@ -1,0 +1,28 @@
+\chapter{Conclusioni}
+\label{chap:conclusioni}
+
+La natura di questo progetto di tesi è altamente sperimentale ed è volto a presentare analisi dettagliate sull'argomento, in quanto allo stato attuale non esistono importanti indagini che affrontino il problema dell'apprendimento dei tratti di personalità a partire da testo in linguaggio naturale.
+\\
+
+La domanda fondamentale che viene posta al fine di risolvere questo compito, è quale sia la metodologia adatta alla rappresentazione del testo.
+Durante la sperimentazione, infatti, sono stati esaminati due principali approcci e ne è stata comparata l'efficacia.
+
+Siamo partiti da una rappresentazione semplificata del testo ricorrendo al modello \emph{bag-of-words}. 
+I risultati ottenuti in seguito all'applicazione di questo primo metodo sono sub-ottimali dal punto di vista della complessità. Inoltre la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra le parole di una frase.
+
+In seguito è stata sfruttata una classe di algoritmi distribuzionali per insegnare alla rete il significato e le relazioni sussistenti tra le parole. Sfruttando la versione \emph{skip-gram} dell'algoritmo \texttt{word2vec} di Tomas Mikolov vengono rappresentate sotto forma di vettori le mappature tra parole e contesti nello spazio. 
+Ricorrendo al secondo metodo i risultati ottenuti dimostrano come utilizzare un embedding sia la tecnica di estrazione di features più efficiente per filtrare le informazioni contenute in un testo.\\
+
+È emerso che un'evoluzione di questo progetto potrebbe affacciarsi alla valutazione di rappresentazioni alternative del testo, annotazioni, part-of-speech e altre tecniche di NLP, per approfondire e migliorare ulteriormente l'indagine.\\
+
+Dal punto di vista delle architetture implementate, abbiamo iniziato dall'implementazione di \emph{reti neurali fully-connected} come base per capire come modelli semplici di Deep Learning possano fornire informazioni sulle caratteristiche nascoste della personalità. 
+
+Infine, ci addentriamo nelle \emph{reti neurali convoluzionali} molto più specializzate e efficiente delle precedenti nell'ambito del Text Mining.
+
+Sviluppi futuri di questo lavoro potrebbero valutare una procedura di apprendimento alternativa, sfruttando altri modelli, quali le reti ricorrenti,  per ottenere dei risultati più efficaci.\\
+
+
+La prima valutazione effettuata è definita come un problema di regressione, che tenta di prevedere l'esatto valore reale per ogni tratto di personalità.
+Il problema presentato è estremamente complesso, e le performance ottenute sono ancora lontane da quelle desiderate.
+Per questo motivo viene eseguita una seconda valutazione che trasforma il nostro compito in un problema di classificazione binaria multi-label.
+I risultati raggiunti questa volta, evincono che predire un valore binario risulta più semplice rispetto a determinare un preciso valore (a discapito di altri).

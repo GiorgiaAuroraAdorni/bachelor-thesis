@@ -38,7 +38,7 @@ Si procede eliminando dal dataset tutte le sentences non contenenti almeno uno d
 
 \section{Preprocessing}
 \label{sec:preprocessing}
-Gli algoritmi di apprendimento automatico non sono in grado funzionare direttamente con il testo non elaborato, è quindi necessario eseguire in primis un preprocessamento del nostro database di testi e in seguito convertire i nostri dati in numeri, nello specifico, in vettori di numeri.\\
+Gli algoritmi di apprendimento automatico non sono in grado funzionare direttamente con il testo non elaborato, è quindi necessario eseguire in primis un preprocessamento del database di testi e in seguito convertire i dati in numeri, nello specifico, in vettori di numeri.\\
 Alla fine di questo processo il dataset ottenuto sarà suddiviso in tre corpora: 
 \begin{itemize}
 	\item \SI{70}{\percent} training set : contenente \numprint{4351900} reviews utilizzate dalla rete per l'apprendimento;
@@ -55,9 +55,8 @@ Il \emph{Natural Language Processing} (NLP) è un insieme di tecniche di compute
 Dal punto di vista sintattico ecco una serie di operazioni che vengono applicate al dataset:
 \begin{itemize}
 	\item \textbf{Rottura della frase}: dato un pezzo di testo vengono trovati i limiti della frase, spesso contrassegnati da punti o altri segni di punteggiatura.
-	\item \textbf{Stemming}: alcune parole vengono ridotte alla loro forma radice (ad esempio ``argue, argued, argues, arguing, and argus'' sono mappati alla parola ``argu'').
+	\item \textbf{Stemming}: alcune parole vengono ridotte alla loro forma radice (ad esempio ``argue, argued, argues, arguing, and argus'' sono mappati alla parola ``argue'').
 	\item \textbf{Segmentazione di parole}: un blocco di testo o sentence viene separato in parole. Per una lingua come l'inglese, questo è abbastanza banale, poiché le parole sono solitamente separate da spazi. 
-	{\color{orange}	\item \textbf{Estrazione terminologica}: L'obiettivo dell'estrazione terminologica è estrarre automaticamente i termini rilevanti da un dato corpus.}
 \end{itemize}
 Dal punto di vista semantico invece si interviene nel seguente modo:
 \begin{itemize}
