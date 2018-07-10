@@ -54,7 +54,7 @@ x \quad \mbox{se } x>0\\
 \end{equation}
 Questa funzione azzera tutti i valori negativi, mentre ritorna invariati quelli positivi.
 
-Essa viene utilizzata per la sua capacità di accelerare notevolmente la convergenza della discesa del gradiente stocastico, inoltre la sua implementazione risulta semplice ed efficiente. {\color{red}dovremmo fornire una referenza o nota a piede pagina, infatti non abbiamo mai introdotto questo}
+Essa viene utilizzata per la sua capacità di accelerare notevolmente il processo di ottimizzazione, inoltre la sua implementazione risulta semplice ed efficiente.
 
 \begin{figure}[htb]
 	\centering
@@ -68,12 +68,60 @@ Essa viene utilizzata per la sua capacità di accelerare notevolmente la converg
 	\label{fig:subfig}
 \end{figure}
 
+\section{Architetture *}
+\label{sec:architetture}
+
+I neuroni vengono organizzati in una struttura detta architettura della rete.
+I dati, partendo da un livello iniziale, detto layer di input, attraversano gi multipli strati interni della rete, chiamati hidden layer, raggiungendo l'ultimo livello detto layer di output.
+
+Quando i collegamenti tra i neuroni formano una struttura senza cicli si parla di reti \emph{feed-forward} \cite{svozil1997introduction}.
+
+\subsection{Layer fully-connected *}
+\label{subsec:fc}
+
+Un’architettura molto comune nelle reti neurali è una struttura ``densa'', che utilizza \emph{layer fully-connected}, in cui tutti i neuroni del livello precedente sono collegati ad ogni neurone dello strato successivo \cite{sainath2015convolutional}.
+
+Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. 
+Una struttura di questo tipo è però caratterizzata da un numero di connessione che cresce molto velocemente, causando un accrescimento del numero di parametri che la rete deve apprendere.
+Questo comporta un aumento del costo computazionale e un altro rischio di overfitting, approfondito nella sezione \ref{subsec:overfitting}.
+
+Per questo motivo questi vengono spesso sostituiti dai layer convoluzionali.
+
+\subsection{Layer convoluzionali *}
+\label{subsec:cnn}
+Una rete neurale convoluzionale, in inglese \emph{Convolutional Neural Network} (CNN), è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali seguiti da una serie di livelli completamente connessi \cite{kim2014convolutional}.
+
+Una convoluzione può essere considerata come una funzione a finestra scorrevole, detta \emph{kernel} o filtro, applicata a una matrice. 
+Ogni livello applica filtri diversi, in genere centinaia o migliaia, e combina i loro risultati. 
+Durante la fase di addestramento, una CNN impara automaticamente i valori dei suoi filtri in base all'attività che si desidera eseguire. 
+
+Le reti convoluzionali sono adatte per elaborare dati visivi e altri dati bidimensionali, ed hanno mostrato ottimi risultati nel riconoscimento di immagini e nella manipolazione del linguaggio naturale \cite{manning1999foundations}.
+In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matrice, in cui ogni riga corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. 
+
+Nel \emph{Natural Language Processing} (NLP) utilizziamo filtri che scorrono su righe complete della matrice (parole), pertanto, la loro ``larghezza'' è solitamente uguale alla quella della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. 
+
+Risulta che le CNN applicate ai problemi di NLP funzionino abbastanza bene, un esempio è il modello \emph{bag-of-words} che è stato l'approccio standard per anni e ha portato a risultati piuttosto buoni \cite{wallach2006topic}.
+
+Le CNN sono più facili da addestrare e hanno molti meno parametri da stimare. 
+Il minor numero di connessioni e pesi di questa architettura, rende gli strati convoluzionali relativamente economici in termini di memoria e potenza di calcolo necessari.
+
+\subsection{Layer di pooling *}
+\label{subsec:maxpool}
+
+Il \emph{pooling} è un processo alquanto comune nelle reti neurali, la cui funzione è ridurre progressivamente la dimensionalità spaziale per diminuire la quantità di parametri e computazionale della rete, mantenendo le informazioni più salienti e controllando anche l'overfitting.
+
+Il layer di pooling opera indipendentemente su ogni slice di profondità dell'input e lo ridimensiona spazialmente, usando l'operazione MAX sul risultato di ogni filtro \cite{karpathy2016cs231n}. 
+
+Una proprietà del pool è che fornisce una matrice di output a dimensione fissa --- in genere richiesta per la classificazione. Ciò consente di utilizzare frasi di dimensioni variabili e filtri di dimensioni variabili, ma ottenere sempre le stesse dimensioni di output da inserire in un classificatore.
 
 \subsection{Batch normalization *}
 \label{subsec:normalization}
 
-Per aumentare la stabilità della rete neurale, generalmente viene applicata ad ogni strato una \emph{batch normalization}, la quale normalizza l'uscita di un precedente livello sottraendo il valore medio di un batch e dividendo il risultato per la sua deviazione standard \cite{ioffe2015batch}.
+Durante la fase di addestramento del modello, i parametri di ogni substrato vengono ottimizzati al fine di minimizzare l'errore finale.
+Ad ogni iterazione, in ciascuno strato avviene una variazione dell'output, corrispondente ad una variazione nei valori in ingresso al livello successivo.
+Questo può rappresentare un problema per la rete, che deve adattare i propri strati ad un continuo cambiamento nell'input. 
 
+Per aumentare la stabilità della rete neurale, velocizzare il training e migliorarne le performance, generalmente viene applicata ad ogni strato una \emph{batch normalization}  \cite{ioffe2015batch}, la quale normalizza l'uscita di un precedente livello sottraendo il valore medio di un batch e dividendo il risultato per la sua deviazione standard.
 \begin{equation}
 	\hat{x}^{(k)}=\frac{x^{(k)}-\mean[x^{(k)}]}{\sqrt{\variance[x^{(k)}]}}
 \end{equation}
@@ -85,22 +133,26 @@ Dunque viene prevista l'aggiunta di due parametri --- ``deviazione standard'' $\
 	\label{eq:batchnorm}
 \end{equation}
 
-{\color{red} stesso discorso del gradiente, dovremmo accennare cosa sia la batch normalization, basta una nota pie pagina}
+La \emph{batch normalization} può essere utilizzata sia su reti \emph{feed-forward}, sia sulle \emph{reti convoluzionali}.
+In questo secondo caso, media e varianza vengono calcolate per ogni filtro.
 
 \section{Apprendimento}
 \label{sec:apprendimento}
-Per insegnare alla rete a risolvere un determinato problema, occorre una fase di apprendimento in cui vengono sfruttate una serie di osservazioni per trovare un modello ottimale.
+Per insegnare alla rete a risolvere un determinato problema, occorre una fase di addestramento in cui vengono sfruttate una serie di osservazioni per stabilire quali valori assegnare ad ogni parametro della rete e trovare un modello ottimale.
 
-Questo comporta la definizione di una \emph{funzione di costo}, in grado di misurare la distanza tra una soluzione particolare ed una ottimale. 
+Questo processo di apprendimento viene strutturato come un problema di ottimizzazione in cui lo scopo è minimizzare una \emph{funzione di costo}, che misura la distanza tra una soluzione particolare ed una ottima. 
 
-\subsection{Funzione di costo *}
+\subsection{Funzione di costo}
 \label{subsec:loss}
 
 Una funzione di costo mappa un evento ad un numero reale, il quale ne rappresenta intuitivamente il ``costo''.
 
-Gli algoritmi di apprendimento cercano di risolvere un problema di ottimizzazione, ovvero la minimizzazione di una certa funzione di perdita. 
+Nella strategia adottata si utilizzeranno due diverse funzioni obiettivo: l'\emph{errore quadratico medio} per risolvere il problema di regressione, e la \emph{softmax cross entropy} per il compito di classificazione. Mentre per la costruzione dell'embedding verrà applicata la \emph{Noise Contrastive estimation}.
 
-Il tipo di problema che si vuole risolvere è una \emph{regressione}, il cui compito è prevedere dei valori reali. Per questo task, è comune calcolare lo scostamento tra la quantità prevista dalla rete $(\hat{Y})$ e i valori osservati $Y$ (ground truth). 
+\subsubsection{Mean Squared Error}
+\label{subsubsec:MSE}
+
+Per il task il cui compito è prevedere dei valori reali è comune calcolare lo scostamento tra la quantità prevista dalla rete $(\hat{Y})$ e i valori osservati $Y$ (ground truth). 
  
 L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quadrati degli errori, e viene calcolato come
 
@@ -108,17 +160,90 @@ L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quad
 \mse = \frac{1}{n}\sum_{i=1}^{n}(Y_i-\hat{Y}_i)^2 \mbox{.}
 \end{equation}
 
-{\color{red} definire cosa siano n, Yi e Yi hat}
-\subsection{Algoritmi di ottimizzazione *}
+con $n$ numero delle previsioni \cite{wang2009mean}.
+
+\subsubsection{Softmax Cross Entropy *}
+\label{subsubsec:sce}
+
+Softmax è una funzione di loss comunemente utilizzata per la classificazione. In particolare viene applicata allo strato finale della rete ed addestrata in un regime di entropia incrociata \cite{tang2013deep}.\\
+L'entropia incrociata è un indicatore che può essere utilizzato per misurare l'accuratezza delle previsioni. 
+
+Date due variabili casuali discrete $p$ e $q$ definiamo l'entropia nel modo seguente:
+\begin{equation}
+	H(p,q)=-\sum_{x} p(x) \log q(x)
+\end{equation}
+
+in cui $p_{x}$ è la ``vera'' probabilità o distribuzione, mentre $q_{x}$ è la distribuzione ``innaturale'' ottenuta a partire dal modello corrente.
+
+Nella pratica la \emph{cross entropy} viene calcolata empiricamente ipotizzando l'equiprobabilità degli eventi, poiché $p$ è ignota. 
+Di conseguenza, è ridefinibile come segue
+
+\begin{equation}
+H(q)=-\frac{1}{N}\sum_{x} \log q(x)
+\end{equation}
+
+dove N è il numero di eventi osservati.
+
+L'obiettivo principale di questa funzione è rendere il risultato della softmax campionata uguale a quella vera. L'algoritmo si concentra sulla selezione di campioni specifici dalla distribuzione data per ottenere la loss desiderata \cite{liu2016large}.  
+L'utilizzo della funzione softmax ha un effetto considerevole sulle prestazioni. 
+
+\subsubsection{Noise Contrastive estimation *}
+\label{subsubsec:nce}
+
+La stima contrastiva del rumore è una strategia utilizzata nell'ambito della modellazione linguistica o per la generazione di word embedding dati in input dei corpus molto ampi.
+
+La funzione obiettivo del modello \emph{skip-gram} cerca di trovare rappresentazioni di parole che siano utili per predire le parole circostanti, meglio chiamati contesti, in una frase o in un documento. 
+Data una sequenza di parole di addestramento, la funzione obiettivo massimizza la probabilità media di log
+\begin{equation}
+\frac{1}{T}\sum_{t=1}^{T} \sum_{-c \leq j \leq c, j \neq 0} \log p(w_{t+j} | w_T)
+\end{equation}
+
+dove $c$ è la dimensione del contesto di training \cite{mikolov2013distributed}. 
+
+Nell'implementazione del modello \texttt{word2vec}, la formulazione standard dello \emph{skip-gram} definisce la precedente probabilità di log ricorrendo alla funzione softmax:
+\begin{equation}
+p_{\theta}(w_{O} | w_{I}) = \frac{\exp({v^{\prime}_{w_{O}}}^{\top} v_{w_{I}})}{\sum_{w=1}^{W} \exp({v^{\prime}_{w}}^{\top} v_{w_I})}
+\end{equation}
+
+dove $v_w$ e $v'_w$ sono le rappresentazione vettoriali di input e output e $W$ è il numero delle parole del vocabolario \cite{dyer2014notes}.
+
+In questo modo la previsione di una data parola a partire da un contesto risulta essere un compito computazionalmente intenso, poiché vi sono operazione che coinvolgono l'intero dizionario.
+
+Di conseguenza, un alternativa alla funzione softmax è l'applicazione della \emph{noise contrastive estimation} con campionamento negativo \cite{liu2016classification, viswesvaran2000measurement}. Essa consente un allenamento più veloce e rappresentazioni vettoriali migliori per le parole frequenti.
+
+\subsection{Algoritmi di ottimizzazione}
 \label{subsec:optimizer}
 
 Gli algoritmi di ottimizzazione sono necessari per minimizzare il risultato di una determinata funzione obiettivo, la quale dipende dai parametri che il modello deve imparare durante l'addestramento. 
 
 Vengono utilizzate varie strategie e algoritmi di ottimizzazione per aggiornare e calcolare i valori appropriati e ottimali di tale modello, i quali influenzano fortemente l'efficacia del processo di apprendimento.
 
+L'entità dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
+
+\subsubsection{Stochastic Gradient Descent *}
+\label{subsubsec:SGD}
+
+La discesa del gradiente, in inglese \emph{Gradient Descent} (GD), è un algoritmo iterativo per l'ottimizzazione di funzioni \cite{ruder2016overview}.
+
+Viene utilizzato principalmente per eseguire gli aggiornamenti dei pesi in un modello di rete neurale nel seguente modo
+\begin{equation}
+\theta = \theta - \eta \nabla J(\theta)
+\end{equation}
+dove $\eta$ rappresenta il tasso di apprendimento, $\nabla J(\theta)$ è il gradiente della funzione di loss $J(\theta)$ rispetto al parametro $\theta$. 
+
 La tradizionale discesa gradiente, o \emph{Batch Gradient Descent} (GD), calcola il gradiente dell'intero set di dati, eseguendo un solo aggiornamento. Di conseguenza il processo di addestramento può risultare lento e difficile da controllare per i set di dati che sono molto grandi. 
 
-L'entità dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
+I problemi che si verificano con questo algoritmo vengono risolti applicando una sua variante: la {discesa stocastica del gradiente}, in inglese \emph{Stochastic Gradient Descent} (SGD).
+Questa tecnica esegue un aggiornamento alla volta dei parametri per ognuno degli esempi di training
+\begin{equation}
+\theta = \theta - \eta \nabla J(\theta; x(i); y(i))
+\end{equation}
+
+dove $x(i)$ e $y(i)$ sono le coppie di esempi usati per l'addestramento.
+
+Questa tecnica risulta essere molto più veloce di quella classica. 
+A causa dei frequenti aggiornamenti, i parametri presentano un'alta varianza, inoltre la funzione loss oscilla tra diverse intensità. Questo favorisce la scoperta di nuovi minimi locali, complicando però la convergenza all'ottimo globale. 
+
 
 \subsubsection{Adagrad}
 \label{subsubsec:adagrad}
@@ -129,16 +254,7 @@ In questo algoritmo, la dimensione degli aggiornamenti è grande per parametri a
 Adagrad modifica il tasso di apprendimento generale $\eta$ ad ogni istante di tempo $t$ per ogni parametro $\theta(i)$, sulla base dei gradienti che sono stati calcolati per $\theta(i)$.
 
 Il vantaggio principale di questo metodo è che non è necessario regolare manualmente la frequenza di apprendimento e nella maggior parte delle implementazioni viene usato un valore predefinito --- per esempio \numprint{0,001} --- e lasciato invariato.\\
-La principale debolezza consiste nell'accumulo dei ``gradienti quadrati'' nel denominatore, finché ogni termine aggiunto è positivo. Di conseguenza il tasso di apprendimento si riduce fino al punto in cui l'algoritmo non è più in grado di acquisire ulteriori conoscenze. 
-
-{\color{red} suggerisco di fornire referenza letteratura ogni volta che si facciano affermazioni di tal tipo, questo per evitare atteggiamenti non adeguati da parte di chi valuta}
-
-\subsubsection{Adam}
-\label{subsubsec:adam}
-
-L'\emph{Adaptive Moment Estimation} (Adam) è un altro metodo che calcola i tassi di apprendimento adattivi per ciascun parametro. Oltre a memorizzare una media esponenziale decadente di gradienti quadrati, mantiene anche una media decadente esponenziale dei gradienti passati.
-
-{\color{blue}Adam funziona bene se confrontato con altri algoritmi adattativi, poiché converge molto velocemente e la velocità di apprendimento è efficiente.}{\color{red}questa frase ritengo debba essere meglio strutturata per comunicarne il senso compiuto al lettore interessato}
+La principale debolezza consiste nell'accumulo dei ``gradienti quadrati'' nel denominatore, finché ogni termine aggiunto è positivo. Di conseguenza il tasso di apprendimento si riduce fino al punto in cui l'algoritmo non è più in grado di acquisire ulteriori conoscenze \cite{ruder2016overview}. 
 
 \subsection{Paradigmi di apprendimento *}
 \label{subsec:Paradigmi di apprendimento}
@@ -147,11 +263,9 @@ Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
 \begin{itemize}
 	\item[\bfseries supervisionato] --- alla rete viene presentato un training set preparato da un ``insegnante esterno'', composto da coppie significative di valori (input, output atteso).
 	
-	Quando alla rete neurale viene fornito l'input dall'ambiente, l'insegnante calcola l'output desiderato corrispondente, addestrando la rete mediante un algoritmo (tipicamente quello di back propagation). 
+	Quando alla rete neurale viene fornito l'input dall'ambiente, l'insegnante calcola l'output desiderato corrispondente, addestrando la rete mediante un algoritmo (tipicamente quello di back propagation \cite{horikawa1992fuzzy}). 
 	
-	{\color{red}Durante questo procedimento viene calcolo l'errore che la rete commette, } dato dalla differenza tra l'output e l'output atteso, necessario per farle comprendere di quanto sbaglia. La rete cerca di minimizzare l'errore commesso, che rappresenta l'azione ottima per l'input corrente, modificando i propri pesi.
-	
-	In questo moto la rete impara a riconoscere la relazione incognita che lega le variabili di ingresso e uscita, in modo da prevedere il valore di output per qualsiasi valore di ingresso, basandosi solo su una casistica di corrispondenze (coppie input-output).
+	La rete impara a riconoscere la relazione incognita che lega le variabili di ingresso e uscita, in modo da prevedere il valore di output per qualsiasi valore di ingresso, basandosi solo su una casistica di corrispondenze (coppie input-output).
 	
 	\item[\bfseries non supervisionato] --- alla rete vengono presentati solo i valori di input, mentre non sono messe a disposizione le informazioni di ritorno dell'ambiente sui valori obiettivo che si vogliono ottenere in risposta o riguardo la correttezza dell'output fornito.
 	
@@ -184,58 +298,60 @@ Vengono utilizzate diverse tecniche statistiche per valutare la bontà di un mod
 
 Le metriche di valutazione spiegano le prestazioni di un modello. Un loro aspetto importante è la capacità di discriminare tra i risultati del modello.
 Vengono presi in considerazione diversi tipi di metriche per valutare i modelli. La scelta della metrica dipende completamente dal tipo di modello e dal piano di implementazione. 
-\\
 
-I modelli predittivi si distinguo in due principali categorie: si parla di \emph{regressione} quando l'output da prevedere è continuo, o di \emph{classificazione} nel caso in cui l'output sia nominale o binario. Le metriche di valutazione utilizzate in ciascuno di questi modelli sono diverse.
+I modelli predittivi si distinguo in due principali categorie: si parla di \emph{regressione} quando l'output da prevedere è continuo, o di \emph{classificazione} nel caso in cui l'output sia nominale o binario. \\
+Le metriche di valutazione utilizzate in ciascuno di questi modelli sono diverse.
 
-Nei problemi di classificazione, in particolare quella binaria, gli output sono 0 o 1. 
-Una \emph{matrice di confusione}, nota anche come matrice di errore, è una tabella $N \times N$, con N corrispondente al numero delle classi,{\color{red} attenzione se consideri 0/1 allora la matrice è ovviamene 2x2, poi generalizza pure ad NxN dicendo che se il problema è ad N classi allora la matrice di confusione è fatta in quel modo} che consente la visualizzazione delle prestazioni di un algoritmo di apprendimento supervisionato. Ogni riga della matrice rappresenta le istanze previste si una classe mentre ciascuna colonna rappresenta le istanze osservate di una classe. 
-È dunque possibile estrarre da questa tabella l'\emph{accuratezza} del modello, che consiste nella porzione rispetto al totale delle previsioni corrette, la \emph{precisione}, cioè la porzione dei casi positivi identificati correttamente, e la \emph{recall}, ovvero la porzione dei casi positivi reali correttamente identificati. {\color{red} classe 1}
+\subsubsection{Regressione}
+\label{subsubsec:regressione}
 
-L'individuazione di falsi positivi, falsi negativi, veri positivi e veri negativi, {\color{red} chiarire cosa siano falsi positivi, falsi negativi, ...}consente un'analisi più dettagliata della semplice proporzione di classificazioni corrette. L'accuratezza infatti non è una metrica attendibile per le prestazioni reali di un classificatore, poiché produrrà risultati fuorvianti se il set di dati non è bilanciato.
-
-L'\emph{errore quadratico medio}(RMSE) è la metrica di valutazione più popolare utilizzata nei problemi di regressione. Questo parametro aiuta a fornire risultati affidabili, mostrando correttamente la grandezza del termine di errore.
+L'{errore quadratico medio}, in inglese \emph{Mean Squared Error} (MSE), è la metrica di valutazione più popolare utilizzata nei problemi di regressione. Questo parametro aiuta a fornire risultati affidabili, mostrando correttamente la grandezza del termine di errore.
 La metrica RMSE è definita dalla seguente equazione
 \begin{equation}
-	\rmse = \sqrt{\frac{\sum_{i=1}^{N}(\mbox{Predicted}_i - \mbox{Actual}_i)^2}{N}} \mbox{.}
+	\rmse = \sqrt{\frac{\sum_{i=1}^{N}({Y}_i - \hat{Y}_i)^2}{N}} \mbox{.}
 	\label{eq:rmse}
 \end{equation}
 
-{\color{red} attenzione prima usavamo Yi e Yi hat, ora abbiamo cambiato? perche? dobbiamo motivare}
+con $\hat{Y}$ quantità prevista dalla rete, $Y$ i valori osservati e $N$ numero delle previsioni.
+\subsubsection{Classificazione}
+\label{subsubsec:classificazione}
+
+Nei problemi di classificazione, in particolare quella binaria, gli output sono 0 o 1. \\
+Una \emph{matrice di confusione}, nota anche come matrice di errore, è una tabella $2 \times 2$, generalizzabile ad una $N \times N$ per problemi ad $N$ classi, che consente la visualizzazione delle prestazioni di un algoritmo di apprendimento supervisionato. 
+
+Ogni colonna della matrice rappresenta le istanze previste di una classe mentre ciascuna riga quelle osservate. 
+
+\begin{figure}[H]
+	\centering
+	{\includegraphics[width=.35\textwidth]{images/confmatrix}}
+	\caption{Visualizzazione di una matrice di confusione}
+	\label{fig:confmat}
+\end{figure}
+
+L'individuazione di falsi positivi (casi negativi identificati come positivi), falsi negativi (casi positivi identificati come negativi), veri positivi (casi positivi correttamente identificati) e veri negativi (casi negativi correttamente identificati), mostrati nella figura \ref{fig:confmat}, consentono  un'analisi più dettagliata della semplice proporzione di classificazioni corrette. \\
+È possibile estrarre da questa tabella le seguenti misure di performance:
+\begin{itemize}
+	\item l'\emph{accuratezza} del modello, che consiste nella porzione rispetto al totale delle previsioni corrette
+	\begin{equation}
+		\frac{\mbox{True Positive} + \mbox{True Negative}}{\mbox{True Positive} + \mbox{True Negative} + \mbox{False Positive} + \mbox{False Negative}}
+	\end{equation} 
+	\item la \emph{precisione}, cioè la porzione dei casi positivi identificati correttamente
+		\begin{equation}
+	\frac{\mbox{True Positive}}{\mbox{True Positive} + \mbox{False Positive}}
+	\end{equation}
+	
+	\item la \emph{recall}, ovvero la porzione dei casi positivi reali correttamente identificati
+		\begin{equation}
+	\frac{\mbox{True Positive}}{\mbox{True Positive} + \mbox{False Negative}}
+	\end{equation}
+\end{itemize}
+
+
 \subsection{Overfitting *}
 \label{subsec:overfitting}
 
 L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future''.
-{\color{red} si puo' ben dire che overfitting è sinonimo di memorizzazione del training set che poi si traduce in cattiva capacità di generalizzazione su nuovi dati}
-La rete neurale deve avere capacità di comprensione del modello statistico dei dati, non memorizzare i soli dati del training set. L'essenza di questo problema consiste nell'estrarre inconsapevolmente parte della variazione residua (cioè il rumore) come se quella variazione rappresentasse la sottostante struttura del modello \cite{burnham2003model}.
+
+La rete neurale deve avere la capacità di comprensione del modello statistico dei dati. In presenza di overfitting essa memorizza i dati del training set e non è quindi in grado di generalizzare su nuovi dati. L'essenza di questo problema consiste nell'estrarre inconsapevolmente parte della variazione residua (cioè il rumore) come se quella variazione rappresentasse la sottostante struttura del modello \cite{burnham2003model}.
 
 Per ridurre la possibilità di overfitting esistono diverse tecniche, come la convalida incrociata (cross validation), la regolarizzazione o l'\emph{early stopping}, che consiste nell'utilizzo di un validation set di coppie non usate nel training set per la misurazione dell'errore.
-
-\section{Reti neurali per la classificazione *}
-\label{sec:classificazione}
-La classificazione è la suddivisione di oggetti in insiemi disgiunti secondo un criterio stabilito a priori (etichetta). Ogni oggetto viene rappresentato come un vettore di numeri in modo da poter essere classificato dalla rete neurale, un vettore di feature che contraddistingue univocamente quell'oggetto.\\
-
-Date $N$ classi di appartenenza tra cui discriminare, il vettore di input $x$ possiede $L$ dimensioni delle feature da classificare, il vettore $y$ individua la classe formata da $N$ valori. Il classificatore riceve in input il vettore $x$ e restituisce in uscita il vettore $y$ dove $y_i=1$ se l'oggetto con l'input $x$ appartiene alla classe $i$ e $y_j=0$ per $i\neq j$ per $i,j=1 \dots N$.\\
-Questo corrisponde ad una mappatura tra i valori di input e di output, che può essere modellata come una funzione non lineare.
-
-\section{Reti neurali convoluzionali *}
-\label{sec:cnn}
-Una rete neurale convoluzionale, in inglese \emph{Convolutional Neural Network} (CNN), è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali seguiti da una serie di livelli completamente connessi (corrispondenti a quelli tipici di ANN) \cite{kim2014convolutional}. Questa architettura consente alle CNN di sfruttare la struttura 2D dei dati di input.\\
-
-Una convoluzione può essere considerata come una funzione a finestra scorrevole, detta \emph{kernel} o filtro, applicata a una matrice. 
-Nelle CNN usiamo le convoluzioni sul livello di input per calcolare l'output. Ciò si traduce in connessioni locali, in cui ogni regione dell'ingresso è collegata a un neurone nell'output. Ogni livello applica filtri diversi, in genere centinaia o migliaia, e combina i loro risultati. 
-Durante la fase di addestramento, una CNN impara automaticamente i valori dei suoi filtri in base all'attività che si desidera eseguire. 
-
-Le CNN sono più facili da addestrare rispetto ad altre reti neurali regolari, profonde e feed-forward e hanno molti meno parametri da stimare. Una rete convoluzionale è composta da un input e un livello di output, oltre a più livelli nascosti. Gli strati nascosti consistono tipicamente di livelli convoluzionali, di raggruppamento, o completamente connessi.
-
-Le reti convoluzionali sono adatte per elaborare dati visivi e altri dati bidimensionali, ed hanno mostrato ottimi risultati nel riconoscimento di immagini o nella manipolazione del linguaggio naturale \cite{manning1999foundations,FIXME}.
-In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matrice. Ogni riga della matrice corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed} o GloVe \cite{pennington2014glove}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. 
-
-Nel \emph{Natural Language Processing} (NLP) utilizziamo filtri che scorrono su righe complete della matrice (parole), pertanto, la loro ``larghezza'' è solitamente uguale alla quella della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. 
-
-Risulta che le CNN applicate ai problemi di NLP funzionino abbastanza bene, un esempio è il modello \emph{Bag of Words} che è stato l'approccio standard per anni e ha portato a risultati piuttosto buoni.
-
-
-
-
-Il minor numero di connessioni e pesi di questa architettura, rende gli strati convoluzionali relativamente economici in termini di memoria e potenza di calcolo necessari.

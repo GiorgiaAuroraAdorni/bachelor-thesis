@@ -8,8 +8,8 @@ In particolare verranno utilizzate diverse strutture di rete, combinando differe
 \label{sec:approcci}
 Per affrontare questo problema di \emph{Text Mining}, gli esperimenti si concentrano su due principali metodi per l'estrazione delle caratteristiche del testo:
 \begin{itemize}
-	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze \cite{FIXME}.
-	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite l'algoritmo \texttt{word2vec} di Tomas Mikolov \cite{FIXME}. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
+	\item Un approccio supervisionato, in cui viene utilizzato come strumento di generazione di feature un vettore \emph{bag-of-words} o brevemente BoW, una rappresentazione di testo che descrive la presenza delle parole all'interno di un documento, in questo caso nel dizionario delle occorrenze \cite{wallach2006topic}.
+	\item Un approccio non supervisionato, in cui viene costruito un embedding, tramite l'algoritmo \texttt{word2vec} di Tomas Mikolov \cite{mikolov2013distributed}. Insegnando alla rete il significato delle parole e la relazione tra di esse, è possibile rappresentare, sotto forma di vettori, le mappature tra le parole e i contesti.
 \end{itemize}
 $\\$
 In seguito viene posta l'attenzione su tre diverse architetture neurali:
@@ -45,12 +45,9 @@ Il modello riguarda solo le parole conosciute, di conseguenza i vocaboli che com
 
 Una volta estratte, le features posso essere passate in input alla rete neurale, che le elabora calcolando le risposte dei neuroni dal livello di input verso il livello di output.
 
-In questa prima strategia viene utilizzata una rete \emph{feed-forward}, in cui le informazioni si spostano dal livello di input attraverso eventuali strati nascosti fino al livello di output senza cicli. L'architettura è caratterizzata da una struttura densa o \emph{fully-connected}, in cui tutti i neuroni del layer precedente sono collegati ad ogni neurone del layer successivo, e ciascuna connessione ha il proprio peso.
+In questa prima strategia viene utilizzata una rete \emph{feed-forward} con struttura densa o \emph{fully-connected}. Per i dettagli di queste architetture si rimanda alla sezione \ref{subsec:fc}.
 
-
-Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. L'ultimo di questi strati rappresenta l’output della rete.
-
-Ad ogni livello fully connected viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
+Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
 Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. 
 
@@ -79,7 +76,7 @@ Tutte le simulazioni sono state addestrate per \num{10} epoche: la fase di addes
 
 L’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
 
-Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsec:loss}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{root mean squared error} (RMSE), introdotta nella sezione \ref{subsec:EvaluationMetric}.
+Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsubsec:MSE}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{root mean squared error} (RMSE), introdotta nella sezione \ref{subsubsec:regressione}.
 
 In ogni epoca si alternano una fase di training ed una fase di test in modo tale da monitorare costantemente i miglioramenti o i peggioramenti del modello sul test set. 
 
@@ -154,8 +151,8 @@ Durante l'applicazione di tecniche di apprendimento automatico, tutte le ``infor
 
 Nel caso dell'approccio \emph{bag-of-words}, la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su un determinato termine. 
 
-Inoltre la ``raffigurazione'' utilizzata nel precedente esperimento, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un'alternativa valida sarebbe quella di sfruttare \emph{modelli spaziali vettoriali} (VSM) per rappresentare le parole in uno spazio continuo \cite{FIXME}.
-Questi metodi dipendono dall'ipotesi distributiva, la quale afferma che le parole che appaiono negli stessi contesti condividono lo stesso significato semantico \cite{FIXME}. 
+Inoltre la ``raffigurazione'' utilizzata nel precedente esperimento, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un'alternativa valida sarebbe quella di sfruttare \emph{modelli spaziali vettoriali} (VSM) per rappresentare le parole in uno spazio continuo \cite{mikolov2013linguistic,erk2008structured}.
+Questi metodi dipendono dall'ipotesi distributiva, la quale afferma che le parole che appaiono negli stessi contesti condividono lo stesso significato semantico \cite{baroni2014don}. 
 
 \subsection{Input Features}
 \label{subsec:features2}
@@ -168,7 +165,7 @@ A partire dal corpus di testo, la rete prende in input un set formato dall'accop
 
 Viene considerato come ``contesto'' l'insieme delle ``parole a sinistra'' e delle ``parole alla destra'' dell'obiettivo, ovvero la finestra di dimensione 1 attorno all'elemento target. Ogni coppia di destinazione del contesto viene trattata come se fosse una nuova osservazione, incrementando le informazioni distribuzionali. Viene così prodotto uno spazio vettoriale di diverse centinaia di dimensioni, in cui ogni parola univoca viene assegnata a un vettore corrispondente nello spazio.
 
-Per l'implementazione viene utilizzato il modello \emph{Skip-Gram}, una versione di \texttt{word2vec} che vuole predire le parole del contesto di origine (label) a partire dalle parole target (features) \cite{FIXME}.
+Per l'implementazione viene utilizzato il modello \emph{Skip-Gram}, una versione di \texttt{word2vec} che vuole predire le parole del contesto di origine (label) a partire dalle parole target (features).
 
 \begin{figure}[H]
 	\centering
@@ -191,7 +188,7 @@ In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo t
 	\label{fig:embedding1}
 \end{figure}
 
-La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Socastic Gradient Descent} (SGD), definita nella sezione \ref{subsec:optimizer}.
+La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Socastic Gradient Descent} (SGD), definita nella sezione \ref{subsubsec:SGD}.
 
 Nella seguente tabella vengono presentati i due embedding realizzati e i relativi parametri.
 
@@ -226,9 +223,9 @@ Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni
 
 Ad ogni livello convoluzionale viene applicata una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
 
-Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling} \cite{FIXME}, introdotto nella sezione \ref{sec:cnn}, per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
+Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling}, introdotto nella sezione \ref{subsec:maxpool}, necessario per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
 
-Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella sezione \ref{FIXME}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
+Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella sezione \ref{subsec:fc}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
 
 \begin{figure}[tb]
 	\centering
@@ -251,11 +248,10 @@ Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, defi
 
 Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.
 
-L'input della rete è costituito da un numero di caratteristiche pari a ``dimensione dell'embedding''$\times$``numero delle parole di ogni sentence''.
-Ad ogni livello vengono applicate la funzione di attivazione non lineare \emph{ReLU} e la \emph{batch normalization}, introdotte rispettivamente nelle sezioni \ref{subsec:fattivazione} e \ref{subsec:normalization}.
+L'input della rete è costituito da un numero di caratteristiche pari a $e \times p$ dove $e$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
 
-Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsec:optimizer}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
-Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsec:loss}.
+Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
+Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsubsec:MSE}.
 
 Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully connected}, senza applicare alcuna convoluzione. 
 
@@ -279,7 +275,7 @@ Nel caso del secondo embedding si è voluto provare anche un modello che sfrutta
 	\label{tab:netemb2}
 \end{figure}
 
-\begin{table}[tb]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{llc}
 		\toprule
@@ -303,7 +299,7 @@ Nel caso del secondo embedding si è voluto provare anche un modello che sfrutta
 \label{subsec:performance2}
 
 Prendendo in considerazione i due diversi embedding, vengono messe a confronto a confronto le diverse architetture implementate, mostrando i risultati ottenuti in termini di loss.
-\begin{table}[]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{ll@{\hspace{.5cm}}ccc}
 		\toprule
@@ -327,7 +323,16 @@ Valutando le prestazioni su train e test set viene rilevato il  come il migliore
 Oltre a ciò, anche rispetto al precedente approccio il ``Modello 7'' mostra una performance migliorata circa 
 del \SI{3}{\percent}.
 
-\begin{figure}[b]
+Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalità, riassunti nella tabella \ref{tab:rmsemikolov}, e viene inoltre visualizzata la curva RMSE nella figura \ref{fig:rmse}.
+
+\begin{figure}[H]
+	\centering
+	{\includegraphics[width=.65\textwidth]{images/rmse2-linlong}} 
+	\caption{Visualizzazione delle training RMSE dei modelli}
+	\label{fig:rmse}
+\end{figure}
+
+\begin{figure}[t]
 	\centering
 	\begin{tabular}{clccccc}
 		\toprule	
@@ -347,15 +352,6 @@ del \SI{3}{\percent}.
 	\end{tabular}
 	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle architetture sul test set}
 	\label{tab:rmsemikolov}
-\end{figure}
-
-Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalità, riassunti nella tabella \ref{tab:rmsemikolov}, e viene inoltre visualizzata la curva RMSE nella figura \ref{fig:rmse}.
-
-\begin{figure}[t]
-	\centering
-	{\includegraphics[width=.65\textwidth]{images/rmse2-linlong}} 
-	\caption{Visualizzazione delle training RMSE dei modelli}
-	\label{fig:rmse}
 \end{figure}
 
 
@@ -399,16 +395,14 @@ Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; s
 	\label{tab:netemb3}
 \end{figure}
 
-Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.
-
-L'algoritmo di apprendimento utilizzato è \emph{Adagrad}, definito nella sezione \ref{subsec:optimizer}, con \emph{learning rate} \numprint{0,0005} per il ``Modello 9'' e \numprint{0,005} per il ``Modello 10''. La funzione di \emph{loss} scelta è la MSE, introdotta nella sezione \ref{subsec:loss}. 
+L'algoritmo di apprendimento utilizzato è \emph{Adagrad}, definito nella sezione \ref{subsubsec:adagrad}, con \emph{learning rate} \numprint{0,0005} per il ``Modello 9'' e \numprint{0,005} per il ``Modello 10''. La funzione di \emph{loss} scelta è la MSE, introdotta nella sezione \ref{subsubsec:MSE}. 
 
 \subsection{Performance}
 \label{subsec:performance3}
 
 Vengono presentati nella tabella \ref{tab:lossmikolov2} i valori ottenuti dalla funzione obiettivo dei due modelli, mentre nella tabella \ref{tab:rmsemikolov2} vengono riassunti i valori di RMSE per ogni tratto di personalità.
 
-\begin{table}[b]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{l@{\hspace{.5cm}}ccc}
 		\toprule
@@ -422,7 +416,7 @@ Vengono presentati nella tabella \ref{tab:lossmikolov2} i valori ottenuti dalla 
 	\label{tab:lossmikolov2}
 \end{table}
 
-\begin{figure}[t]
+\begin{figure}[H]
 	\centering
 	\begin{tabular}{clccccc}
 		\toprule	
@@ -452,7 +446,7 @@ Viene stabilito 0 come ``punto di neutralità assoluta'' perché corrisponde all
 
 Adottando questo metodo, si assumerà di poter estrarre da questa funzione una misura di polarità, positiva o negativa, che indicherà un tratto più o meno accentuato.
 
-Il vantaggio effettivo di questo approccio consiste nella possibilità di valutare le performance in modo standard, misurando accuratezza, precisione e recall, e visualizzando le matrici di confusione, argomenti trattati nella sezione \ref{subsec:EvaluationMetric}.
+Il vantaggio effettivo di questo approccio consiste nella possibilità di valutare le performance in modo standard, visualizzando le matrici di confusione e misurandone l'accuratezza, argomenti trattati nella sezione \ref{subsubsec:classificazione}.
 
 \subsection{Input Features}
 \label{subsec:features4}
@@ -507,9 +501,9 @@ In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione
 
 In tutte le simulazioni l’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, il valore di \emph{learning rate}  di ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov2}.
 
-Come funzione obiettivo viene utilizzata la \emph{Softamax Cross Entropy}, presentata nella sezione \ref{subsec:loss}. 
+Come funzione obiettivo viene utilizzata la \emph{Softamax Cross Entropy}, presentata nella sezione \ref{subsubsec:sce}. 
 
-\begin{table}[b]
+\begin{table}[H]
 	\centering
 	\begin{tabular}{llc}
 		\toprule
@@ -555,7 +549,7 @@ Prendendo in considerazione le diverse architetture implementate, vengono presen
 	\label{tab:lossmikolov3}
 \end{table}
 
-Come già detto, l'utilizzo di questo approccio consente una valutazione non più solo in termini di loss ma se ne potrà analizzare anche l'accuratezza, introdotta nella sezione \ref{subsec:EvaluationMetric}. 
+Come già detto, l'utilizzo di questo approccio consente una valutazione non più solo in termini di loss ma se ne potrà analizzare anche l'accuratezza, introdotta nella sezione \ref{subsubsec:classificazione}. 
 
 \begin{figure}[H]
 	\centering
