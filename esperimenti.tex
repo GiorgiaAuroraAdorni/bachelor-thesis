@@ -213,11 +213,18 @@ Nella seguente tabella vengono presentati i due embedding realizzati e i relativ
 \label{subsec:modelli2}
 
 La rappresentazione spazio-vettoriale viene utilizzata come feature della modello che si andrà a costruire.
-In questo secondo approccio verrà utilizzata un \emph{rete convoluzionale}, in cui ogni neurone è collegato solo a pochi neuroni vicini nel livello precedente, e lo stesso insieme di pesi viene utilizzato per ogni neurone. 
+In questo secondo approccio verrà utilizzata un \emph{rete convoluzionale}, in cui ogni neurone è collegato solo a pochi neuroni vicini nel livello precedente, e lo stesso insieme di pesi viene utilizzato per ogni neurone.\\
 
 In questo tipo di rete, il modello di connessione locale e lo schema di peso condiviso possono essere interpretati come un filtro (o un insieme di filtri) che accettano un sottoinsieme dei dati di input alla volta, ma vengono applicati all'intero input.
 
-Uno strato convoluzionale è molto più specializzato ed efficiente di uno completamente connesso.\\
+Uno strato convoluzionale è molto più specializzato ed efficiente di uno completamente connesso.
+
+\begin{figure}[H]
+	\centering
+	{\includegraphics[width=.85\textwidth]{images/cnn}} 
+	\caption{Esempio di architettura convoluzionale per la manipolazione del linguaggio naturale}
+	\label{fig:rmse}
+\end{figure}
 
 Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni'' non lineari tramite l'applicazione della funzione di attivazione \emph{ReLU}, introdotta nella sezione \ref{subsec:fattivazione}.
 
@@ -227,7 +234,7 @@ Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling}, i
 
 Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella sezione \ref{subsec:fc}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
 
-\begin{figure}[tb]
+\begin{figure}[H]
 	\centering
 	\begin{tabular}{lccc}
 		\toprule
@@ -246,16 +253,7 @@ Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, defi
 	\label{tab:netemb1}
 \end{figure}
 
-Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.
-
-L'input della rete è costituito da un numero di caratteristiche pari a $e \times p$ dove $e$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
-
-Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
-Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsubsec:MSE}.
-
-Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully connected}, senza applicare alcuna convoluzione. 
-
-\begin{figure}[tb]
+\begin{figure}[H]
 	\centering
 	\begin{tabular}{lcc}
 		\toprule
@@ -275,7 +273,18 @@ Nel caso del secondo embedding si è voluto provare anche un modello che sfrutta
 	\label{tab:netemb2}
 \end{figure}
 
-\begin{table}[H]
+Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.\\
+
+L'input della rete è costituito da un numero di caratteristiche pari a $e \times p$ dove $e$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
+
+Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
+
+Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsubsec:MSE}.
+
+Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully connected}, senza applicare alcuna convoluzione. 
+
+
+\begin{table}[t]
 	\centering
 	\begin{tabular}{llc}
 		\toprule
@@ -442,6 +451,7 @@ L'ultimo approccio provato riutilizza i precedenti metodi di estrazione di featu
 Nello specifico il problema viene trasformato in un compito di classificazione binaria multi-label, in cui si cercano di predire cinque diverse etichette per ogni istanza. 
 
 Per ogni dimensione di personalità l'output della rete sarà ``0'', se il valore reale che assume un determinato tratto è inferiore a 0, o ``1'' altrimenti.
+\\
 Viene stabilito 0 come ``punto di neutralità assoluta'' perché corrisponde alla media dei valori osservati in ognuna delle caratteristiche.
 
 Adottando questo metodo, si assumerà di poter estrarre da questa funzione una misura di polarità, positiva o negativa, che indicherà un tratto più o meno accentuato.
@@ -580,6 +590,8 @@ Il ``Modello 13'' sembrerebbe il migliore tra quelli proposti poiché presenta v
 
 Viene presentata un analisi più dettagliata su questo modello, in particolare mostrando il grafico dell'accuratezza, su train e test set, e le matrici di confusione calcolate per ogni tratto di personalità.
 
+Come si può vedere chiaramente dalle matrici di confusione, le caratteristiche \emph{Conscientiousness} e \emph{Extraversion} sono quelle che vengono predette nel modo peggiore.
+
 \begin{figure}[H]
 	\centering
 	\subfloat[][\emph{Visualizzazione matrice di confusione}\label{subfig:confO}]{
@@ -665,8 +677,7 @@ Viene presentata un analisi più dettagliata su questo modello, in particolare m
 	\label{fig:binN}
 \end{figure}
 
-Come si può vedere chiaramente dalle matrici di confusione, le caratteristiche \emph{Conscientiousness} e \emph{Extraversion} sono quelle che vengono predette nel modo peggiore.
- 
+
 
 
 %Vi sono stati numerosi esperimenti prima di ottenere il modello finale, ovvero quello con le performance migliori. Di seguito vengono descritti brevemente soltanto quelli più significativi, mentre per la descrizione precisa del modello finale si rimanda alla sezione successiva.\\
