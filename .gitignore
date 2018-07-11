@@ -3,8 +3,8 @@
 *.log
 *.toc
 
-# PDF output - usually a bad idea to keep this in Git
-*.pdf
+# # PDF output - usually a bad idea to keep this in Git
+# *.pdf
 
 # Latexmk
 *.fdb_latexmk
@@ -85,3 +85,28 @@ C:\\nppdf32Log\\debuglog.txt
 /abstract.tex
 /table.numbers
 /images/embedding1
+/images/binary
+/images/big_five.pdf
+/images/bow.pdf
+/images/cnn.pdf
+/images/confmatrix.pdf
+/images/dict_histogram.pdf
+/images/dict_histogram2.pdf
+/images/dict_histogram3.pdf
+/images/dict_histogram30.pdf
+/images/dict_histogram50.pdf
+/images/LogoBicocca.pdf
+/images/loss1-lin.pdf
+/images/loss1.pdf
+/images/mikolov.pdf
+/images/oceatable.pdf
+/images/personalitydiagram.pdf
+/images/preprocessing.pdf
+/images/relu.pdf
+/images/relu2.pdf
+/images/review.pdf
+/images/rmse2-lin.pdf
+/images/rmse2-linlong.pdf
+/images/signmoid.pdf
+/images/signmoid2.pdf
+/images/skip-gram.pdf
