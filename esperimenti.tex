@@ -49,7 +49,7 @@ In questa prima strategia viene utilizzata una rete \emph{feed-forward} con stru
 
 Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, effettuiamo dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. 
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, vien effettuata dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. 
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
@@ -147,7 +147,7 @@ Inoltre, un tipo di rappresentazione sparsa risulta più difficile da modellare 
 \section{Esperimento 2}
 \label{sec:es2}
 
-Durante l'applicazione di tecniche di apprendimento automatico, tutte le ``informazioni'' vengono rappresentate per mezzo di id unici e discreti. 
+Durante l'applicazione di tecniche di apprendimento automatico, tutte le ``informazioni'' vengono rappresentate per mezzo di identificativi unici e discreti. 
 
 Nel caso dell'approccio \emph{bag-of-words}, la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su un determinato termine. 
 
@@ -676,13 +676,4 @@ Come si può vedere chiaramente dalle matrici di confusione, le caratteristiche 
 	\caption{Analisi della caratteristica Neuroticism del ``Modello 13''}
 	\label{fig:binN}
 \end{figure}
-
-
-
-
-%Vi sono stati numerosi esperimenti prima di ottenere il modello finale, ovvero quello con le performance migliori. Di seguito vengono descritti brevemente soltanto quelli più significativi, mentre per la descrizione precisa del modello finale si rimanda alla sezione successiva.\\
-
-
-
-%Abbiamo valutato il nostro approccio basato sulla conoscenza sulla sua efficacia nel predire la personalità degli individui rispetto al modello dei Big Five. La nostra valutazione misura le prestazioni di: 1) classificare gli individui per ogni tratto di personalità e 2) stimare il grado di appartenenza degli individui a ciascun tratto di personalità. La prima valutazione è definita come un problema di classificazione multi-etichetta e assegna etichette "Sì" e "No" per gli individui per ciascun tratto di personalità. Questa è la metodologia di valutazione più popolare seguita nella letteratura sulla previsione della personalità. La seconda valutazione si concentra sul grado di appartenenza di ciascun individuo a ciascun tratto di personalità rispetto all'assegnazione di etichette piuttosto rigide "Sì" e "No". Gran parte della ricerca pertinente in letteratura non ha valutato questa impostazione della previsione della personalità [19]. Riteniamo che questa impostazione sia più vicina allo scenario del mondo reale dal momento che ogni individuo ha alcune caratteristiche da ogni tratto della personalità piuttosto che appartenere a ciascun tratto o meno. La seconda valutazione è definita come un problema di regressione e usiamo la regressione lineare e SVM per la regressione [9] per stimare il valore del grado di appartenenza.
 

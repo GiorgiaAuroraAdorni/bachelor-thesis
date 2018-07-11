@@ -52,17 +52,16 @@ La divisione dei tre dataset dovrà mantenere una buona distribuzione fra le div
 Il \emph{Natural Language Processing} (NLP) è un insieme di tecniche di computer science e linguistica che ricorrono a dei calcolatori per analizzare il linguaggio umano.
 \\
 
-Dal punto di vista sintattico ecco una serie di operazioni che vengono applicate al dataset:
+Dal punto di vista sintattico, al dataset viene applicata la seguente serie di operazioni:
 \begin{itemize}
 	\item \textbf{Rottura della frase}: dato un pezzo di testo vengono trovati i limiti della frase, spesso contrassegnati da punti o altri segni di punteggiatura.
-	\item \textbf{Stemming}: alcune parole vengono ridotte alla loro forma radice (ad esempio ``argue, argued, argues, arguing, and argus'' sono mappati alla parola ``argue'').
+	\item \textbf{Stemming}: alcune parole vengono ridotte alla loro forma radice (ad esempio ``argue, argued, argues, arguing, and argus'' sono mappati alla parola ``argu'').
 	\item \textbf{Segmentazione di parole}: un blocco di testo o sentence viene separato in parole. Per una lingua come l'inglese, questo è abbastanza banale, poiché le parole sono solitamente separate da spazi. 
 \end{itemize}
 Dal punto di vista semantico invece si interviene nel seguente modo:
 \begin{itemize}
 	\item \textbf{Semantica lessicale}: tenta di comprendere il significato computazionale delle singole parole nel loro contesto.
-	\item \textbf{Comprensione del linguaggio naturale}: i blocchi di testo vengono convertiti in rappresentazioni più formali più facili da manipolare per i programmi di computer. 
-	\item \textbf{Segmentazione e riconoscimento degli argomenti}: data una porzione di testo, separarla in segmenti ciascuno dei quali è dedicato a un argomento e identifica l'argomento del segmento.
+	\item \textbf{Comprensione del linguaggio naturale}: i blocchi di testo vengono convertiti in rappresentazioni più formali e più facili da manipolare per i computer. 
 \end{itemize}
 Ricorrendo, dove possibile, alle tecniche sopraelencate, è possibile costruire un dizionario delle \numprint{60000} parole più frequenti nel corpus di training, basato sulla frequenza assoluta di una parola, avendo cura di eliminare tutti gli aggettivi presenti nel dataset OCEAN.
 

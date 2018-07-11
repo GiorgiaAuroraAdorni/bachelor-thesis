@@ -3,9 +3,9 @@
 
 Nel campo dell'apprendimento automatico, o \emph{machine learning}, una rete neurale artificiale  in inglese \emph{Artificial Neural Network} (ANN),  è un modello matematico basato sulla semplificazione delle reti neurali biologiche \cite{samuel1959some}.
 
-Una rete neurale può essere considerata come un sistema dinamico avente la topologia di un grafo orientato con nodi, che modellano i neuroni in un cervello biologico, e archi, che rappresentano le sinapsi (interconnessioni di informazioni).
+Una rete neurale può essere considerata come un sistema dinamico avente la topologia di un grafo orientato, i cui nodi modellano i neuroni in un cervello biologico, mentre gli archi rappresentano le sinapsi (interconnessioni di informazioni).
 
-Ogni connessione può trasmettere un segnale da un neurone artificiale a un altro, i quali sono tipicamente aggregati in strati. Gli stimoli vengono ricevuti da un livello di nodi d'ingresso, detto unità di elaborazione, che elabora il segnale e lo trasmette ad altri neuroni collegati ad esso.
+Ogni connessione può trasmettere un segnale da un neurone artificiale a un altro, i quali sono tipicamente aggregati in strati. Gli stimoli vengono ricevuti da un livello di nodi d'ingresso, detto unità di elaborazione, che elabora il segnale e lo trasmette ad altri neuroni ad esso collegati.
 
 \section{Modello}
 \label{sec:modello}
@@ -68,26 +68,26 @@ Essa viene utilizzata per la sua capacità di accelerare notevolmente il process
 	\label{fig:subfig}
 \end{figure}
 
-\section{Architetture *}
+\section{Architetture}
 \label{sec:architetture}
 
 I neuroni vengono organizzati in una struttura detta architettura della rete.
-I dati, partendo da un livello iniziale, detto layer di input, attraversano gi multipli strati interni della rete, chiamati hidden layer, raggiungendo l'ultimo livello detto layer di output.
+I dati, partendo da un livello iniziale, detto layer di input, attraversano i multipli strati interni della rete, chiamati hidden layer, raggiungendo l'ultimo livello detto layer di output.
 
 Quando i collegamenti tra i neuroni formano una struttura senza cicli si parla di reti \emph{feed-forward} \cite{svozil1997introduction}.
 
-\subsection{Layer fully-connected *}
+\subsection{Layer fully-connected}
 \label{subsec:fc}
 
 Un’architettura molto comune nelle reti neurali è una struttura ``densa'', che utilizza \emph{layer fully-connected}, in cui tutti i neuroni del livello precedente sono collegati ad ogni neurone dello strato successivo \cite{sainath2015convolutional}.
 
 Lo scopo di un layer completamente connesso è imparare combinazioni non lineari di feature ad alto livello provenienti dal layer precedente. 
-Una struttura di questo tipo è però caratterizzata da un numero di connessione che cresce molto velocemente, causando un accrescimento del numero di parametri che la rete deve apprendere.
-Questo comporta un aumento del costo computazionale e un altro rischio di overfitting, approfondito nella sezione \ref{subsec:overfitting}.
+Una struttura di questo tipo è però caratterizzata da un numero di connessioni che cresce molto velocemente, causando un accrescimento del numero di parametri che la rete deve apprendere.
+Questo comporta un aumento del costo computazionale e un alto rischio di overfitting, approfondito nella sezione \ref{subsec:overfitting}.
 
 Per questo motivo questi vengono spesso sostituiti dai layer convoluzionali.
 
-\subsection{Layer convoluzionali *}
+\subsection{Layer convoluzionali}
 \label{subsec:cnn}
 Una rete neurale convoluzionale, in inglese \emph{Convolutional Neural Network} (CNN), è una classe di reti artificiali avanzate e \emph{feed-forward}, composte da uno o più strati convoluzionali seguiti da una serie di livelli completamente connessi \cite{kim2014convolutional}.
 
@@ -96,7 +96,7 @@ Ogni livello applica filtri diversi, in genere centinaia o migliaia, e combina i
 Durante la fase di addestramento, una CNN impara automaticamente i valori dei suoi filtri in base all'attività che si desidera eseguire. 
 
 Le reti convoluzionali sono adatte per elaborare dati visivi e altri dati bidimensionali, ed hanno mostrato ottimi risultati nel riconoscimento di immagini e nella manipolazione del linguaggio naturale \cite{manning1999foundations}.
-In quest'ultimo caso, l'input sono frasi o documenti rappresentati come una matrice, in cui ogni riga corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. 
+In quest'ultimo caso, l'input è costituito da frasi o documenti rappresentati come una matrice, in cui ogni riga corrisponde a un token, in genere una parola. Tipicamente, questi vettori sono dei word embeddings (rappresentazioni a bassa dimensione) come word2vec \cite{mikolov2013distributed}, ma potrebbero anche essere vettori unici che indicizzano la parola in un vocabolario. 
 
 Nel \emph{Natural Language Processing} (NLP) utilizziamo filtri che scorrono su righe complete della matrice (parole), pertanto, la loro ``larghezza'' è solitamente uguale alla quella della matrice di input. L'altezza, o la dimensione della regione, può variare, ma le finestre tipicamente scorrono su 2-5 parole per volta. 
 
@@ -105,16 +105,16 @@ Risulta che le CNN applicate ai problemi di NLP funzionino abbastanza bene, un e
 Le CNN sono più facili da addestrare e hanno molti meno parametri da stimare. 
 Il minor numero di connessioni e pesi di questa architettura, rende gli strati convoluzionali relativamente economici in termini di memoria e potenza di calcolo necessari.
 
-\subsection{Layer di pooling *}
+\subsection{Layer di pooling}
 \label{subsec:maxpool}
 
-Il \emph{pooling} è un processo alquanto comune nelle reti neurali, la cui funzione è ridurre progressivamente la dimensionalità spaziale per diminuire la quantità di parametri e computazionale della rete, mantenendo le informazioni più salienti e controllando anche l'overfitting.
+Il \emph{pooling} è un processo alquanto comune nelle reti neurali, la cui funzione è ridurre progressivamente la dimensionalità spaziale per diminuire la quantità di parametri e la complessità computazionale della rete, mantenendo le informazioni più salienti e controllando anche l'overfitting.
 
 Il layer di pooling opera indipendentemente su ogni slice di profondità dell'input e lo ridimensiona spazialmente, usando l'operazione MAX sul risultato di ogni filtro \cite{karpathy2016cs231n}. 
 
 Una proprietà del pool è che fornisce una matrice di output a dimensione fissa --- in genere richiesta per la classificazione. Ciò consente di utilizzare frasi di dimensioni variabili e filtri di dimensioni variabili, ma ottenere sempre le stesse dimensioni di output da inserire in un classificatore.
 
-\subsection{Batch normalization *}
+\subsection{Batch normalization}
 \label{subsec:normalization}
 
 Durante la fase di addestramento del modello, i parametri di ogni substrato vengono ottimizzati al fine di minimizzare l'errore finale.
@@ -138,7 +138,7 @@ In questo secondo caso, media e varianza vengono calcolate per ogni filtro.
 
 \section{Apprendimento}
 \label{sec:apprendimento}
-Per insegnare alla rete a risolvere un determinato problema, occorre una fase di addestramento in cui vengono sfruttate una serie di osservazioni per stabilire quali valori assegnare ad ogni parametro della rete e trovare un modello ottimale.
+Per insegnare alla rete a risolvere un determinato problema, occorre una fase di addestramento in cui vengono condotte una serie di osservazioni per stabilire quali valori assegnare ad ogni parametro della rete e trovare un modello ottimale.
 
 Questo processo di apprendimento viene strutturato come un problema di ottimizzazione in cui lo scopo è minimizzare una \emph{funzione di costo}, che misura la distanza tra una soluzione particolare ed una ottima. 
 
@@ -162,7 +162,7 @@ L'\emph{errore quadratico medio} (MSE) di uno stimatore misura la media dei quad
 
 con $n$ numero delle previsioni \cite{wang2009mean}.
 
-\subsubsection{Softmax Cross Entropy *}
+\subsubsection{Softmax Cross Entropy}
 \label{subsubsec:sce}
 
 Softmax è una funzione di loss comunemente utilizzata per la classificazione. In particolare viene applicata allo strato finale della rete ed addestrata in un regime di entropia incrociata \cite{tang2013deep}.\\
@@ -187,7 +187,7 @@ dove N è il numero di eventi osservati.
 L'obiettivo principale di questa funzione è rendere il risultato della softmax campionata uguale a quella vera. L'algoritmo si concentra sulla selezione di campioni specifici dalla distribuzione data per ottenere la loss desiderata \cite{liu2016large}.  
 L'utilizzo della funzione softmax ha un effetto considerevole sulle prestazioni. 
 
-\subsubsection{Noise Contrastive estimation *}
+\subsubsection{Noise Contrastive estimation}
 \label{subsubsec:nce}
 
 La stima contrastiva del rumore è una strategia utilizzata nell'ambito della modellazione linguistica o per la generazione di word embedding dati in input dei corpus molto ampi.
@@ -220,7 +220,7 @@ Vengono utilizzate varie strategie e algoritmi di ottimizzazione per aggiornare 
 
 L'entità dell'aggiornamento è determinata dal tasso di apprendimento $\eta$, in inglese \emph{learning rate}, che garantisce la convergenza al minimo globale, per superfici di errore convesse, e ad un minimo locale, per superfici non convesse. 
 
-\subsubsection{Stochastic Gradient Descent *}
+\subsubsection{Stochastic Gradient Descent}
 \label{subsubsec:SGD}
 
 La discesa del gradiente, in inglese \emph{Gradient Descent} (GD), è un algoritmo iterativo per l'ottimizzazione di funzioni \cite{ruder2016overview}.
@@ -256,7 +256,7 @@ Adagrad modifica il tasso di apprendimento generale $\eta$ ad ogni istante di te
 Il vantaggio principale di questo metodo è che non è necessario regolare manualmente la frequenza di apprendimento e nella maggior parte delle implementazioni viene usato un valore predefinito --- per esempio \numprint{0,001} --- e lasciato invariato.\\
 La principale debolezza consiste nell'accumulo dei ``gradienti quadrati'' nel denominatore, finché ogni termine aggiunto è positivo. Di conseguenza il tasso di apprendimento si riduce fino al punto in cui l'algoritmo non è più in grado di acquisire ulteriori conoscenze \cite{ruder2016overview}. 
 
-\subsection{Paradigmi di apprendimento *}
+\subsection{Paradigmi di apprendimento}
 \label{subsec:Paradigmi di apprendimento}
 
 Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
@@ -273,7 +273,7 @@ Gli algoritmi di apprendimento sono principalmente suddivisi in due categorie:
 	
 	In questo caso, gli algoritmi che modificano i pesi della rete fanno riferimento solo ai dati contenuti nelle variabili di ingresso.
 	
-	Questo è un tipo di apprendimento autonomo senza controllo esterno sull'errore. È un approccio adatto per ottimizzare le risorse e se non si conoscono a priori i gruppi in cui dividere l'input.
+	Questo è un tipo di apprendimento autonomo senza controllo esterno sull'errore. È un approccio adatto per ottimizzare le risorse nel caso in cui non si conoscano a priori i gruppi in cui dividere l'input.
 \end{itemize}
 
 \section{Development and test set}
@@ -286,17 +286,17 @@ Vengono generalmente definiti:
 	\item Test set --- si utilizza per valutare le performance dell'algoritmo, ma non per prendere decisioni su quale algoritmo di apprendimento o parametri utilizzare. 
 \end{itemize}
 
-Una volta definiti i set di development e test, ci si concentrerà sul miglioramento delle prestazioni del development set. 
+Una volta definiti i set, ci si concentrerà sul miglioramento delle prestazioni del training e validation set. 
 
 Generalmente la dimensione del test set è un terzo di quella del training. Esso è composto da input critici su cui la risposta della rete deve essere buona. 
-Questo funziona bene quando sono messi a disposizione un numero limitato di esempi, ma nell'era dei big data, dove i problemi di apprendimento automatico consistono di più di un miliardo di campioni, la frazione di dati allocati agli insiemi di sviluppo e test è ridotta, nonostante il valore assoluto di esempi sia maggiore.
+Questo funziona bene quando sono messi a disposizione un numero limitato di esempi, ma nell'era dei Big Data, dove i problemi di apprendimento automatico consistono di più di un miliardo di campioni, la frazione di dati allocati agli insiemi di sviluppo e test è ridotta, nonostante il valore assoluto di esempi sia maggiore.
 
 Vengono utilizzate diverse tecniche statistiche per valutare la bontà di un modello.
 
-\subsection{Evaluation metric *}
+\subsection{Evaluation metric}
 \label{subsec:EvaluationMetric}
 
-Le metriche di valutazione spiegano le prestazioni di un modello. Un loro aspetto importante è la capacità di discriminare tra i risultati del modello.
+Le metriche di valutazione misurano le prestazioni di un modello, discriminando la bontà dei risultati ottenuti.
 Vengono presi in considerazione diversi tipi di metriche per valutare i modelli. La scelta della metrica dipende completamente dal tipo di modello e dal piano di implementazione. 
 
 I modelli predittivi si distinguo in due principali categorie: si parla di \emph{regressione} quando l'output da prevedere è continuo, o di \emph{classificazione} nel caso in cui l'output sia nominale o binario. \\
@@ -331,11 +331,11 @@ Ogni colonna della matrice rappresenta le istanze previste di una classe mentre 
 L'individuazione di falsi positivi (casi negativi identificati come positivi), falsi negativi (casi positivi identificati come negativi), veri positivi (casi positivi correttamente identificati) e veri negativi (casi negativi correttamente identificati), mostrati nella figura \ref{fig:confmat}, consentono  un'analisi più dettagliata della semplice proporzione di classificazioni corrette. \\
 È possibile estrarre da questa tabella le seguenti misure di performance:
 \begin{itemize}
-	\item l'\emph{accuratezza} del modello, che consiste nella porzione rispetto al totale delle previsioni corrette
+	\item l'\emph{accuracy}, o accuratezza, del modello, che consiste nella porzione rispetto al totale delle previsioni corrette
 	\begin{equation}
 		\frac{\mbox{True Positive} + \mbox{True Negative}}{\mbox{True Positive} + \mbox{True Negative} + \mbox{False Positive} + \mbox{False Negative}}
 	\end{equation} 
-	\item la \emph{precisione}, cioè la porzione dei casi positivi identificati correttamente
+	\item la \emph{precision}, o precisione, cioè la porzione dei casi positivi identificati correttamente
 		\begin{equation}
 	\frac{\mbox{True Positive}}{\mbox{True Positive} + \mbox{False Positive}}
 	\end{equation}
@@ -347,10 +347,10 @@ L'individuazione di falsi positivi (casi negativi identificati come positivi), f
 \end{itemize}
 
 
-\subsection{Overfitting *}
+\subsection{Overfitting}
 \label{subsec:overfitting}
 
-L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde troppo o esattamente a un particolare insieme di dati, e può quindi non riuscire ad adattare dati aggiuntivi o prevedere in modo affidabile le osservazioni future''.
+L'\emph{overfitting} è ``la produzione di un'analisi che corrisponde esattamente a un particolare insieme di dati o ne presenta forti similarità; può determinare l'impossibilità di adattamento a nuovi dati o compromettere l'affidabilità delle predizioni sulle osservazioni future''.
 
 La rete neurale deve avere la capacità di comprensione del modello statistico dei dati. In presenza di overfitting essa memorizza i dati del training set e non è quindi in grado di generalizzare su nuovi dati. L'essenza di questo problema consiste nell'estrarre inconsapevolmente parte della variazione residua (cioè il rumore) come se quella variazione rappresentasse la sottostante struttura del modello \cite{burnham2003model}.
 
