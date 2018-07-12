@@ -13,11 +13,11 @@ I risultati ottenuti sono sub-ottimali dal punto di vista della complessità. In
 In seguito è stata sfruttata una classe di algoritmi distribuzionali per insegnare alla rete il significato e le relazioni sussistenti tra le parole. Sfruttando la versione \emph{skip-gram} dell'algoritmo \texttt{word2vec} di Tomas Mikolov vengono rappresentate sotto forma di vettori le mappature tra parole e contesti nello spazio. 
 Ricorrendo al secondo metodo i risultati ottenuti dimostrano come utilizzare un embedding sia la tecnica di estrazione di features più efficiente per filtrare le informazioni contenute in un testo.\\
 
-È emerso che un'evoluzione di questo progetto potrebbe affacciarsi alla valutazione di rappresentazioni alternative del testo, annotazioni, part-of-speech e altre tecniche di NLP, per approfondire e migliorare ulteriormente l'indagine.\\
+È emerso che un'evoluzione di questo progetto potrebbe affacciarsi alla valutazione di rappresentazioni alternative del testo, annotazioni, part-of-speech \cite{brown1957linguistic} e altre tecniche di NLP, per approfondire e migliorare ulteriormente l'indagine.\\
 
-Dal punto di vista delle architetture implementate, abbiamo iniziato dall'implementazione di \emph{reti neurali fully-connected} come base per capire come modelli semplici di Deep Learning possano fornire informazioni sulle caratteristiche nascoste della personalità. 
+Dal punto di vista delle architetture implementate, abbiamo iniziato dall'implementazione di reti neurali \emph{fully-connected} come base per capire come modelli semplici di Deep Learning possano fornire informazioni sulle caratteristiche nascoste della personalità. 
 
-Infine, ci addentriamo nelle \emph{reti neurali convoluzionali} molto più specializzate e efficiente delle precedenti nell'ambito del Text Mining.
+Infine, ci addentriamo nelle reti neurali \emph{convoluzionali} molto più specializzate e efficiente delle precedenti nell'ambito del Text Mining.
 
 Sviluppi futuri di questo lavoro potrebbero valutare una procedura di apprendimento alternativa, sfruttando altri modelli, quali le reti ricorrenti,  per ottenere dei risultati più efficaci.\\
 
@@ -25,7 +25,7 @@ Sviluppi futuri di questo lavoro potrebbero valutare una procedura di apprendime
 La prima valutazione effettuata è definita come una regressione che tenta di prevedere l'esatto valore reale per ogni tratto di personalità.
 Il problema presentato è estremamente complesso, e le performance ottenute sono ancora lontane da quelle desiderate.
 Per questo motivo viene eseguita una seconda valutazione che trasforma il nostro compito in un problema di classificazione binaria multi-label.
-I risultati raggiunti questa volta, evincono che ottimizzare la funzione di loss di un modello predittivo di regressione è molto più difficoltoso rispetto ad ottimizzare una funzione di costo stabile come la Softamax.
+I risultati raggiunti questa volta, evincono che ottimizzare la funzione di loss di un modello predittivo di regressione è molto più difficoltoso rispetto ad ottimizzare una funzione di costo stabile come la Softmax.
 Questo è evidente poiché il modello di regressione tenta di produrre un esatto valore per ogni input, e i valori anomali predetti possono introdurre gradienti enormi.
 
  

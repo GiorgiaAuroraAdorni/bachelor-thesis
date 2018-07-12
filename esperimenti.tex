@@ -49,7 +49,7 @@ In questa prima strategia viene utilizzata una rete \emph{feed-forward} con stru
 
 Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, vien effettuata dopo ogni layer una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}. 
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, vien effettuata dopo ogni layer una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}. 
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
@@ -76,7 +76,7 @@ Tutte le simulazioni sono state addestrate per \num{10} epoche: la fase di addes
 
 L’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
 
-Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{mean squared error (MSE)}, presentato nella sezione \ref{subsubsec:MSE}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{root mean squared error} (RMSE), introdotta nella sezione \ref{subsubsec:regressione}.
+Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{Mean Squared Error (MSE)}, presentato nella sezione \ref{subsubsec:MSE}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{Root Mean Squared Error} (RMSE), introdotta nella sezione \ref{subsubsec:regressione}.
 
 In ogni epoca si alternano una fase di training ed una fase di test in modo tale da monitorare costantemente i miglioramenti o i peggioramenti del modello sul test set. 
 
@@ -95,12 +95,12 @@ Prendendo in considerazione le tre diverse architetture implementate, vengono pr
 %		\textbf{Modello 4} & \numprint{0.0287} & \numprint{0.0104} &\numprint{145} min \\
 		\bottomrule 
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti dalle tre diverse reti}
+	\captionof{table}{Confronto dei risultati in termini di {loss} ottenuti dalle tre diverse reti}
 	\label{tab:lossbow+fc}
 \end{table}
 
 Per valutare l'efficacia di questi modelli, è fondamentale eseguire un analisi dettagliata, in particolare ponendo l'attenzione sui valori di RMSE per ogni tratto di personalità.
-Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, è possibile stabilire qual è il valore di root mean squared error di un modello concettuale, chiamato ``Modello 0'', che per ogni tratto predice sempre il suo valore medio.
+Calcolando il valore medio assunto da ogni caratteristica durante la fase di addestramento, è possibile stabilire qual è il valore di Root Mean Squared Error di un modello concettuale, chiamato ``Modello 0'', che per ogni tratto predice sempre il suo valore medio.
  
 \begin{figure}[H]
 	\centering
@@ -123,7 +123,7 @@ Calcolando il valore medio assunto da ogni caratteristica durante la fase di add
 %		& Modello 0 & \numprint{0,233} & \numprint{0,307} & \numprint{0,262} & \numprint{0,373} & \numprint{0,546}  \\
 		\bottomrule	
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle architetture contro il modello basato sulla media di training}
+	\captionof{table}{Confronto dei risultati in termini di {Root Mean Squared Error} delle architetture contro il modello basato sulla media di training}
 	\label{tab:confmm0bow+fc}
 \end{figure}
 
@@ -149,9 +149,9 @@ Inoltre, un tipo di rappresentazione sparsa risulta più difficile da modellare 
 
 Durante l'applicazione di tecniche di apprendimento automatico, tutte le ``informazioni'' vengono rappresentate per mezzo di identificativi unici e discreti. 
 
-Nel caso dell'approccio \emph{bag-of-words}, la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su un determinato termine. 
+Nel caso dell'approccio {BoW}, la codifica utilizzata non fornisce alcuna informazione utile al sistema riguardo le relazioni che possono sussistere tra i singoli elementi. Ciò significa che quando sta elaborando i dati, il modello può sfruttare molto poco di ciò che ha appreso su un determinato termine. 
 
-Inoltre la ``raffigurazione'' utilizzata nel precedente esperimento, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un'alternativa valida sarebbe quella di sfruttare \emph{modelli spaziali vettoriali} (VSM) per rappresentare le parole in uno spazio continuo \cite{mikolov2013linguistic,erk2008structured}.
+Inoltre la ``raffigurazione'' utilizzata nel precedente esperimento, ha portato alla creazione di dati sparsi. Di conseguenza, per ottenere un modello di successo, un'alternativa valida sarebbe quella di sfruttare {modelli spaziali vettoriali}, in inglese \emph{Vector Space Model} (VSM), per rappresentare le parole in uno spazio continuo \cite{mikolov2013linguistic,erk2008structured}.
 Questi metodi dipendono dall'ipotesi distributiva, la quale afferma che le parole che appaiono negli stessi contesti condividono lo stesso significato semantico \cite{baroni2014don}. 
 
 \subsection{Input Features}
@@ -165,12 +165,12 @@ A partire dal corpus di testo, la rete prende in input un set formato dall'accop
 
 Viene considerato come ``contesto'' l'insieme delle ``parole a sinistra'' e delle ``parole alla destra'' dell'obiettivo, ovvero la finestra di dimensione 1 attorno all'elemento target. Ogni coppia di destinazione del contesto viene trattata come se fosse una nuova osservazione, incrementando le informazioni distribuzionali. Viene così prodotto uno spazio vettoriale di diverse centinaia di dimensioni, in cui ogni parola univoca viene assegnata a un vettore corrispondente nello spazio.
 
-Per l'implementazione viene utilizzato il modello \emph{Skip-Gram}, una versione di \texttt{word2vec} che vuole predire le parole del contesto di origine (label) a partire dalle parole target (features).
+Per l'implementazione viene utilizzato il modello \emph{skip-gram}, una versione di \texttt{word2vec} che vuole predire le parole del contesto di origine (label) a partire dalle parole target (features).
 
 \begin{figure}[H]
 	\centering
 	{\includegraphics[width=.7\textwidth]{images/skip-gram}} 
-	\caption{Visualizzazione del modello Skip-gram}
+	\caption{Visualizzazione del modello skip-gram}
 	\label{fig:mikolov}
 \end{figure}
 
@@ -188,7 +188,7 @@ In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo t
 	\label{fig:embedding1}
 \end{figure}
 
-La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Socastic Gradient Descent} (SGD), definita nella sezione \ref{subsubsec:SGD}.
+La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Stochastic Gradient Descent} (SGD), definita nella sezione \ref{subsubsec:SGD}.
 
 Nella seguente tabella vengono presentati i due embedding realizzati e i relativi parametri.
 
@@ -228,7 +228,7 @@ Uno strato convoluzionale è molto più specializzato ed efficiente di uno compl
 
 Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni'' non lineari tramite l'applicazione della funzione di attivazione \emph{ReLU}, introdotta nella sezione \ref{subsec:fattivazione}.
 
-Ad ogni livello convoluzionale viene applicata una \emph{batch normalization}, definita nella sezione \ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
+Ad ogni livello convoluzionale viene applicata una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
 
 Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling}, introdotto nella sezione \ref{subsec:maxpool}, necessario per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
 
@@ -275,13 +275,13 @@ Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, defi
 
 Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le diverse configurazioni dei layer convoluzionali delle architetture implementate per i due embedding.\\
 
-L'input della rete è costituito da un numero di caratteristiche pari a $e \times p$ dove $e$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
+L'input della rete è costituito da un numero di caratteristiche pari a $n \times p$ dove $n$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
 
 Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
 
 Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsubsec:MSE}.
 
-Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully connected}, senza applicare alcuna convoluzione. 
+Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully-connected}, senza applicare alcuna convoluzione. 
 
 
 \begin{table}[t]
@@ -291,12 +291,12 @@ Nel caso del secondo embedding si è voluto provare anche un modello che sfrutta
 		\multicolumn{2}{c}{{Modelli}} & \textbf{Learning Rate}  \\
 		\midrule
 		\multirow{3}*{{Embedding 1}} 
-		&\textbf{Modello 4} & \numprint{0.001} \\
+		&\textbf{Modello 4} & \numprint{0.0010} \\
 		&\textbf{Modello 5} & \numprint{0.0001} \\
-		&\textbf{Modello 6} & \numprint{0.005} \\
+		&\textbf{Modello 6} & \numprint{0.0050} \\
 		\midrule
 		\multirow{2}*{{Embedding 2}} 
-		&\textbf{Modello 7} & \numprint{0.005} \\
+		&\textbf{Modello 7} & \numprint{0.0050} \\
 		&\textbf{Modello 8} & \numprint{0.0001} \\	
 		\bottomrule 
 	\end{tabular}
@@ -359,7 +359,7 @@ Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalit
 		& \textbf{Modello 8} & \numprint{0,399} & \numprint{0,275} & \numprint{0,257} & \numprint{0,271} & \numprint{0,457} \\
 		\bottomrule	
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle architetture sul test set}
+	\captionof{table}{Confronto dei risultati in termini di {Root Mean Squared Error} delle architetture sul test set}
 	\label{tab:rmsemikolov}
 \end{figure}
 
@@ -421,7 +421,7 @@ Vengono presentati nella tabella \ref{tab:lossmikolov2} i valori ottenuti dalla 
 		\textbf{Modello 10} & \numprint{0.050} & \numprint{0.059} &\numprint{17} h \\	
 		\bottomrule 
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{loss} ottenuti nell'implementazione dei due modelli}
+	\captionof{table}{Confronto dei risultati in termini di {loss} ottenuti nell'implementazione dei due modelli}
 	\label{tab:lossmikolov2}
 \end{table}
 
@@ -437,7 +437,7 @@ Vengono presentati nella tabella \ref{tab:lossmikolov2} i valori ottenuti dalla 
 		& \textbf{Modello 10} & \numprint{0,147} & \numprint{0,225} & \numprint{0,224} & \numprint{0,252} & \numprint{0,339} \\
 		\bottomrule	
 	\end{tabular}
-	\captionof{table}{Confronto dei risultati in termini di \emph{Root Mean Squared Error} delle due architetture sul test set}
+	\captionof{table}{Confronto dei risultati in termini di {RMSE} delle due architetture sul test set}
 	\label{tab:rmsemikolov2}
 \end{figure}
 
@@ -488,7 +488,7 @@ Ad ogni livello della rete viene applicata la stessa procedura degli esperimenti
 	\label{tab:netemb4}
 \end{figure}
 
-In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione 2 e padding same, tranne che per l'ultimo livello convoluzionale con padding valid.
+In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione 2 e padding same, tranne che per l'ultimo livello convoluzionale con padding valid. {\color{red} \ref{}}
 
 \begin{figure}[H]
 	\centering
