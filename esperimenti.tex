@@ -49,7 +49,7 @@ In questa prima strategia viene utilizzata una rete \emph{feed-forward} con stru
 
 Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, vien effettuata dopo ogni layer una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}. 
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, viene effettuata dopo ogni layer una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}. 
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
@@ -328,7 +328,7 @@ Prendendo in considerazione i due diversi embedding, vengono messe a confronto a
 	\label{tab:lossmikolov}
 \end{table}
 
-Valutando le prestazioni su train e test set viene rilevato il  come il migliore tra quelli proposti, presentando i valori di loss più bassi. 
+Valutando le prestazioni su train e test set viene rilevato il ``Modello 7'' come il migliore tra quelli proposti, presentando i valori di loss più bassi. 
 Oltre a ciò, anche rispetto al precedente approccio il ``Modello 7'' mostra una performance migliorata circa 
 del \SI{3}{\percent}.
 
@@ -488,7 +488,7 @@ Ad ogni livello della rete viene applicata la stessa procedura degli esperimenti
 	\label{tab:netemb4}
 \end{figure}
 
-In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione 2 e padding same, tranne che per l'ultimo livello convoluzionale con padding valid. {\color{red} \ref{}}
+In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione 2 e padding same, tranne che per l'ultimo livello convoluzionale con padding valid, per i dettagli si consiglia di visitare la sezione { \ref{subsec:cnn}}.
 
 \begin{figure}[H]
 	\centering
