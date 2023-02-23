@@ -29,7 +29,7 @@ In seguito viene posta l'attenzione su tre diverse architetture neurali:
 Nel primo approccio proposto, per rappresentare i dati testuali viene utilizzato il modello \emph{bag-of-words}, un tipo di descrizione semplificata, spesso utilizzata nell'elaborazione del linguaggio naturale e nel campo dell'\emph{Information Retrivial} (IR). 
 
 Sfruttando il dizionario delle occorrenze precedentemente costruito, il testo viene modellato  come fosse una ``borsa di parole'', in cui grammatica e ordine delle parole vengono trascurate.
-Ogni frase viene ridotta ad un vettore in cui ogni elemento identifica una parola del dizionario. Nella posizione corrispondente ad un determinato termine vi sarà il valore \num{1} se la parola è contenuta nella frase, \num{0} altrimenti.
+Ogni frase viene ridotta ad un vettore in cui ogni elemento identifica una parola del dizionario. Nella posizione corrispondente ad un determinato termine vi sarà il valore 1 se la parola è contenuta nella frase, 0 altrimenti.
 
 Il modello riguarda solo le parole conosciute, di conseguenza i vocaboli che compaiono nel testo ma sono assenti nel dizionario vengono trascurati.
 
@@ -45,11 +45,11 @@ Il modello riguarda solo le parole conosciute, di conseguenza i vocaboli che com
 
 Una volta estratte, le features posso essere passate in input alla rete neurale, che le elabora calcolando le risposte dei neuroni dal livello di input verso il livello di output.
 
-In questa prima strategia viene utilizzata una rete \emph{feed-forward} con struttura densa o \emph{fully-connected}. Per i dettagli di queste architetture si rimanda alla sezione \ref{subsec:fc}.
+In questa prima strategia viene utilizzata una rete \emph{feed-forward} con struttura densa o \emph{fully-connected}. Per i dettagli di queste architetture si rimanda alla Sezione~\ref{subsec:fc}.
 
-Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella sezione \ref{subsec:fattivazione}.
+Ad ogni livello viene applicata la funzione di attivazione non lineare \emph{ReLU}, descritta nella Sezione~\ref{subsec:fattivazione}.
 
-Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, viene effettuata dopo ogni layer una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}. 
+Inoltre, per accelerare l'apprendimento ed aumentare la stabilità della rete, viene effettuata dopo ogni layer una \emph{Batch Normalization}, definita nella Sezione~\ref{subsec:normalization}. 
 
 Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementate, con differenti strati e numero di neuroni che caratterizza ciascuno.
 
@@ -61,10 +61,10 @@ Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementa
 			\textbf{Layer} \quad & \textbf{Modello 1} & \textbf{Modello 2} & \textbf{Modello 3} \\
 			\midrule
 			Input 				 & \numprint{60000}	  & \numprint{60000}   &\numprint{60000}\\
-			fc1  				 & \num{300}		  & \num{300} 		   & \num{100} 		\\
-			fc2  				 &  \num{200}		  & \num{200} 		   & \num{50}  		\\
-			fc3					 & -				  & \num{100} 		   & \num{20}    	\\
-			Output 				 &  \num{5}			  & \num{5} 		   & \num{5}		\\
+			fc1  				 & \numprint{300}		  & 300 		   & {100} 		\\
+			fc2  				 &  {200}		  & 200 		   & 50  		\\
+			fc3					 & -				  & {100} 		   & 20    	\\
+			Output 				 &  {5}			  & {5} 		   & {5}		\\
 			\bottomrule
 		\end{tabular}
 	\captionof{table}{Confronto delle architetture di tre differenti modelli}
@@ -72,11 +72,11 @@ Vengono presentate nella tabella \ref{tab:arcbow+fc} tre architetture implementa
 \end{figure}
 
 
-Tutte le simulazioni sono state addestrate per \num{10} epoche: la fase di addestramento viene in genere portata avanti fino a quando le performance sul test non producono alcun miglioramento.
+Tutte le simulazioni sono state addestrate per {10} epoche: la fase di addestramento viene in genere portata avanti fino a quando le performance sul test non producono alcun miglioramento.
 
-L’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
+L’ottimizzatore scelto è \emph{Adagrad}, introdotto nella Sezione~\ref{subsubsec:adagrad}, con learning rate \numprint{0,001}.
 
-Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{Mean Squared Error (MSE)}, presentato nella sezione \ref{subsubsec:MSE}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{Root Mean Squared Error} (RMSE), introdotta nella sezione \ref{subsubsec:regressione}.
+Come funzione di loss è stato scelto l'errore quadratico medio, in inglese \emph{Mean Squared Error (MSE)}, presentato nella Sezione~\ref{subsubsec:MSE}. Mentre la metrica di valutazione utilizzata per misurare le prestazioni predittive del modello è la \emph{Root Mean Squared Error} (RMSE), introdotta nella Sezione~\ref{subsubsec:regressione}.
 
 In ogni epoca si alternano una fase di training ed una fase di test in modo tale da monitorare costantemente i miglioramenti o i peggioramenti del modello sul test set. 
 
@@ -174,7 +174,7 @@ Per l'implementazione viene utilizzato il modello \emph{skip-gram}, una versione
 	\label{fig:mikolov}
 \end{figure}
 
-In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo tale che le parole che condividono contesti comuni nel corpo siano situate in stretta prossimità l'una dell'altra. Un esempio interessante viene illustrato nella figura \ref{fig:embedding1}\subref{subfig:vis3d} --- si ponga particolare attenzione alle parole ``beautiful'', ``lovely'', ``chic'', ``trendy'' ecc.. --- in cui i vocaboli semanticamente simili si trovano vicini dello spazio.
+In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo tale che le parole che condividono contesti comuni nel corpo siano situate in stretta prossimità l'una dell'altra. Un esempio interessante viene illustrato nella Figura~\ref{fig:embedding1}\subref{subfig:vis3d} --- si ponga particolare attenzione alle parole ``beautiful'', ``lovely'', ``chic'', ``trendy'' ecc.. --- in cui i vocaboli semanticamente simili si trovano vicini dello spazio.
 
 \begin{figure}[H]
 	\centering
@@ -188,7 +188,7 @@ In questo tipo di apprendimento, i vettori si posizionano nello spazio in modo t
 	\label{fig:embedding1}
 \end{figure}
 
-La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Stochastic Gradient Descent} (SGD), definita nella sezione \ref{subsubsec:SGD}.
+La funzione obiettivo utilizzata dalla rete per la costruzione dell'embedding viene definita sull'intero set di dati, ed ottimizzata con la \emph{Stochastic Gradient Descent} (SGD), definita nella Sezione~\ref{subsubsec:SGD}.
 
 Nella seguente tabella vengono presentati i due embedding realizzati e i relativi parametri.
 
@@ -223,16 +223,16 @@ Uno strato convoluzionale è molto più specializzato ed efficiente di uno compl
 	\centering
 	{\includegraphics[width=.85\textwidth]{images/cnn}} 
 	\caption{Esempio di architettura convoluzionale per la manipolazione del linguaggio naturale}
-	\label{fig:rmse}
+	\label{fig:cnn}
 \end{figure}
 
-Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni'' non lineari tramite l'applicazione della funzione di attivazione \emph{ReLU}, introdotta nella sezione \ref{subsec:fattivazione}.
+Le operazioni eseguite da questi strati vengono trasformate in ``moltiplicazioni'' non lineari tramite l'applicazione della funzione di attivazione \emph{ReLU}, introdotta nella Sezione~\ref{subsec:fattivazione}.
 
-Ad ogni livello convoluzionale viene applicata una \emph{Batch Normalization}, definita nella sezione \ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
+Ad ogni livello convoluzionale viene applicata una \emph{Batch Normalization}, definita nella Sezione~\ref{subsec:normalization}, utilizzata sull'input per il ridimensionamento delle funzionalità e la normalizzazione batch nei livelli nascosti.
 
-Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling}, introdotto nella sezione \ref{subsec:maxpool}, necessario per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
+Dopo il primo strato convoluzionale viene inserito un \emph{layer di pooling}, introdotto nella Sezione~\ref{subsec:maxpool}, necessario per ridurre in modo efficace i campioni dell'output del livello precedente, riducendo il numero di operazioni richieste per tutti i livelli successivi, ma passando comunque le informazioni valide.
 
-Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella sezione \ref{subsec:fc}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
+Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, definito nella Sezione~\ref{subsec:fc}, corrispondente ad un'operazione lineare sul vettore di input del livello che esegue una serie di trasformazioni sulla rappresentazione profonda al fine di emettere i punteggi di ogni classe.
 
 \begin{figure}[H]
 	\centering
@@ -240,12 +240,12 @@ Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, defi
 		\toprule
 		\textbf{Layer}& \textbf{Modello 4} & \textbf{Modello 5} & \textbf{Modello 6} 		\\ 
 		\midrule
-		conv1 	& \num{10}$\times$\num{5}, 10	  & \num{5}$\times$\num{5}, 150, same pad    &\num{3}$\times$\num{3}, 100, same pad 		   \\
+		conv1 	& {10}$\times${5}, 10	  & {5}$\times${5}, 150, same pad    &{3}$\times${3}, 100, same pad 		   \\
 		
-		mpool1 	& &{\num{4}$\times$\num{4}, stride 2, same pad}	&   \\
-		conv2  	& \num{18}$\times$\num{18}, 10	  &  \num{5}$\times$\num{20}, 100, same pad	  &		\num{3}$\times$\num{20}, 75, same pad    \\
-		conv3  	& ---	  & \num{1}$\times$\num{20}, 50, 	   &	\num{1}$\times$\num{20}, 50 	   \\
-		fcout		& &{\num{1}$\times$\num{1}, 5}&		   \\
+		mpool1 	& &{{4}$\times${4}, stride 2, same pad}	&   \\
+		conv2  	& {18}$\times${18}, 10	  &  {5}$\times${20}, 100, same pad	  &		{3}$\times${20}, 75, same pad    \\
+		conv3  	& ---	  & {1}$\times${20}, 50, 	   &	{1}$\times${20}, 50 	   \\
+		fcout		& &{{1}$\times${1}, 5}&		   \\
 		
 		\bottomrule	
 	\end{tabular}
@@ -259,14 +259,14 @@ Come ultimo strato della rete viene scelto un \emph{layer fully-connected}, defi
 		\toprule
 		\textbf{Layer}& \textbf{Modello 7} 								  & \textbf{Modello 8} 			   \\ 
 		\midrule
-		conv1 	& \num{3}$\times$\num{3}, 100, stride 2, same pad     & ---	   \\
-		mpool1 	& \num{4}$\times$\num{4}, stride 2, same pad		  & ---	   \\
-		conv2  	& \num{3}$\times$\num{63}, 75, stride 2, same pad	  & ---    \\
-		conv3  	& \num{1}$\times$\num{32}, 50, stride 2	  				  & ---	   \\
-		fc1  	& ---													  & \num{1}$\times$\num{1}, 100	   \\
-		fc2  	& \num{1}$\times$\num{32}, 50, stride 2	  				  & \num{1}$\times$\num{1},  50    \\
-		fc3  	& \num{1}$\times$\num{32}, 50, stride 2	  				  & \num{1}$\times$\num{1},  20	   \\
-		fcout	& \num{1}$\times$\num{1}, 5   			  				  & \num{1}$\times$\num{1},   5	   \\
+		conv1 	& {3}$\times${3}, 100, stride 2, same pad     & ---	   \\
+		mpool1 	& {4}$\times${4}, stride 2, same pad		  & ---	   \\
+		conv2  	& {3}$\times${63}, 75, stride 2, same pad	  & ---    \\
+		conv3  	& {1}$\times${32}, 50, stride 2	  				  & ---	   \\
+		fc1  	& ---													  & {1}$\times${1}, 100	   \\
+		fc2  	& {1}$\times${32}, 50, stride 2	  				  & {1}$\times${1},  50    \\
+		fc3  	& {1}$\times${32}, 50, stride 2	  				  & {1}$\times${1},  20	   \\
+		fcout	& {1}$\times${1}, 5   			  				  & {1}$\times${1},   5	   \\
 		\bottomrule	
 	\end{tabular}
 	\captionof{table}{Architetture implementate a partire dall'embedding 2}
@@ -277,9 +277,9 @@ Vengono presentate nelle tabelle \ref{tab:netemb1} e \ref{tab:netemb2} le divers
 
 L'input della rete è costituito da un numero di caratteristiche pari a $n \times p$ dove $n$ è la dimensione dell'embedding e $p$ il numero delle parole di ogni sentence.
 
-Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella sezione \ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
+Come algoritmo di ottimizzazione viene scelto sempre \emph{Adagrad}, illustrato nella Sezione~\ref{subsubsec:adagrad}, mentre il valore di \emph{learning rate} settato per ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov}.
 
-Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella sezione \ref{subsubsec:MSE}.
+Viene mantenuta anche in questa simulazione la funzione di costo MSE, approfondita nella Sezione~\ref{subsubsec:MSE}.
 
 Nel caso del secondo embedding si è voluto provare anche un modello che sfruttasse solo livelli di rete \emph{fully-connected}, senza applicare alcuna convoluzione. 
 
@@ -330,9 +330,9 @@ Prendendo in considerazione i due diversi embedding, vengono messe a confronto a
 
 Valutando le prestazioni su train e test set viene rilevato il ``Modello 7'' come il migliore tra quelli proposti, presentando i valori di loss più bassi. 
 Oltre a ciò, anche rispetto al precedente approccio il ``Modello 7'' mostra una performance migliorata circa 
-del \SI{3}{\percent}.
+del $3\%$.
 
-Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalità, riassunti nella tabella \ref{tab:rmsemikolov}, e viene inoltre visualizzata la curva RMSE nella figura \ref{fig:rmse}.
+Vengono analizzati anche i valori di RMSE, relativi ad ogni tratto di personalità, riassunti nella tabella \ref{tab:rmsemikolov}, e viene inoltre visualizzata la curva RMSE nella Figura~\ref{fig:rmse}.
 
 \begin{figure}[H]
 	\centering
@@ -377,13 +377,13 @@ Ricorrendo nuovamente al modello \emph{skip-gram}, l'input della rete questa vol
 La finestratura che si andrà a definire in torno al target sarà di dimensione 2 e considererà le due parole a sinistra e le due parole a destra dell'aggettivo. La window non sarà più quindi incentrata su ogni elemento della sentence.
 Dunque nell'embedding che si andrà a costruire non verranno appresi i contesti di tutte le parole, ma solamente quelli di nostro interesse, ovvero relativi agli aggettivi.
 
-In questo esperimento viene realizzato un solo embedding, la cui dimensione è \num{250} e con numero di etichette negative da campionare pari a 50 \cite{liu2016classification}.
+In questo esperimento viene realizzato un solo embedding, la cui dimensione è {250} e con numero di etichette negative da campionare pari a 50 \cite{liu2016classification}.
 
 \subsection{Architettura della rete}
 \label{subsec:modelli3}
 
 Viene utilizzato l'embedding estratto per costruire due modelli di reti neurali, le cui architetture vengono presentate nella tabella \ref{tab:netemb3}.
-Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; si rimanda alla sezione \ref{subsec:modelli2} per i dettagli. 
+Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; si rimanda alla Sezione~\ref{subsec:modelli2} per i dettagli. 
 
 \begin{figure}[H]
 	\centering
@@ -391,12 +391,12 @@ Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; s
 		\toprule
 		\textbf{Layer}& \textbf{Modello 9} & \textbf{Modello 10}	\\ 
 		\midrule
-		conv1   & \num{7}$\times$\num{5}, 100, stride 2, same pad    		&\num{3}$\times$\num{3}, 100, stride 2, same pad 		   \\
-		mpool1 	&\multicolumn{2}{c}{\num{4}$\times$\num{4}, stride 2, same pad}	 \\
-		conv2  	&  \num{5}$\times$\num{63}, 75, stride 2, same pad	    &		\num{3}$\times$\num{63}, 75, stride 2, same pad    \\
-		conv3  	& \num{3}$\times$\num{32}, 50, stride 2, same pad 	   	&	\num{1}$\times$\num{32}, 50, stride 2 	   \\
-		conv4  	& \num{1}$\times$\num{16}, 25, stride 2 	   	&	--- 	   \\
-		fcout	&\multicolumn{2}{c}{\num{1}$\times$\num{1}, 5}						\\
+		conv1   & {7}$\times${5}, 100, stride 2, same pad    		&{3}$\times${3}, 100, stride 2, same pad 		   \\
+		mpool1 	&\multicolumn{2}{c}{{4}$\times${4}, stride 2, same pad}	 \\
+		conv2  	&  {5}$\times${63}, 75, stride 2, same pad	    &		{3}$\times${63}, 75, stride 2, same pad    \\
+		conv3  	& {3}$\times${32}, 50, stride 2, same pad 	   	&	{1}$\times${32}, 50, stride 2 	   \\
+		conv4  	& {1}$\times${16}, 25, stride 2 	   	&	--- 	   \\
+		fcout	&\multicolumn{2}{c}{{1}$\times${1}, 5}						\\
 		
 		\bottomrule	
 	\end{tabular}
@@ -404,7 +404,7 @@ Come nel precedente esperimento si ricorrerà alle \emph{reti convoluzionali}; s
 	\label{tab:netemb3}
 \end{figure}
 
-L'algoritmo di apprendimento utilizzato è \emph{Adagrad}, definito nella sezione \ref{subsubsec:adagrad}, con \emph{learning rate} \numprint{0,0005} per il ``Modello 9'' e \numprint{0,005} per il ``Modello 10''. La funzione di \emph{loss} scelta è la MSE, introdotta nella sezione \ref{subsubsec:MSE}. 
+L'algoritmo di apprendimento utilizzato è \emph{Adagrad}, definito nella Sezione~\ref{subsubsec:adagrad}, con \emph{learning rate} \numprint{0,0005} per il ``Modello 9'' e \numprint{0,005} per il ``Modello 10''. La funzione di \emph{loss} scelta è la MSE, introdotta nella Sezione~\ref{subsubsec:MSE}. 
 
 \subsection{Performance}
 \label{subsec:performance3}
@@ -456,7 +456,7 @@ Viene stabilito 0 come ``punto di neutralità assoluta'' perché corrisponde all
 
 Adottando questo metodo, si assumerà di poter estrarre da questa funzione una misura di polarità, positiva o negativa, che indicherà un tratto più o meno accentuato.
 
-Il vantaggio effettivo di questo approccio consiste nella possibilità di valutare le performance in modo standard, visualizzando le matrici di confusione e misurandone l'accuratezza, argomenti trattati nella sezione \ref{subsubsec:classificazione}.
+Il vantaggio effettivo di questo approccio consiste nella possibilità di valutare le performance in modo standard, visualizzando le matrici di confusione e misurandone l'accuratezza, argomenti trattati nella Sezione~\ref{subsubsec:classificazione}.
 
 \subsection{Input Features}
 \label{subsec:features4}
@@ -476,12 +476,12 @@ Ad ogni livello della rete viene applicata la stessa procedura degli esperimenti
 		\toprule
 		\textbf{Layer} & \textbf{Modello 11} & \textbf{Modello 12} & \textbf{Modello 13}  	\\ 
 		\midrule
-		conv1 	& \num{3}$\times$\num{3}, 100	  & \num{5}$\times$\num{3}, 100 & \num{7}$\times$\num{5}, 100 	   \\
-		mpool1 	& {\num{4}$\times$\num{4}}	&{\num{4}$\times$\num{4}}	& {\num{4}$\times$\num{4}}	 \\
-		conv2  	& \num{3}$\times$\num{63}, 75 &  \num{3}$\times$\num{63}, 75	  &		\num{5}$\times$\num{63}, 75    \\
-		conv3  	&\num{1}$\times$\num{32}, 50	  & \num{1}$\times$\num{32}, 50  &	\num{3}$\times$\num{32}, 50 	  \\
-		conv4  	& ---	  & \num{1}$\times$\num{16}, 25  &	\num{1}$\times$\num{16}, 25 	  \\
-		fcout	&{\num{1}$\times$\num{1}, 10} &{\num{1}$\times$\num{1}, 10}&{\num{1}$\times$\num{1}, 10}		   \\
+		conv1 	& {3}$\times${3}, 100	  & {5}$\times${3}, 100 & {7}$\times${5}, 100 	   \\
+		mpool1 	& {{4}$\times${4}}	&{{4}$\times${4}}	& {{4}$\times${4}}	 \\
+		conv2  	& {3}$\times${63}, 75 &  {3}$\times${63}, 75	  &		{5}$\times${63}, 75    \\
+		conv3  	&{1}$\times${32}, 50	  & {1}$\times${32}, 50  &	{3}$\times${32}, 50 	  \\
+		conv4  	& ---	  & {1}$\times${16}, 25  &	{1}$\times${16}, 25 	  \\
+		fcout	&{{1}$\times${1}, 10} &{{1}$\times${1}, 10}&{{1}$\times${1}, 10}		   \\
 		\bottomrule	
 	\end{tabular}
 	\captionof{table}{Architetture implementate a partire dall'embedding 2}
@@ -496,22 +496,22 @@ In ogni livello convoluzionale della rete si utilizzano uno stride di dimensione
 		\toprule
 		\textbf{Layer} & \textbf{Modello 14} & \textbf{Modello 15}   	\\ 
 		\midrule
-		conv1 	& {\num{7}$\times$\num{5}, 100, stride 2, same pad}&{\num{7}$\times$\num{5}, 100, stride 2, same pad} \\
-		mpool1 	& {\num{4}$\times$\num{4}, stride 2, same pad} &{\num{4}$\times$\num{4}, stride 2, same pad}  \\
-		conv2  	& {\num{5}$\times$\num{63}, 75, stride 2, same pad}&{\num{5}$\times$\num{63}, 75, stride 2, same pad}    \\
-		conv3  	&  {\num{3}$\times$\num{32}, 50, stride 2, same pad} &{\num{3}$\times$\num{32}, 50, stride 2, same pad} 	  \\
-		conv4  	& \num{1}$\times$\num{16}, 25, stride 2  &	\num{3}$\times$\num{16}, 25, stride 2, same pad 	  \\
-		conv5  	& ---  &	\num{1}$\times$\num{8}, 16, stride 2 	  \\
-		fcout	& \multicolumn{2}{c}{\num{1}$\times$\num{1}, 10}		   \\
+		conv1 	& {{7}$\times${5}, 100, stride 2, same pad}&{{7}$\times${5}, 100, stride 2, same pad} \\
+		mpool1 	& {{4}$\times${4}, stride 2, same pad} &{{4}$\times${4}, stride 2, same pad}  \\
+		conv2  	& {{5}$\times${63}, 75, stride 2, same pad}&{{5}$\times${63}, 75, stride 2, same pad}    \\
+		conv3  	&  {{3}$\times${32}, 50, stride 2, same pad} &{{3}$\times${32}, 50, stride 2, same pad} 	  \\
+		conv4  	& {1}$\times${16}, 25, stride 2  &	{3}$\times${16}, 25, stride 2, same pad 	  \\
+		conv5  	& ---  &	{1}$\times${8}, 16, stride 2 	  \\
+		fcout	& \multicolumn{2}{c}{{1}$\times${1}, 10}		   \\
 		\bottomrule	
 	\end{tabular}
 	\captionof{table}{Architetture implementate a partire dall'embedding 3}
 	\label{tab:rmsebin2}
 \end{figure}
 
-In tutte le simulazioni l’ottimizzatore scelto è \emph{Adagrad}, introdotto nella sezione \ref{subsubsec:adagrad}, il valore di \emph{learning rate}  di ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov2}.
+In tutte le simulazioni l’ottimizzatore scelto è \emph{Adagrad}, introdotto nella Sezione~\ref{subsubsec:adagrad}, il valore di \emph{learning rate}  di ogni modello viene mostrato nella tabella \ref{tab:learningratemikolov2}.
 
-Come funzione obiettivo viene utilizzata la \emph{Softamax Cross Entropy}, presentata nella sezione \ref{subsubsec:sce}. 
+Come funzione obiettivo viene utilizzata la \emph{Softamax Cross Entropy}, presentata nella Sezione~\ref{subsubsec:sce}. 
 
 \begin{table}[H]
 	\centering
@@ -559,7 +559,7 @@ Prendendo in considerazione le diverse architetture implementate, vengono presen
 	\label{tab:lossmikolov3}
 \end{table}
 
-Come già detto, l'utilizzo di questo approccio consente una valutazione non più solo in termini di loss ma se ne potrà analizzare anche l'accuratezza, introdotta nella sezione \ref{subsubsec:classificazione}. 
+Come già detto, l'utilizzo di questo approccio consente una valutazione non più solo in termini di loss ma se ne potrà analizzare anche l'accuratezza, introdotta nella Sezione~\ref{subsubsec:classificazione}. 
 
 \begin{figure}[H]
 	\centering

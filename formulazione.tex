@@ -41,9 +41,9 @@ Si procede eliminando dal dataset tutte le sentences non contenenti almeno uno d
 Gli algoritmi di apprendimento automatico non sono in grado funzionare direttamente con il testo non elaborato, è quindi necessario eseguire in primis un preprocessamento del database di testi e in seguito convertire i dati in numeri, nello specifico, in vettori di numeri.\\
 Alla fine di questo processo il dataset ottenuto sarà suddiviso in tre corpora: 
 \begin{itemize}
-	\item \SI{70}{\percent} training set : contenente \numprint{4351900} reviews utilizzate dalla rete per l'apprendimento;
-	\item \SI{10}{\percent} validation set: contenente \numprint{621700} reviews;
-	\item \SI{20}{\percent} testing set: contenente \numprint{1243000} reviews.
+	\item $70\%$ training set : contenente \numprint{4351900} reviews utilizzate dalla rete per l'apprendimento;
+	\item $10\%$ validation set: contenente \numprint{621700} reviews;
+	\item $20\%$ testing set: contenente \numprint{1243000} reviews.
 \end{itemize}
 La divisione dei tre dataset dovrà mantenere una buona distribuzione fra le diverse classi.
 
@@ -68,14 +68,14 @@ Ricorrendo, dove possibile, alle tecniche sopraelencate, è possibile costruire 
 \begin{figure}[H]
 	\centering
 	{\includegraphics[width=.8\textwidth]{images/dict_histogram30}}
-	\caption{Istogramma rappresentativo delle \num{30} parole più frequenti nel dizionario}
+	\caption{Istogramma rappresentativo delle 30 parole più frequenti nel dizionario}
 	\label{fig:Istrogramma del dizionario}
 \end{figure}
 In questo modo non verrà influenzata la rete mostrando l'associazione tra gli aggettivi e le label associate, ed il modello sarà ``costretto'' ad imparare il legame esistente tra il contesto di una frase e il relativo valore del tratto di personalità. 
 
 Inoltre sarà necessario anche rimuovere tutte le \emph{stopwords} relative alla lingua inglese, ovvero parole considerate poco significative perché usate troppo frequentemente all'interno delle frasi --- per esempio gli articoli e le congiunzioni --- filtrando i termini comuni e senza uno specifico significato semantico dalle parole che trasportano vere informazioni.
 
-In seguito ogni parola del dizionario verrà codificata con un valore intero univoco, mentre quelle non presenti, tra cui gli aggettivi mappati nel vocabolario OCEAN, verranno indicizzati al valore ``-1'' e gli verrà associato il token ``UNK'' come mostrato nella figura \ref{fig:preprocessing}
+In seguito ogni parola del dizionario verrà codificata con un valore intero univoco, mentre quelle non presenti, tra cui gli aggettivi mappati nel vocabolario OCEAN, verranno indicizzati al valore ``-1'' e gli verrà associato il token ``UNK'' come mostrato nella Figura~\ref{fig:preprocessing}
 \begin{figure}[H]
 	\centering
 	{\includegraphics[width=.5\textwidth]{images/preprocessing}}
